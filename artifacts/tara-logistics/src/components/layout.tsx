@@ -190,7 +190,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </div>
                   <div>
                     <div className="text-[13px] text-[#94A3B8] mb-0.5">24/7 Support</div>
-                    <div className="text-[15px] font-medium text-foreground">(330) 756-7732</div>
+                    <div className="text-[15px] font-medium text-foreground">(572)-220-2488</div>
                   </div>
                 </li>
                 <li className="flex gap-4 group">

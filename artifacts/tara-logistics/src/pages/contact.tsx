@@ -127,7 +127,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <div className="font-semibold uppercase tracking-wider text-xs text-[#94A3B8] mb-2">Phone</div>
-                      <div className="text-2xl font-medium text-foreground">(330) 756-7732</div>
+                      <div className="text-2xl font-medium text-foreground">(572)-220-2488</div>
                       <div className="text-[15px] text-[#CBD5E1] mt-2">24/7 Dispatch Support</div>
                     </div>
                   </div>
