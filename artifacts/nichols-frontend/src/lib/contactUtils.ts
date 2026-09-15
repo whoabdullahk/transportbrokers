@@ -30,7 +30,8 @@ export async function submitContactForm(
       message: sanitizedData.message,
     }
 
-    const response = await fetch('/api/leads', {
+    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const response = await fetch(`${baseUrl}/api/leads`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),

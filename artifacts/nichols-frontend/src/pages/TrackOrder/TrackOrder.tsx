@@ -88,7 +88,8 @@ async function fetchShipmentData(rawId: string): Promise<TrackOrderRecord> {
   if (!cleanId) return defaultRecord
 
   try {
-    const res = await fetch(`/api/shipments/${encodeURIComponent(cleanId)}`)
+    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const res = await fetch(`${baseUrl}/api/shipments/${encodeURIComponent(cleanId)}`)
     if (res.ok) {
       const data = await res.json()
       return {
