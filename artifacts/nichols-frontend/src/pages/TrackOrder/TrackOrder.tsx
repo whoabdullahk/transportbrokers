@@ -71,21 +71,9 @@ const defaultRecord: TrackOrderRecord = {
   destName: 'Dallas, TX',
 }
 
-function getRecordForId(rawId: string): TrackOrderRecord {
+async function fetchShipmentData(rawId: string): Promise<TrackOrderRecord | null> {
   const cleanId = rawId.trim().toUpperCase()
-  if (!cleanId) return defaultRecord
-
-  return {
-    ...defaultRecord,
-    trackingId: cleanId.startsWith('NTS-') ? cleanId : `NTS-${cleanId}`,
-    contractNumber: `DFA-${cleanId.replace(/\D/g, '').slice(0, 4) || '2026'}-88`,
-    appliesToContract: `DFA-${cleanId.replace(/\D/g, '').slice(0, 4) || '2026'}-88`,
-  }
-}
-
-async function fetchShipmentData(rawId: string): Promise<TrackOrderRecord> {
-  const cleanId = rawId.trim().toUpperCase()
-  if (!cleanId) return defaultRecord
+  if (!cleanId) return null
 
   try {
     const baseUrl = import.meta.env.VITE_API_URL || '';
@@ -272,14 +260,9 @@ export function TrackOrder() {
       </section>
 
       {/* 2. RESULTS CONTAINER */}
-      {activeRecord && (
+      {activeRecord ? (
         <section className="py-16 bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-            
-            {/* STEP 2: Two light cards side by side: 'Load Overview' & 'Schedule' */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
-              {/* Card 1: Load Overview */}
             {/* 2A. QUICK STATS: 2 Columns */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               
