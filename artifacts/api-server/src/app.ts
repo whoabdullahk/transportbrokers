@@ -10,18 +10,21 @@ dns.setDefaultResultOrder("ipv4first");
 
 const app: Express = express();
 
+// @ts-ignore
+const pinoMiddleware = typeof pinoHttp === "function" ? pinoHttp : ((pinoHttp as any)?.default || (pinoHttp as any)?.pinoHttp || pinoHttp);
+
 app.use(
-  pinoHttp({
+  (pinoMiddleware as any)({
     logger,
     serializers: {
-      req(req) {
+      req(req: any) {
         return {
           id: req.id,
           method: req.method,
           url: req.url?.split("?")[0],
         };
       },
-      res(res) {
+      res(res: any) {
         return {
           statusCode: res.statusCode,
         };
