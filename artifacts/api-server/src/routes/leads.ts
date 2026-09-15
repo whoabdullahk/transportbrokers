@@ -39,7 +39,7 @@ router.post("/leads", async (req, res): Promise<void> => {
     try {
       const result = await sendEmail({
         from: `"Brokerage Co. of American INC Website" <${process.env.SMTP_USER}>`,
-        to: "winston@transportbrokersinc.com",
+        to: process.env.SMTP_TO ?? process.env.SMTP_USER ?? "",
         replyTo: parsed.data.email,
         subject: `New Contact Form: ${parsed.data.serviceInterested || "General Inquiry"} — ${parsed.data.fullName}`,
         html: `

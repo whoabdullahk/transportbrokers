@@ -40,7 +40,7 @@ router.post("/carrier-agreement", async (req, res) => {
 
     const recipients = [
       formData.email,
-      "winston@transportbrokersinc.com"
+      process.env.SMTP_TO ?? process.env.SMTP_USER
     ].filter(Boolean) as string[];
 
     let emailSent = false;
