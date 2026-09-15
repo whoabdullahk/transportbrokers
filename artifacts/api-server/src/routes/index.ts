@@ -12,7 +12,7 @@ import adminLoadsRouter from "./admin/loads.js";
 import adminRateConfirmationsRouter from "./admin/rate-confirmations.js";
 import storageRouter from "./storage.js";
 
-const router: IRouter = Router();
+const router: any = Router();
 
 router.use(healthRouter);
 router.use(leadsRouter);
