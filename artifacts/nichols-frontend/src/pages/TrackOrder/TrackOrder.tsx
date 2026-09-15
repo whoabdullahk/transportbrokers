@@ -112,12 +112,12 @@ async function fetchShipmentData(rawId: string): Promise<TrackOrderRecord> {
   } catch {
     // API not reachable or offline, fallback smoothly
   }
-  return getRecordForId(cleanId)
+  return null
 }
 
 export function TrackOrder() {
-  const [inputVal, setInputVal] = useState('NTS-78432')
-  const [activeRecord, setActiveRecord] = useState<TrackOrderRecord | null>(defaultRecord)
+  const [inputVal, setInputVal] = useState('')
+  const [activeRecord, setActiveRecord] = useState<TrackOrderRecord | null>(null)
   const [feedback, setFeedback] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -131,7 +131,10 @@ export function TrackOrder() {
       const q = params.get('tracking_id') || params.get('bol') || params.get('id')
       if (q) {
         setInputVal(q)
-        fetchShipmentData(q).then((rec) => setActiveRecord(rec))
+        fetchShipmentData(q).then((rec) => {
+          if (rec) setActiveRecord(rec)
+          else setFeedback(`Tracking ID ${q} not found.`)
+        })
       }
     }
   }, [])
@@ -205,10 +208,16 @@ export function TrackOrder() {
     if (!inputVal.trim()) return
 
     setIsLoading(true)
+    setFeedback(null)
     try {
       const rec = await fetchShipmentData(inputVal)
-      setActiveRecord(rec)
-      setFeedback(`Showing verified dispatch record for ${rec.trackingId}`)
+      if (rec) {
+        setActiveRecord(rec)
+        setFeedback(`Showing verified dispatch record for ${rec.trackingId}`)
+      } else {
+        setActiveRecord(null)
+        setFeedback(`Tracking ID ${inputVal} not found. Please verify and try again.`)
+      }
     } finally {
       setIsLoading(false)
     }
@@ -271,307 +280,321 @@ export function TrackOrder() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
               {/* Card 1: Load Overview */}
-              <div className="p-7 rounded-2xl bg-gray-50 border border-gray-200 shadow-sm space-y-5">
-                <div className="flex items-center justify-between pb-3 border-b border-gray-200">
-                  <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">
-                    Load Overview
-                  </h2>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold font-mono bg-lime-100 text-lime-900 border border-lime-300">
-                    {activeRecord.status}
-                  </span>
+            {/* 2A. QUICK STATS: 2 Columns */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              
+              {/* Load Overview */}
+              <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm flex flex-col justify-between relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
+                  <ShieldCheck className="w-32 h-32 text-black" />
                 </div>
+                <div>
+                  <div className="flex items-center justify-between mb-8">
+                    <h3 className="text-sm font-black uppercase tracking-widest text-black">
+                      Load Overview
+                    </h3>
+                    <span className="px-3 py-1 bg-lime-100 text-lime-700 text-[10px] font-bold uppercase tracking-widest rounded-full font-mono border border-lime-200">
+                      {activeRecord.status}
+                    </span>
+                  </div>
 
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Tracking ID</div>
-                    <div className="font-bold text-gray-900 font-mono text-base mt-0.5">{activeRecord.trackingId}</div>
-                  </div>
-                  <div>
-                    <div className="text-xs font-mono uppercase text-gray-500 font-semibold">DOT Number</div>
-                    <div className="font-bold text-gray-900 font-mono text-base mt-0.5">{activeRecord.dotNumber}</div>
-                  </div>
-                  <div>
-                    <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Carrier</div>
-                    <div className="font-bold text-gray-900 mt-0.5">{activeRecord.carrier}</div>
-                  </div>
-                  <div>
-                    <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Truck #</div>
-                    <div className="font-bold text-gray-900 font-mono text-base mt-0.5">{activeRecord.truckNumber}</div>
+                  <div className="grid grid-cols-2 gap-y-6 gap-x-4">
+                    <div>
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1 font-mono">
+                        Tracking ID
+                      </div>
+                      <div className="font-bold text-gray-900">{activeRecord.trackingId}</div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1 font-mono">
+                        DOT Number
+                      </div>
+                      <div className="font-bold text-gray-900">{activeRecord.dotNumber}</div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1 font-mono">
+                        Carrier
+                      </div>
+                      <div className="font-bold text-gray-900">{activeRecord.carrier}</div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1 font-mono">
+                        Truck #
+                      </div>
+                      <div className="font-bold text-gray-900">{activeRecord.truckNumber}</div>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Card 2: Schedule */}
-              <div className="p-7 rounded-2xl bg-gray-50 border border-gray-200 shadow-sm space-y-5">
-                <div className="flex items-center justify-between pb-3 border-b border-gray-200">
-                  <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">
-                    Schedule
-                  </h2>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold font-mono bg-blue-50 text-blue-900 border border-blue-200">
-                    {activeRecord.tripsPerWeek}
-                  </span>
-                </div>
+              {/* Schedule */}
+              <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-8">
+                    <h3 className="text-sm font-black uppercase tracking-widest text-black">
+                      Schedule
+                    </h3>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600 font-mono bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+                      {activeRecord.tripsPerWeek}
+                    </span>
+                  </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                  <div className="sm:col-span-2">
-                    <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Monday–Friday Windows</div>
-                    <div className="font-bold text-gray-900 font-mono mt-0.5">{activeRecord.scheduleWindows}</div>
-                  </div>
-                  <div>
-                    <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Start Date</div>
-                    <div className="font-bold text-gray-900 mt-0.5">{activeRecord.startDate}</div>
-                  </div>
-                  <div>
-                    <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Contract Ref</div>
-                    <div className="font-bold text-gray-900 font-mono mt-0.5">{activeRecord.contractNumber}</div>
+                  <div className="space-y-6">
+                    <div>
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1 font-mono">
+                        Monday–Friday Windows
+                      </div>
+                      <div className="font-bold text-gray-900">{activeRecord.scheduleWindows}</div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1 font-mono">
+                          Start Date
+                        </div>
+                        <div className="font-bold text-gray-900">{activeRecord.startDate}</div>
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1 font-mono">
+                          Contract Ref
+                        </div>
+                        <div className="font-bold text-gray-900">{activeRecord.contractNumber}</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+
             </div>
 
-            {/* STEP 3: Dark accent card: Total Per Round Trip (Intentionally stays dark with lime-green top border) */}
-            <div className="border-t-4 border-lime-500 bg-neutral-900 text-white p-8 sm:p-10 rounded-2xl shadow-xl space-y-3">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <div className="text-xs font-mono uppercase text-lime-400 tracking-widest font-bold">
-                  Guaranteed Lane Compensation
-                </div>
-                <div className="text-xs font-mono text-gray-400">
-                  Contract: {activeRecord.contractNumber}
-                </div>
-              </div>
-
-              <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-4">
+            {/* 2B. RATE & COMPENSATION: Dark Theme */}
+            <div className="bg-neutral-900 rounded-xl overflow-hidden shadow-lg border border-neutral-800">
+              <div className="p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-neutral-800">
                 <div>
-                  <h3 className="text-sm font-mono uppercase text-gray-400 tracking-wider">
+                  <div className="text-lime-400 text-[10px] font-bold uppercase tracking-widest font-mono mb-2">
+                    Guaranteed Lane Compensation
+                  </div>
+                  <div className="text-gray-400 text-xs font-mono mb-1 uppercase tracking-wider">
                     Total Per Round Trip
-                  </h3>
-                  <div className="text-5xl sm:text-6xl font-black text-white font-mono tracking-tight mt-1">
+                  </div>
+                  <div className="text-4xl sm:text-5xl font-black text-white tracking-tight font-mono">
                     {activeRecord.totalPerRoundTrip}
                   </div>
                 </div>
-                <p className="text-xs sm:text-sm text-gray-400 max-w-md font-light leading-relaxed">
-                  Rate includes complete terminal-to-terminal round-trip transit, certified equipment access, driver compensation, and standard fuel surcharges.
-                </p>
-              </div>
-            </div>
-
-            {/* STEP 4: Three dark accent boxes side by side: Daily, Weekly (5 days), Monthly (4 weeks) */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {/* Daily Box */}
-              <div className="border-t-4 border-lime-500 bg-neutral-900 text-white p-6 rounded-xl shadow-lg space-y-2">
-                <div className="text-xs font-mono uppercase text-gray-400 tracking-wider font-semibold">
-                  Daily
-                </div>
-                <div className="text-3xl sm:text-4xl font-black text-lime-400 font-mono tracking-tight">
-                  {activeRecord.dailyRate}
-                </div>
-                <div className="text-xs text-gray-400 font-light pt-1 border-t border-white/10">
-                  1 Scheduled Round Trip
-                </div>
-              </div>
-
-              {/* Weekly (5 days) Box */}
-              <div className="border-t-4 border-lime-500 bg-neutral-900 text-white p-6 rounded-xl shadow-lg space-y-2">
-                <div className="text-xs font-mono uppercase text-gray-400 tracking-wider font-semibold">
-                  Weekly (5 days)
-                </div>
-                <div className="text-3xl sm:text-4xl font-black text-lime-400 font-mono tracking-tight">
-                  {activeRecord.weeklyRate}
-                </div>
-                <div className="text-xs text-gray-400 font-light pt-1 border-t border-white/10">
-                  5 Consecutive Operating Days
-                </div>
-              </div>
-
-              {/* Monthly (4 weeks) Box */}
-              <div className="border-t-4 border-lime-500 bg-neutral-900 text-white p-6 rounded-xl shadow-lg space-y-2">
-                <div className="text-xs font-mono uppercase text-gray-400 tracking-wider font-semibold">
-                  Monthly (4 weeks)
-                </div>
-                <div className="text-3xl sm:text-4xl font-black text-lime-400 font-mono tracking-tight">
-                  {activeRecord.monthlyRate}
-                </div>
-                <div className="text-xs text-gray-400 font-light pt-1 border-t border-white/10">
-                  20 Contracted Round Trips
-                </div>
-              </div>
-            </div>
-
-            {/* STEP 5: Route Information light card next to a real embedded map (Leaflet + OpenStreetMap) */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-              {/* Route Information Card */}
-              <div className="lg:col-span-6 p-7 sm:p-8 rounded-2xl bg-gray-50 border border-gray-200 shadow-sm space-y-5">
-                <div className="pb-3 border-b border-gray-200">
-                  <h3 className="text-xl font-black text-gray-900 uppercase tracking-tight">
-                    Route Information
-                  </h3>
-                  <p className="text-xs text-gray-500 mt-0.5">
-                    Continental corridor routing and authorized transit milestones.
+                <div className="md:text-right max-w-sm">
+                  <div className="text-xs font-mono text-gray-500 mb-2 uppercase tracking-wider">
+                    Contract: {activeRecord.contractNumber}
+                  </div>
+                  <p className="text-sm text-gray-400">
+                    Rate includes complete terminal-to-terminal round-trip transit, certified equipment access, driver compensation, and standard fuel surcharges.
                   </p>
                 </div>
+              </div>
 
-                <div className="space-y-3.5 text-xs sm:text-sm">
-                  <div className="flex flex-col sm:flex-row sm:justify-between py-1 border-b border-gray-200 gap-1">
-                    <span className="font-mono text-gray-500 uppercase font-semibold">Outbound Route</span>
-                    <span className="font-bold text-gray-900">{activeRecord.outboundRoute}</span>
+              {/* Rate Breakdown */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-neutral-800">
+                <div className="p-6">
+                  <div className="text-gray-500 text-[10px] font-bold uppercase tracking-widest font-mono mb-2">Daily</div>
+                  <div className="text-2xl font-black text-lime-400 font-mono mb-1">{activeRecord.dailyRate}</div>
+                  <div className="text-xs text-gray-500">1 Scheduled Round Trip</div>
+                </div>
+                <div className="p-6 bg-neutral-900/50">
+                  <div className="text-gray-500 text-[10px] font-bold uppercase tracking-widest font-mono mb-2">Weekly (5 Days)</div>
+                  <div className="text-2xl font-black text-lime-400 font-mono mb-1">{activeRecord.weeklyRate}</div>
+                  <div className="text-xs text-gray-500">5 Consecutive Operating Days</div>
+                </div>
+                <div className="p-6 bg-neutral-800/20">
+                  <div className="text-gray-500 text-[10px] font-bold uppercase tracking-widest font-mono mb-2">Monthly (4 Weeks)</div>
+                  <div className="text-2xl font-black text-lime-400 font-mono mb-1">{activeRecord.monthlyRate}</div>
+                  <div className="text-xs text-gray-500">20 Contracted Round Trips</div>
+                </div>
+              </div>
+            </div>
+
+            {/* 2C. ROUTING & MAP */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              
+              {/* Route Details */}
+              <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                <h3 className="text-sm font-black uppercase tracking-widest text-black mb-2">
+                  Route Information
+                </h3>
+                <p className="text-xs text-gray-500 mb-6">
+                  Continental corridor routing and authorized transit milestones.
+                </p>
+
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono">Outbound Route</span>
+                    <span className="font-bold text-gray-900 text-sm">{activeRecord.outboundRoute}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono">Return Route</span>
+                    <span className="font-bold text-gray-900 text-sm">{activeRecord.returnRoute}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono">Pickup Location</span>
+                    <span className="font-bold text-gray-900 text-sm text-right max-w-[60%]">{activeRecord.pickupLocation}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono">Delivery Location</span>
+                    <span className="font-bold text-gray-900 text-sm text-right max-w-[60%]">{activeRecord.deliveryLocation}</span>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row sm:justify-between py-1 border-b border-gray-200 gap-1">
-                    <span className="font-mono text-gray-500 uppercase font-semibold">Return Route</span>
-                    <span className="font-bold text-gray-900">{activeRecord.returnRoute}</span>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row sm:justify-between py-1 border-b border-gray-200 gap-1">
-                    <span className="font-mono text-gray-500 uppercase font-semibold">Pickup Location</span>
-                    <span className="font-medium text-gray-900 text-right">{activeRecord.pickupLocation}</span>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row sm:justify-between py-1 border-b border-gray-200 gap-1">
-                    <span className="font-mono text-gray-500 uppercase font-semibold">Delivery Location</span>
-                    <span className="font-medium text-gray-900 text-right">{activeRecord.deliveryLocation}</span>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 py-1 border-b border-gray-200">
+                  <div className="grid grid-cols-2 gap-4 py-3 border-b border-gray-100">
                     <div>
-                      <span className="block font-mono text-gray-500 uppercase font-semibold text-xs">Each Side Miles</span>
-                      <span className="font-bold text-gray-900 font-mono text-sm">{activeRecord.eachSideMiles}</span>
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono mb-1">Each Side Miles</div>
+                      <div className="font-bold text-gray-900 text-sm">{activeRecord.eachSideMiles}</div>
                     </div>
                     <div>
-                      <span className="block font-mono text-gray-500 uppercase font-semibold text-xs">Total Round Trip</span>
-                      <span className="font-bold text-gray-900 font-mono text-sm">{activeRecord.totalRoundTripMiles}</span>
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono mb-1">Total Round Trip</div>
+                      <div className="font-bold text-gray-900 text-sm">{activeRecord.totalRoundTripMiles}</div>
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row sm:justify-between py-1 border-b border-gray-200 gap-1">
-                    <span className="font-mono text-gray-500 uppercase font-semibold">Commodity</span>
-                    <span className="font-bold text-gray-900">{activeRecord.commodity}</span>
+                  <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono">Commodity</span>
+                    <span className="font-bold text-gray-900 text-sm">{activeRecord.commodity}</span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 pt-1">
+                  <div className="grid grid-cols-2 gap-4 py-3">
                     <div>
-                      <span className="block font-mono text-gray-500 uppercase font-semibold text-xs">Outbound Weight</span>
-                      <span className="font-bold text-gray-900 font-mono">{activeRecord.outboundWeight}</span>
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono mb-1">Outbound Weight</div>
+                      <div className="font-bold text-gray-900 text-sm">{activeRecord.outboundWeight}</div>
                     </div>
                     <div>
-                      <span className="block font-mono text-gray-500 uppercase font-semibold text-xs">Backhaul Weight</span>
-                      <span className="font-bold text-gray-900 font-mono">{activeRecord.backhaulWeight}</span>
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono mb-1">Backhaul Weight</div>
+                      <div className="font-bold text-gray-900 text-sm">{activeRecord.backhaulWeight}</div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Real Leaflet Map Container */}
-              <div className="lg:col-span-6 rounded-2xl overflow-hidden border border-gray-200 shadow-sm flex flex-col min-h-[380px] bg-gray-100 relative">
-                <div className="p-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between text-xs font-mono">
-                  <div className="flex items-center gap-2 text-gray-700 font-bold">
-                    <span className="h-2 w-2 rounded-full bg-lime-500 animate-pulse" />
-                    <span>CORRIDOR ROUTE MAP</span>
+              {/* Leaflet Map */}
+              <div className="bg-white border border-gray-200 rounded-xl p-2 shadow-sm flex flex-col min-h-[400px]">
+                <div className="px-4 py-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-lime-500 animate-pulse"></div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono">Corridor Route Map</span>
                   </div>
-                  <span className="text-gray-500">Leaflet • OpenStreetMap</span>
+                  <span className="text-[10px] text-gray-400 font-mono">Leaflet • OpenStreetMap</span>
                 </div>
                 <div 
-                  ref={mapContainerRef} 
-                  className="w-full flex-1 min-h-[340px] z-0"
-                  style={{ minHeight: '340px' }}
+                  ref={mapContainerRef}
+                  className="flex-1 w-full bg-gray-100 rounded-lg overflow-hidden relative z-0 border border-gray-200"
+                  style={{ minHeight: '350px' }}
                 />
               </div>
+
             </div>
 
-            {/* STEP 6: Slot Fee Breakdown light card next to a real logistics/port photo */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-              {/* Slot Fee Breakdown Card */}
-              <div className="lg:col-span-6 p-7 sm:p-8 rounded-2xl bg-gray-50 border border-gray-200 shadow-sm space-y-5">
-                <div className="pb-3 border-b border-gray-200">
-                  <h3 className="text-xl font-black text-gray-900 uppercase tracking-tight">
+            {/* 2D. BOTTOM SECTION: Slot Fee & Image */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-8">
+              
+              <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+                <div>
+                  <h3 className="text-sm font-black uppercase tracking-widest text-black mb-1">
                     Slot Fee Breakdown
                   </h3>
-                  <p className="text-xs text-gray-500 mt-0.5">
+                  <p className="text-xs text-gray-500 mb-6">
                     Dedicated lane capacity hold & terminal credentialing audit.
                   </p>
-                </div>
 
-                <div className="space-y-4 text-xs sm:text-sm">
-                  <div className="flex justify-between items-center py-2 border-b border-gray-200">
-                    <span className="font-mono text-gray-500 uppercase font-semibold">Reservation Fee</span>
-                    <span className="font-black text-gray-900 font-mono text-lg">{activeRecord.reservationFee}</span>
-                  </div>
-
-                  <div className="py-2 border-b border-gray-200 space-y-1">
-                    <span className="block font-mono text-gray-500 uppercase font-semibold">Purpose</span>
-                    <p className="font-medium text-gray-800 leading-relaxed">{activeRecord.purpose}</p>
-                  </div>
-
-                  <div className="flex justify-between items-center py-2 border-b border-gray-200">
-                    <span className="font-mono text-gray-500 uppercase font-semibold">Refundable</span>
-                    <span className="font-bold text-gray-900">{activeRecord.refundable}</span>
-                  </div>
-
-                  <div className="flex justify-between items-center py-2 border-b border-gray-200">
-                    <span className="font-mono text-gray-500 uppercase font-semibold">Applies to Contract</span>
-                    <span className="font-bold text-gray-900 font-mono">{activeRecord.appliesToContract}</span>
-                  </div>
-
-                  <div className="flex justify-between items-center pt-2">
-                    <span className="font-mono text-gray-500 uppercase font-semibold">Bill of Lading Status</span>
-                    <span className="inline-flex items-center gap-1.5 font-bold text-lime-700 bg-lime-50 px-2.5 py-1 rounded-full border border-lime-300">
-                      <ShieldCheck className="h-3.5 w-3.5" />
-                      <span>{activeRecord.bolStatus}</span>
-                    </span>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono">Reservation Fee</span>
+                      <span className="font-mono font-bold text-gray-900 text-base">{activeRecord.reservationFee}</span>
+                    </div>
+                    <div className="py-3 border-b border-gray-100">
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono mb-1">Purpose</div>
+                      <div className="font-bold text-gray-900 text-sm">{activeRecord.purpose}</div>
+                    </div>
+                    <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono">Refundable</span>
+                      <span className="font-bold text-gray-900 text-sm">{activeRecord.refundable}</span>
+                    </div>
+                    <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono">Applies to Contract</span>
+                      <span className="font-bold text-gray-900 text-sm font-mono">{activeRecord.appliesToContract}</span>
+                    </div>
+                    <div className="flex justify-between items-center py-3">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono">Bill of Lading Status</span>
+                      <span className="px-3 py-1 bg-lime-50 text-lime-700 text-xs font-bold rounded-full border border-lime-200 flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        {activeRecord.bolStatus}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Real Logistics/Port/Freight Yard Photography */}
-              <div className="lg:col-span-6 rounded-2xl overflow-hidden border border-gray-200 shadow-sm relative min-h-[300px]">
-                <img
-                  src="/images/hero/container-yard-aerial.jpg"
-                  alt="Intermodal port terminal and logistics container yard"
-                  className="w-full h-full object-cover min-h-[320px]"
+              {/* Lifestyle / Branding Image */}
+              <div className="relative rounded-xl overflow-hidden shadow-sm border border-gray-200 min-h-[300px] group">
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors z-10"></div>
+                <img 
+                  src="/images/services/intermodal.jpg" 
+                  alt="Freight terminal operations"
+                  className="absolute inset-0 w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 text-white space-y-1">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-xs font-mono text-lime-400">
-                    <span className="h-2 w-2 rounded-full bg-lime-400 animate-pulse" />
-                    <span>Terminal Gate & Yard Visibility</span>
+                <div className="absolute bottom-0 left-0 right-0 p-6 z-20 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-black/50 backdrop-blur-sm border border-white/10 text-[10px] font-bold uppercase tracking-widest text-lime-400 mb-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-lime-400 animate-pulse"></span>
+                    Terminal Gate & Yard Visibility
                   </div>
-                  <h4 className="text-lg font-bold text-white uppercase">
+                  <h4 className="text-white font-black uppercase tracking-wide text-lg leading-tight mb-2">
                     Intermodal Terminal & Slot Operations
                   </h4>
-                  <p className="text-xs text-gray-300 font-light">
+                  <p className="text-gray-300 text-xs leading-relaxed max-w-sm">
                     Guaranteed terminal gate access, pre-reserved equipment slots, and priority backhaul staging.
                   </p>
                 </div>
               </div>
+
             </div>
 
-            {/* Assistance Card */}
-            <div className="p-8 rounded-2xl bg-gray-50 border border-gray-200 text-center space-y-4">
-              <div className="text-xs font-mono uppercase text-gray-500 tracking-wider font-semibold">
-                Direct Dispatch Inquiries
-              </div>
-              <h3 className="text-2xl font-black text-gray-900 uppercase">
-                Need Real-Time Verbal Confirmation?
+            {/* CALL TO ACTION BLOCK */}
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-8 text-center max-w-4xl mx-auto mt-8 mb-12 shadow-sm">
+              <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono mb-4">Direct Dispatch Inquiries</div>
+              <h3 className="text-2xl font-black text-black uppercase tracking-tight mb-3">
+                Need real-time verbal confirmation?
               </h3>
-              <p className="text-sm text-gray-600 max-w-xl mx-auto font-normal">
+              <p className="text-gray-600 text-sm max-w-lg mx-auto mb-6">
                 Our Alexandria dispatch team is actively monitoring this lane and can confirm gate entry, scale weights, and appointment schedules.
               </p>
-              <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
-                <a
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a 
                   href="tel:4435600311"
-                  className="px-6 py-3 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider transition-all inline-flex items-center gap-2 shadow-sm"
+                  className="px-6 py-3 rounded-full bg-black text-white font-bold text-sm uppercase tracking-wider inline-flex items-center gap-2 hover:bg-neutral-800 transition-colors"
                 >
-                  <Phone className="h-3.5 w-3.5 text-lime-400" />
-                  <span>Call (443) 560-0311</span>
+                  <Phone className="w-4 h-4 text-lime-400" />
+                  Call (443) 560-0311
                 </a>
-                <Link
-                  href="/contact"
-                  className="px-6 py-3 rounded-full bg-white hover:bg-gray-100 text-gray-900 font-bold text-xs uppercase tracking-wider transition-all border border-gray-300 shadow-sm"
-                >
-                  <span>Submit Inquiry</span>
+                <Link href="/contact-us">
+                  <button className="px-6 py-3 rounded-full bg-white text-black font-bold text-sm uppercase tracking-wider inline-flex items-center border border-gray-300 hover:border-black transition-colors">
+                    Submit Inquiry
+                  </button>
                 </Link>
               </div>
             </div>
 
+          </div>
+        </section>
+      ) : (
+        <section className="bg-neutral-900 py-32 text-center">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 uppercase tracking-tight">
+              Ready to haul more freight with a broker that has your back?
+            </h2>
+            <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
+              Join the carriers who trust Nichols Transportation Services for consistent lanes and real support.
+            </p>
+            <Link href="/carrier-services">
+              <button className="px-8 py-4 rounded-full bg-white text-black font-bold text-sm uppercase tracking-wider inline-flex items-center gap-3 hover:bg-lime-400 transition-colors">
+                Get Started Today
+                <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-lime-400 shadow-sm">
+                  <ArrowRight className="h-4 w-4" />
+                </div>
+              </button>
+            </Link>
           </div>
         </section>
       )}
