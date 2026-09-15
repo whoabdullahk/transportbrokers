@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import { desc, eq } from "drizzle-orm";
 import { db, rateConfirmationsTable, auditLogsTable } from "@workspace/db";
-import { sendEmail } from "../../lib/mailer";
+import { sendEmail } from "../../lib/mailer.js";
 import {
   AdminCreateRateConfirmationBody,
   AdminCreateRateConfirmationResponse,
@@ -10,7 +10,7 @@ import {
   AdminUpdateRateConfirmationBody,
   AdminUpdateRateConfirmationResponse,
 } from "@workspace/api-zod";
-import { requireAdminAuth, requirePermission } from "../../middlewares/adminAuth";
+import { requireAdminAuth, requirePermission } from "../../middlewares/adminAuth.js";
 
 const router: IRouter = Router();
 

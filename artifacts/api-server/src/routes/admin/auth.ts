@@ -8,8 +8,8 @@ import {
   SESSION_TTL_MS,
   generateSessionToken,
   hashSessionToken,
-} from "../../lib/session";
-import { requireAdminAuth } from "../../middlewares/adminAuth";
+} from "../../lib/session.js";
+import { requireAdminAuth } from "../../middlewares/adminAuth.js";
 
 const router: IRouter = Router();
 

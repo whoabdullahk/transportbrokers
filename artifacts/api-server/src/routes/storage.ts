@@ -5,11 +5,11 @@ import {
 } from '@workspace/api-zod';
 import { Router, type IRouter, type Request, type Response } from 'express';
 
-import { requireAdminAuth } from '../middlewares/adminAuth';
+import { requireAdminAuth } from "../middlewares/adminAuth.js";
 import {
   ObjectNotFoundError,
   ObjectStorageService,
-} from '../lib/objectStorage';
+} from "../lib/objectStorage.js";
 
 const router: IRouter = Router();
 const objectStorageService = new ObjectStorageService();

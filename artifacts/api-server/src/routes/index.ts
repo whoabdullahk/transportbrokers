@@ -1,16 +1,16 @@
 import { Router, type IRouter } from "express";
-import healthRouter from "./health";
-import leadsRouter from "./leads";
-import shipmentsRouter from "./shipments";
-import carrierAgreementRouter from "./carrier-agreement";
-import adminAuthRouter from "./admin/auth";
-import adminShipmentsRouter from "./admin/shipments";
-import adminLeadsRouter from "./admin/leads";
-import adminUsersRouter from "./admin/users";
-import adminRolesRouter from "./admin/roles";
-import adminLoadsRouter from "./admin/loads";
-import adminRateConfirmationsRouter from "./admin/rate-confirmations";
-import storageRouter from "./storage";
+import healthRouter from "./health.js";
+import leadsRouter from "./leads.js";
+import shipmentsRouter from "./shipments.js";
+import carrierAgreementRouter from "./carrier-agreement.js";
+import adminAuthRouter from "./admin/auth.js";
+import adminShipmentsRouter from "./admin/shipments.js";
+import adminLeadsRouter from "./admin/leads.js";
+import adminUsersRouter from "./admin/users.js";
+import adminRolesRouter from "./admin/roles.js";
+import adminLoadsRouter from "./admin/loads.js";
+import adminRateConfirmationsRouter from "./admin/rate-confirmations.js";
+import storageRouter from "./storage.js";
 
 const router: IRouter = Router();
 

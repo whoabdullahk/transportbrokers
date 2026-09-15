@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import { HealthCheckResponse } from "@workspace/api-zod";
 import nodemailer from "nodemailer";
-import { sendEmail } from "../lib/mailer";
+import { sendEmail } from "../lib/mailer.js";
 
 const router: IRouter = Router();
 

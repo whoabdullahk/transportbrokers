@@ -8,7 +8,7 @@ import {
   AdminUpdateLoadBody,
   AdminUpdateLoadResponse,
 } from "@workspace/api-zod";
-import { requireAdminAuth, requirePermission } from "../../middlewares/adminAuth";
+import { requireAdminAuth, requirePermission } from "../../middlewares/adminAuth.js";
 
 const router: IRouter = Router();
 

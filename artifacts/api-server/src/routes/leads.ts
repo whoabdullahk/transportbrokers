@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import { db, leadsTable } from "@workspace/db";
 import { CreateLeadBody, CreateLeadResponse } from "@workspace/api-zod";
-import { sendEmail } from "../lib/mailer";
+import { sendEmail } from "../lib/mailer.js";
 
 const router: IRouter = Router();
 

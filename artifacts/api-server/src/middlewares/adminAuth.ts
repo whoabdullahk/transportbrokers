@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { eq, and, gt } from "drizzle-orm";
 import { db, adminSessionsTable, adminUsersTable, rolesTable } from "@workspace/db";
-import { ADMIN_SESSION_COOKIE, hashSessionToken } from "../lib/session";
+import { ADMIN_SESSION_COOKIE, hashSessionToken } from "../lib/session.js";
 
 export interface AuthedAdminUser {
   id: number;

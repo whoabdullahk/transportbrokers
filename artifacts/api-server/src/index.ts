@@ -1,6 +1,6 @@
-import app from "./app";
-import { logger } from "./lib/logger";
-import { verifySmtpConnection } from "./lib/mailer";
+import app from "./app.js";
+import { logger } from "./lib/logger.js";
+import { verifySmtpConnection } from "./lib/mailer.js";
 
 const rawPort = process.env["PORT"];
 
