@@ -1,7 +1,7 @@
-import express, { type Express } from "express";
+import express, { type Express, type Request, type Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import pinoHttp from "pino-http";
+import { pinoHttp } from "pino-http";
 import dns from "dns";
 import router from "./routes";
 import { logger } from "./lib/logger";
@@ -10,21 +10,18 @@ dns.setDefaultResultOrder("ipv4first");
 
 const app: Express = express();
 
-// @ts-ignore
-const pinoMiddleware = typeof pinoHttp === "function" ? pinoHttp : ((pinoHttp as any)?.default || (pinoHttp as any)?.pinoHttp || pinoHttp);
-
 app.use(
-  (pinoMiddleware as any)({
+  pinoHttp({
     logger,
     serializers: {
-      req(req: any) {
+      req(req: Request) {
         return {
           id: req.id,
           method: req.method,
           url: req.url?.split("?")[0],
         };
       },
-      res(res: any) {
+      res(res: Response) {
         return {
           statusCode: res.statusCode,
         };
