@@ -1,0 +1,68 @@
+import type { Service } from '../types/services'
+
+export const servicesData: Service[] = [
+  {
+    id: 'dedicated-freight-lanes',
+    title: 'Dedicated Freight Lanes',
+    description: 'Consistent volume and dependable scheduling with dedicated lane contracts tailored for long-term growth and stable revenue.',
+    backgroundColor: 'lime',
+    textTheme: 'dark',
+    link: '/services/carrier',
+  },
+  {
+    id: 'trailer-rental-program',
+    title: 'Trailer Rental Program',
+    description: 'Modern dry vans, reefers, and flatbeds available with flexible rental terms and full maintenance support.',
+    backgroundColor: 'beige',
+    textTheme: 'dark',
+    link: '/services/carrier',
+  },
+  {
+    id: 'twic-card-assistance',
+    title: 'TWIC Card Assistance',
+    description: 'Step-by-step guidance for port and maritime security credentials to access high-security freight facilities.',
+    backgroundColor: 'black',
+    textTheme: 'light',
+    link: '/services/permits',
+  },
+  {
+    id: 'insurance-assistance',
+    title: 'Insurance Assistance',
+    description: 'Comprehensive commercial trucking coverage options through top-rated industry insurance partners.',
+    backgroundColor: 'gray',
+    textTheme: 'dark',
+    link: '/services/insurance',
+  },
+  {
+    id: 'factoring-registration',
+    title: 'Factoring Registration',
+    description: 'Same-day and next-day invoice factoring programs with competitive rates and zero hidden charges.',
+    backgroundColor: 'black',
+    textTheme: 'light',
+    link: '/services/carrier',
+  },
+  {
+    id: 'specialized-permit-loads',
+    title: 'Specialized Permit Loads',
+    description: 'Routing and permit acquisition for oversize, overweight, hazmat, and heavy-haul shipments.',
+    backgroundColor: 'lime',
+    textTheme: 'dark',
+    link: '/services/permits',
+  },
+  {
+    id: 'permit-application-support',
+    title: 'Permit Application Support',
+    description: 'Expedited multi-state permitting and regulatory filings to keep your rigs rolling without delays.',
+    backgroundColor: 'gray',
+    textTheme: 'dark',
+    link: '/services/permits',
+  },
+  {
+    id: 'dot-compliance-support',
+    title: 'DOT Compliance Support',
+    description: 'Audit preparation, safety ratings management, logbook consulting, and proactive FMCSA compliance.',
+    backgroundColor: 'black',
+    textTheme: 'light',
+    link: '/services/insurance',
+  },
+]

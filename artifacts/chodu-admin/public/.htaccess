@@ -1,0 +1,16 @@
+# ====================================================================
+# Hostinger Subdirectory .htaccess Configuration for /admin (Chodu Admin)
+# This file will be copied to dist/public/ by Vite on build.
+# Place the contents of dist/public/ in public_html/admin/.
+# ====================================================================
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /admin/
+
+  # Route all requests to index.html if the file/directory does not exist
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /admin/index.html [L]
+</IfModule>

@@ -1,0 +1,116 @@
+@import 'leaflet/dist/leaflet.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS Variables */
+:root {
+  --color-brand-black: #080808;
+  --color-brand-charcoal: #111111;
+  --color-brand-surface: #ffffff;
+  --color-brand-border: #e5e7eb;
+  --color-lime: #84cc16;
+  --color-lime-dark: #65a30d;
+  --color-offwhite: #f9fafb;
+}
+
+@layer base {
+  * {
+    @apply m-0 p-0 box-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: light;
+    background-color: #ffffff;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: #ffffff;
+    color: #111827;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    letter-spacing: -0.025em;
+  }
+}
+
+@layer utilities {
+  /* Explicit Brand Background Utilities */
+  .bg-brand-black {
+    background-color: #080808 !important;
+  }
+  .bg-brand-charcoal {
+    background-color: #111111 !important;
+  }
+  .bg-brand-surface {
+    background-color: #171717 !important;
+  }
+  .bg-brand-card {
+    background-color: #141414 !important;
+  }
+  .border-brand-border {
+    border-color: #262626 !important;
+  }
+
+  /* Industrial Technical Background Grid */
+  .bg-grid-industrial {
+    background-size: 40px 40px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  }
+
+  .bg-dots-pattern {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Micro-label style */
+  .tech-label {
+    @apply text-xs uppercase font-mono tracking-widest text-gray-400;
+    letter-spacing: 0.12em;
+  }
+
+  /* Hide Scrollbar */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Focus visible accessibility */
+  *:focus-visible {
+    @apply outline outline-2 outline-lime-500 outline-offset-2;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

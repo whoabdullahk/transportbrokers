@@ -99,7 +99,7 @@ router.post(
         const rcDate = rc.rcDateTime ? new Date(rc.rcDateTime).toLocaleDateString("en-US") : "N/A";
 
         await sendEmail({
-          from: `"BROKERAGE COMPANY OF AMERICAN INC" <${process.env.SMTP_USER}>`,
+          from: `"TRANSPORT BROKERS INC." <${process.env.SMTP_USER}>`,
           to: carrierEmail,
           bcc: process.env.SMTP_USER,
           subject: `Rate Confirmation — PRO #${proNum}`,
@@ -108,7 +108,7 @@ router.post(
 <body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,sans-serif;">
   <div style="max-width:640px;margin:30px auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.12);">
     <div style="background:#0d0d0d;padding:24px 32px;">
-      <div style="color:#D4AF37;font-size:18px;font-weight:900;letter-spacing:1px;">BROKERAGE COMPANY OF AMERICAN INC</div>
+      <div style="color:#D4AF37;font-size:18px;font-weight:900;letter-spacing:1px;">TRANSPORT BROKERS INC.</div>
       <div style="color:#888;font-size:12px;margin-top:4px;">50 Emjay Blvd, Brentwood, NY 11786</div>
     </div>
     <div style="padding:28px 32px;">
@@ -191,8 +191,8 @@ router.post(
       ${rc.specialInstructions ? `<div style="margin-top:20px;padding:16px;background:#fef9c3;border-left:4px solid #D4AF37;border-radius:4px;font-size:13px;color:#78350f;">${rc.specialInstructions.replace(/\n/g, "<br/>")}</div>` : ""}
     </div>
     <div style="background:#f9f9f9;padding:16px 32px;text-align:center;border-top:1px solid #eee;">
-      <p style="margin:0;font-size:11px;color:#aaa;">BROKERAGE COMPANY OF AMERICAN INC · 50 Emjay Blvd, Brentwood, NY 11786</p>
-      <p style="margin:4px 0 0;font-size:11px;color:#aaa;">For questions contact: winston@brokeragecompanyofamericaninc.com</p>
+      <p style="margin:0;font-size:11px;color:#aaa;">TRANSPORT BROKERS INC. · 50 Emjay Blvd, Brentwood, NY 11786</p>
+      <p style="margin:4px 0 0;font-size:11px;color:#aaa;">For questions contact: winston@transportbrokersinc.com</p>
     </div>
   </div>
 </body>

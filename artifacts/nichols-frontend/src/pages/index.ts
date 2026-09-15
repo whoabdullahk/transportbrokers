@@ -1,0 +1,8 @@
+export { Home } from './Home/Home'
+export { About } from './About/About'
+export { CarrierServices } from './CarrierServices/CarrierServices'
+export { Insurance } from './Insurance/Insurance'
+export { Permits } from './Permits/Permits'
+export { TrackOrder } from './TrackOrder/TrackOrder'
+export { Contact } from './Contact/Contact'
+export { Privacy } from './Privacy/Privacy'

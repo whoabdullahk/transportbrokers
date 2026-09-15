@@ -58,7 +58,7 @@ const STEPS = [
 ]
 
 const DISPATCH_COMPANIES = [
-  "BROKERAGE COMPANY OF AMERICAN INC",
+  "TRANSPORT BROKERS INC.",
   "Prime Dispatch Services",
   "Eagle Freight Dispatch",
   "American Truck Dispatch",
@@ -121,13 +121,13 @@ function generatePDF(data: FormData): string {
   doc.setTextColor(255, 255, 255)
   doc.setFontSize(11)
   doc.setFont("helvetica", "bold")
-  doc.text("BROKERAGE COMPANY OF AMERICAN INC", margin + 46, 30)
+  doc.text("TRANSPORT BROKERS INC.", margin + 46, 30)
   doc.setTextColor(212, 175, 55)
   doc.setFontSize(8.5)
   doc.text("MC #: 130697  |  DOT #: 2217864  |  50 Emjay Blvd, Brentwood, NY 11786", margin + 46, 46)
   doc.setTextColor(180, 180, 180)
   doc.setFontSize(7.5)
-  doc.text("winston@brokeragecompanyofamericaninc.com", margin + 46, 59)
+  doc.text("info@transportbrokersinc.com", margin + 46, 59)
 
   y = 90
 
@@ -154,13 +154,13 @@ function generatePDF(data: FormData): string {
   doc.setTextColor(50, 50, 50)
   doc.setFont("helvetica", "normal")
   const partyText = [
-    `This Agreement is made and entered into on ${TODAY_ISO}, by and between: BROKERAGE COMPANY OF AMERICAN INC`,
+    `This Agreement is made and entered into on ${TODAY_ISO}, by and between: TRANSPORT BROKERS INC.`,
     `MC #: 130697 | DOT #: 2217864`,
     `Address: 50 EMJAY BLVD BRENTWOOD, NY 11786`,
-    `Email: winston@brokeragecompanyofamericaninc.com`,
+    `Email: info@transportbrokersinc.com`,
     ``,
     `Dispatch Company: ${data.dispatchCompany}`,
-    `(Hereinafter referred to as the BROKERAGE COMPANY OF AMERICAN INC)`,
+    `(Hereinafter referred to as the TRANSPORT BROKERS INC.)`,
   ]
   partyText.forEach((line) => {
     checkPage()
@@ -375,7 +375,7 @@ function generatePDF(data: FormData): string {
   doc.setFont("helvetica", "normal")
   doc.setFontSize(9)
   doc.setTextColor(50, 50, 50)
-  doc.text("BROKERAGE COMPANY OF AMERICAN INC", margin, y)
+  doc.text("TRANSPORT BROKERS INC.", margin, y)
   y += 13
   doc.text(`Date: ${TODAY_ISO}`, margin, y)
   y += 20
@@ -387,7 +387,7 @@ function generatePDF(data: FormData): string {
     doc.setFontSize(7.5)
     doc.setTextColor(160, 160, 160)
     doc.text(
-      `Brokerage Company of American INC  ·  50 Emjay Blvd, Brentwood, NY 11786  ·  Page ${i} of ${pageCount}`,
+      `TRANSPORT BROKERS INC.  ·  50 Emjay Blvd, Brentwood, NY 11786  ·  Page ${i} of ${pageCount}`,
       W / 2,
       doc.internal.pageSize.getHeight() - 24,
       { align: "center" }
@@ -487,13 +487,13 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
 
       <div className="text-xs text-[#CBD5E1] leading-relaxed mb-5 pb-5 border-b border-[#2a2a2a]">
         This Agreement is made and entered into on <strong className="text-white">{TODAY}</strong>, by and between:{" "}
-        <strong className="text-white">BROKERAGE COMPANY OF AMERICAN INC</strong>
+        <strong className="text-white">TRANSPORT BROKERS INC.</strong>
         <br />
         MC #: <strong className="text-white">130697</strong> | DOT #: <strong className="text-white">2217864</strong>
         <br />
         Address: <strong className="text-white">50 EMJAY BLVD, BRENTWOOD, NY 11786</strong>
         <br />
-        Email: <strong className="text-white">winston@brokeragecompanyofamericaninc.com</strong>
+        Email: <strong className="text-white">info@transportbrokersinc.com</strong>
       </div>
 
       <div className="bg-[#1a1a1a] border border-[#333] rounded-md px-4 py-3 mb-5">
@@ -521,7 +521,7 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
       </div>
 
       <p className="text-xs text-[#94A3B8] italic">
-        (Hereinafter referred to as the BROKERAGE COMPANY OF AMERICAN INC)
+        (Hereinafter referred to as the TRANSPORT BROKERS INC.)
       </p>
     </div>
   )
@@ -963,7 +963,7 @@ export default function CarrierSetupAgreement() {
           </div>
           <h1 className="text-2xl font-bold text-white">Carrier Setup Agreement</h1>
           <p className="text-xs text-[#D4AF37] font-semibold mt-0.5 tracking-wide">
-            BROKERAGE COMPANY OF AMERICAN INC
+            TRANSPORT BROKERS INC.
           </p>
           <p className="text-xs text-[#94A3B8] mt-1">Dedicated Lanes, Dispatch, Trailer Rental, and Setup Services</p>
           <div className="inline-flex items-center gap-1.5 bg-[#D4AF37]/20 border border-[#D4AF37]/40 rounded-full px-3 py-1 mt-3">
@@ -1048,7 +1048,7 @@ export default function CarrierSetupAgreement() {
 
         {/* Footer */}
         <p className="text-center text-[10px] text-[#444] mt-4">
-          Brokerage Company of American INC · 50 Emjay Blvd, Brentwood, NY 11786
+          TRANSPORT BROKERS INC. · 50 Emjay Blvd, Brentwood, NY 11786
         </p>
       </div>
     </div>

@@ -39,7 +39,7 @@ router.post("/leads", async (req, res): Promise<void> => {
     try {
       const result = await sendEmail({
         from: `"Brokerage Co. of American INC Website" <${process.env.SMTP_USER}>`,
-        to: "winston@brokeragecompanyofamericaninc.com",
+        to: "winston@transportbrokersinc.com",
         replyTo: parsed.data.email,
         subject: `New Contact Form: ${parsed.data.serviceInterested || "General Inquiry"} — ${parsed.data.fullName}`,
         html: `
@@ -75,7 +75,7 @@ router.post("/leads", async (req, res): Promise<void> => {
               <p style="color:#0f172a; white-space:pre-wrap; margin:0;">${parsed.data.message}</p>
             </div>
             <p style="color:#94a3b8; font-size:12px; margin-top:16px; text-align:center;">
-              This message was sent from the contact form at brokeragecompanyofamericaninc.com
+              This message was sent from the contact form at transportbrokersinc.com
             </p>
           </div>
         `,
