@@ -31,7 +31,7 @@ router.post("/admin/login", async (req, res): Promise<void> => {
     })
     .from(adminUsersTable)
     .innerJoin(rolesTable, eq(adminUsersTable.roleId, rolesTable.id))
-    .where(eq(adminUsersTable.email, parsed.data.email.toLowerCase()));
+    .where(eq(adminUsersTable.email, parsed.data.email.trim().toLowerCase()));
 
   if (!row || !row.isActive) {
     res.status(401).json({ error: "Invalid credentials" });

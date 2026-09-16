@@ -12,7 +12,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 
 const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.string().trim().email("Invalid email address"),
   password: z.string().min(1, "Password is required"),
 });
 
@@ -108,7 +108,7 @@ export default function AdminLogin() {
                       <FormLabel className="text-xs uppercase tracking-wider text-muted-foreground font-mono">Email Address</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="admin@brokeragecoofamerican.com"
+                          placeholder="winston@brokeragecompanyofamericaninc.com"
                           {...field}
                           className="bg-background/50 border-border focus-visible:ring-[#D4AF37]/50 h-11"
                         />
