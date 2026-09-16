@@ -24,7 +24,13 @@ export default function AdminLogin() {
   const { toast } = useToast();
 
   const { data: admin, isLoading: isChecking, isError: isMeError } = useAdminMe({
-    query: { retry: false, queryKey: getAdminMeQueryKey() }
+    query: {
+      retry: false,
+      queryKey: getAdminMeQueryKey(),
+      staleTime: Infinity,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
   });
 
   const login = useAdminLogin();

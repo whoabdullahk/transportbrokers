@@ -9,7 +9,13 @@ import { useQueryClient } from "@tanstack/react-query";
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
   const { data: admin, isLoading, isError } = useAdminMe({
-    query: { retry: false, queryKey: getAdminMeQueryKey() }
+    query: {
+      retry: false,
+      queryKey: getAdminMeQueryKey(),
+      staleTime: Infinity,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
   });
   const logout = useAdminLogout();
   const queryClient = useQueryClient();
