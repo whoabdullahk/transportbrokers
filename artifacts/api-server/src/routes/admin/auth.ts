@@ -67,14 +67,13 @@ router.post("/admin/login", async (req, res): Promise<void> => {
 
   req.log.info({ adminUserId: row.id }, "Admin logged in");
 
-  res.json(
-    AdminLoginResponse.parse({
-      id: row.id,
-      email: row.email,
-      name: row.name,
-      roleName: row.roleName,
-    }),
-  );
+  res.json({
+    id: row.id,
+    email: row.email,
+    name: row.name,
+    roleName: row.roleName,
+    token,
+  });
 });
 
 router.post("/admin/logout", async (req, res): Promise<void> => {

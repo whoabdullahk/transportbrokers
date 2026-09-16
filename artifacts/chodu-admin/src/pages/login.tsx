@@ -52,6 +52,9 @@ export default function AdminLogin() {
   const onSubmit = (values: LoginFormValues) => {
     login.mutate({ data: values }, {
       onSuccess: (data) => {
+        // Store token for cross-site Bearer auth
+        const token = (data as any).token;
+        if (token) localStorage.setItem('admin_token', token);
         queryClient.setQueryData(getAdminMeQueryKey(), data);
         setLocation("/");
       },

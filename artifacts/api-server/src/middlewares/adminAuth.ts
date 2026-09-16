@@ -21,9 +21,16 @@ declare global {
   }
 }
 
-/** Loads the admin user for the session cookie, if any, without rejecting the request. */
+/** Loads the admin user for the session cookie or Bearer token, if any, without rejecting the request. */
 export async function loadAdminUser(req: Request): Promise<AuthedAdminUser | null> {
-  const token = req.cookies?.[ADMIN_SESSION_COOKIE];
+  // Accept token from cookie OR Authorization: Bearer header (for cross-site requests)
+  let token = req.cookies?.[ADMIN_SESSION_COOKIE];
+  if (!token) {
+    const authHeader = req.headers["authorization"];
+    if (authHeader?.startsWith("Bearer ")) {
+      token = authHeader.slice(7);
+    }
+  }
   if (!token) return null;
 
   const tokenHash = hashSessionToken(token);

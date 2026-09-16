@@ -23,6 +23,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isError) {
+      localStorage.removeItem('admin_token');
       queryClient.removeQueries({ queryKey: getAdminMeQueryKey() });
       setLocation("/login");
     }
@@ -31,6 +32,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const handleLogout = () => {
     logout.mutate(undefined, {
       onSuccess: () => {
+        localStorage.removeItem('admin_token');
         queryClient.clear();
         setLocation("/login");
       }
