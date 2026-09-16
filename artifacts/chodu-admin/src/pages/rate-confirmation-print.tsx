@@ -47,33 +47,6 @@ function PageBreak() {
   return <div className="print:break-after-page" />;
 }
 
-function CompanyLogo({ size = 64 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 100 100" className="select-none">
-      <circle cx="50" cy="50" r="48" fill="#ffffff" stroke="#000000" strokeWidth="2.5" />
-      <circle cx="50" cy="50" r="44" fill="#ffffff" stroke="#000000" strokeWidth="1" strokeDasharray="2,2" />
-      <path id="textPathTop" d="M 12 50 A 38 38 0 1 1 88 50" fill="none" stroke="none" />
-      <path id="textPathBottom" d="M 88 50 A 38 38 0 1 1 12 50" fill="none" stroke="none" />
-
-      <text fill="#0d0d0d" fontSize="6.8" fontWeight="800" letterSpacing="0.4" fontFamily="sans-serif">
-        <textPath href="#textPathTop" startOffset="50%" textAnchor="middle">
-          Transport Brokers Inc.
-        </textPath>
-      </text>
-
-      <text fill="#D4AF37" fontSize="5.2" fontWeight="700" letterSpacing="0.8" fontFamily="sans-serif">
-        <textPath href="#textPathBottom" startOffset="50%" textAnchor="middle">
-          ★ LOGISTICS ★
-        </textPath>
-      </text>
-
-      <circle cx="50" cy="50" r="18" fill="#ffffff" stroke="#D4AF37" strokeWidth="1.5" />
-      <text x="50" y="56" fill="#0d0d0d" fontSize="17" fontWeight="900" textAnchor="middle" fontFamily="'Oswald', sans-serif">
-        BC
-      </text>
-    </svg>
-  );
-}
 
 function DocHeader({ companyName, proNumber }: { companyName: string; proNumber: string }) {
   return (
@@ -155,7 +128,7 @@ export default function RateConfirmationPrint() {
     );
   }
   const companyName = "Transport Brokers Inc.";
-  const companyAddress = "50 Emjay Blvd\nBrentwood, NY 11786";
+  const companyAddress = "67 Beacon Street\nBuffalo, NY 14220";
   const proNumber = rc.proNumber || "—";
   const docId = rc.id ? `2026${String(rc.id).padStart(8, "0")}` : "20260504160917";
   const rcDate = new Date(rc.rcDateTime).toISOString().split("T")[0];
@@ -191,14 +164,9 @@ Failure to notify Transport Brokers Inc. within 1HR of occurrence results in tim
       <div className="max-w-[850px] mx-auto p-8 print:p-4 text-[12px]">
         <DocHeader companyName={companyName} proNumber={proNumber} />
 
-        <div className="relative flex items-center justify-center mb-6 min-h-[64px]">
-          <div className="absolute left-0">
-            <CompanyLogo size={64} />
-          </div>
-          <div className="text-center">
-            <h1 className="text-[17px] font-bold tracking-tight uppercase leading-tight">{companyName}</h1>
-            <p className="text-[11px] text-gray-600 font-semibold whitespace-pre-line leading-snug mt-0.5">{companyAddress}</p>
-          </div>
+        <div className="flex flex-col items-center justify-center mb-6">
+          <BrandLogo size={40} />
+          <p className="text-[11px] text-gray-600 font-semibold whitespace-pre-line leading-snug mt-2 text-center">{companyAddress}</p>
         </div>
 
         <div className="space-y-2 mb-4">
@@ -296,8 +264,6 @@ Failure to notify Transport Brokers Inc. within 1HR of occurrence results in tim
       <div className="max-w-[850px] mx-auto p-8 print:p-4 text-[12px]">
         <DocHeader companyName={companyName} proNumber={proNumber} />
 
-        {/* Blank gray bar */}
-        <div className="bg-gray-100 border border-gray-300 h-6 mb-4 rounded-sm" />
 
         <SectionBar>SPECIAL INSTRUCTIONS</SectionBar>
         <div className="border border-[#D4AF37]/40 bg-[#FEF9C3]/20 p-3 mb-4 text-[10px] leading-tight whitespace-pre-wrap rounded-sm mt-1.5">
@@ -331,14 +297,12 @@ Failure to notify Transport Brokers Inc. within 1HR of occurrence results in tim
       <div className="max-w-[850px] mx-auto p-8 print:p-4 text-[12px]">
         <DocHeader companyName={companyName} proNumber={proNumber} />
 
-        <div className="text-center mb-4">
-          <h1 className="text-xl font-bold tracking-tight">{companyName}</h1>
-          <p className="text-xs text-gray-700 font-semibold whitespace-pre-line">{companyAddress}</p>
+        <div className="flex flex-col items-center justify-center mb-4">
+          <BrandLogo size={32} />
+          <p className="text-xs text-gray-700 font-semibold whitespace-pre-line mt-2">{companyAddress}</p>
         </div>
 
         <Bar>PRO #: {proNumber}</Bar>
-        <div className="h-4" />
-
         <div className="grid grid-cols-2 gap-4 mb-6">
           <div className="border border-black/20 p-3 bg-white">
             <div className="text-[12px] font-bold mb-1">FROM</div>

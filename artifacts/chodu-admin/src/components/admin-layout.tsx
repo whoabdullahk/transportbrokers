@@ -63,7 +63,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             <Truck className="w-4 h-4 text-[#D4AF37]" strokeWidth={2} />
           </div>
           <span className="font-bold text-sm tracking-tight text-foreground leading-tight">
-            Brokerage<span className="text-[#D4AF37]"> Co. of American INC</span>
+            Transport <span className="text-[#D4AF37]">Brokers Inc.</span>
           </span>
         </div>
         <button className="p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -83,7 +83,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             </div>
             <div className="flex flex-col">
               <span className="font-bold text-sm tracking-tight text-foreground leading-none">
-                Brokerage<span className="text-[#D4AF37]"> Co. of American INC</span>
+                Transport <span className="text-[#D4AF37]">Brokers Inc.</span>
               </span>
               <span className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">Admin Portal</span>
             </div>

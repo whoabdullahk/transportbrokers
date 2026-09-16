@@ -685,16 +685,16 @@ function generateRcPDF(values: RcFormValues): string {
   // ==========================================
   drawHeader(1);
 
-  // Logo Circle
+  // Logo Truck
   doc.setDrawColor(0);
-  doc.setLineWidth(1.5);
-  doc.circle(margin + 24, 76, 20);
-  doc.setLineWidth(0.5);
-  doc.circle(margin + 24, 76, 18);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
-  doc.setTextColor(0);
-  doc.text("BC", margin + 24, 80, { align: "center" });
+  doc.setFillColor(0);
+  doc.setLineWidth(2);
+  doc.roundedRect(margin + 10, 64, 20, 14, 2, 2, "S"); // trailer
+  doc.roundedRect(margin + 32, 70, 8, 8, 1, 1, "S"); // cab
+  doc.line(margin + 30, 78, margin + 32, 78);
+  doc.circle(margin + 16, 80, 2.5, "F"); // back wheel
+  doc.circle(margin + 24, 80, 2.5, "F"); // middle wheel
+  doc.circle(margin + 36, 80, 2.5, "F"); // front wheel
 
   // Company Name Centered
   doc.setFont("helvetica", "bold");
@@ -703,8 +703,8 @@ function generateRcPDF(values: RcFormValues): string {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8.5);
   doc.setTextColor(80);
-  doc.text("50 Emjay Blvd", W / 2, 81, { align: "center" });
-  doc.text("Brentwood, NY 11786", W / 2, 91, { align: "center" });
+  doc.text("67 Beacon Street", W / 2, 81, { align: "center" });
+  doc.text("Buffalo, NY 14220", W / 2, 91, { align: "center" });
 
   // Rounded gray bars
   let y = 104;
@@ -737,7 +737,7 @@ function generateRcPDF(values: RcFormValues): string {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.setTextColor(80);
-  doc.text("50 Emjay Blvd\nBrentwood, NY 11786\ninfo@transportbrokersinc.com", margin + 8, y + 34);
+  doc.text("67 Beacon Street\nBuffalo, NY 14220\ninfo@transportbrokersinc.com", margin + 8, y + 34);
 
   // Right Box
   doc.rect(margin + boxW + 12, y, boxW, boxH);
