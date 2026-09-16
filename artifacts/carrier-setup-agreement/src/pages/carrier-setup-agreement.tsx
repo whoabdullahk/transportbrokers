@@ -106,35 +106,36 @@ function generatePDF(data: FormData): Promise<string> {
     if (data.otherServices.factoringSetup) selectedServices.push("Factoring registration")
     if (data.otherServices.insuranceAssistance) selectedServices.push("Commercial insurance setup")
 
-    // ── TB truck/arrow mark + wordmark (Black on White) ──
-    const lx = margin, ly = margin
+    // ── Header (Centered Logo & Text) ──
+    const headerText = "TRANSPORT BROKERS INC."
+    doc.setFontSize(18)
+    doc.setFont("helvetica", "bold")
+    const headerWidth = doc.getTextWidth(headerText)
+    const iconWidth = 24
+    const spacing = 10
+    const totalWidth = iconWidth + spacing + headerWidth
     
-    // Custom simple vector truck
+    const startX = (W - totalWidth) / 2
+    const ly = margin
+    
+    // Truck Icon at startX
     doc.setFillColor(0, 0, 0)
     doc.setDrawColor(0, 0, 0)
-    // Tractor body
-    doc.rect(lx + 4, ly + 8, 14, 12, "F")
-    // Cab
-    doc.rect(lx + 18, ly + 13, 8, 7, "F")
-    // Windshield (cutout/white)
+    doc.rect(startX + 4, ly + 8, 14, 12, "F")
+    doc.rect(startX + 18, ly + 13, 8, 7, "F")
     doc.setFillColor(255, 255, 255)
-    doc.rect(lx + 20, ly + 14, 4, 3, "F")
+    doc.rect(startX + 20, ly + 14, 4, 3, "F")
     doc.setFillColor(0, 0, 0)
-    // Wheels
-    doc.circle(lx + 8, ly + 22, 3, "F")
-    doc.circle(lx + 22, ly + 22, 3, "F")
-    // Arrow element in body (cutout/white)
+    doc.circle(startX + 8, ly + 22, 3, "F")
+    doc.circle(startX + 22, ly + 22, 3, "F")
     doc.setFillColor(255, 255, 255)
-    doc.rect(lx + 8, ly + 11, 6, 2, "F")
-    doc.triangle(lx + 14, ly + 10, lx + 14, ly + 14, lx + 17, ly + 12, "F")
+    doc.rect(startX + 8, ly + 11, 6, 2, "F")
+    doc.triangle(startX + 14, ly + 10, startX + 14, ly + 14, startX + 17, ly + 12, "F")
     
-    // Company name
     doc.setTextColor(0, 0, 0)
-    doc.setFontSize(14)
-    doc.setFont("helvetica", "bold")
-    doc.text("TRANSPORT BROKERS INC.", margin + 34, ly + 20)
+    doc.text(headerText, startX + iconWidth + spacing, ly + 20)
     
-    y += 50
+    y = ly + 40
 
     // ── Title ──
     doc.setFontSize(16)
@@ -143,69 +144,88 @@ function generatePDF(data: FormData): Promise<string> {
     y += 18
     doc.setFontSize(10)
     doc.setFont("helvetica", "normal")
+    doc.setTextColor(100, 100, 100)
     doc.text("(Dedicated Lanes, Dispatch, Trailer Rental, and Setup Services)", W / 2, y, { align: "center" })
-    y += 30
+    doc.setTextColor(0, 0, 0)
+    y += 36
 
     // ── Intro text ──
     doc.setFontSize(10)
     doc.setFont("helvetica", "normal")
-    doc.text(`This Agreement is made and entered into on ${TODAY_ISO}, by and between: TRANSPORT BROKERS INC.`, margin, y)
-    y += 16
-    doc.text(`MC #: 172356 | DOT #: 2212598`, margin, y)
-    y += 16
-    doc.text(`Address: 67 Beacon Street, Buffalo, NY 14220`, margin, y)
-    y += 16
-    doc.text(`Email: info@transportbrokersinc.com`, margin, y)
-    y += 30
-    
-    doc.setFontSize(14)
+    doc.text(`This Agreement is made and entered into on ${TODAY_ISO}, by and between:`, margin, y)
+    y += 18
     doc.setFont("helvetica", "bold")
-    doc.text(`Dispatch Company: ${data.dispatchCompany}`, margin, y)
-    y += 20
-    
-    doc.setFontSize(10)
+    doc.text("TRANSPORT BROKERS INC.", margin, y)
     doc.setFont("helvetica", "normal")
+    y += 18
+    doc.text(`MC #: 172356 | DOT #: 2212598`, margin, y)
+    y += 18
+    doc.text(`Address: 67 Beacon Street, Buffalo, NY 14220`, margin, y)
+    y += 18
+    doc.text(`Email: ethoncollins@transportbrokersinc.com`, margin, y)
+    y += 24
+    
+    if (data.dispatchCompany) {
+      doc.setFontSize(11)
+      doc.setFont("helvetica", "bold")
+      doc.text(`Dispatch Company: ${data.dispatchCompany}`, margin, y)
+      y += 16
+    }
+    doc.setFontSize(9)
+    doc.setFont("helvetica", "italic")
+    doc.setTextColor(100, 100, 100)
     doc.text(`(Hereinafter referred to as the TRANSPORT BROKERS INC.)`, margin, y)
-    y += 16
-
-    // Gray divider
-    doc.setDrawColor(229, 231, 235)
-    doc.setLineWidth(1)
-    doc.line(margin, y, W - margin, y)
-    y += 30
+    doc.setTextColor(0, 0, 0)
+    y += 24
 
     // ── Helper functions ──
+    const divider = () => {
+      y += 12
+      doc.setDrawColor(229, 231, 235)
+      doc.setLineWidth(1)
+      doc.line(margin, y, W - margin, y)
+      y += 24
+    }
+
+    divider()
+
     const sectionTitle = (title: string) => {
       checkPage(40)
-      doc.setFontSize(14)
+      doc.setFontSize(12)
       doc.setFont("helvetica", "bold")
       doc.setTextColor(0, 0, 0)
       doc.text(title, margin, y)
-      y += 20
+      y += 6
+      doc.setDrawColor(212, 175, 55) // Gold accent line
+      doc.setLineWidth(1.5)
+      doc.line(margin, y, margin + doc.getTextWidth(title), y)
+      y += 18
       doc.setFont("helvetica", "normal")
       doc.setFontSize(10)
     }
 
     const field = (label: string, value: string) => {
-      checkPage(16)
+      checkPage(18)
+      doc.setFont("helvetica", "bold")
+      doc.text(`${label}:`, margin, y)
       doc.setFont("helvetica", "normal")
-      doc.text(`${label}: ${value || ""}`, margin, y)
-      y += 16
+      doc.text(` ${value || "N/A"}`, margin + doc.getTextWidth(`${label}:`), y)
+      y += 18
     }
     
     const bullet = (text: string) => {
-      checkPage(16)
-      doc.text(`• ${text}`, margin + 10, y)
-      y += 16
+      checkPage(18)
+      doc.text(`•  ${text}`, margin + 10, y)
+      y += 18
     }
     
     const bodyText = (text: string) => {
-      checkPage(16)
+      checkPage(18)
       const lines = doc.splitTextToSize(text, W - margin * 2)
       lines.forEach((l: string) => {
-        checkPage(16)
+        checkPage(18)
         doc.text(l, margin, y)
-        y += 16
+        y += 18
       })
     }
 
@@ -218,11 +238,8 @@ function generatePDF(data: FormData): Promise<string> {
     field("Driving license Number", data.drivingLicense)
     field("Carrier Phone number", data.phone)
     field("Email", data.email)
-    y += 14
 
-    doc.setDrawColor(229, 231, 235)
-    doc.line(margin, y, W - margin, y)
-    y += 30
+    divider()
 
     // ── Purpose of Agreement ──
     sectionTitle("Purpose of Agreement")
@@ -234,10 +251,7 @@ function generatePDF(data: FormData): Promise<string> {
     y += 4
     bodyText("Access to high-paying loads through partnered shippers including Amazon & government contracts")
     
-    y += 14
-    doc.setDrawColor(229, 231, 235)
-    doc.line(margin, y, W - margin, y)
-    y += 30
+    divider()
 
     // ── Lane Setup Option ──
     sectionTitle("Selected Dedicated Lane Setup Option:")
@@ -250,15 +264,12 @@ function generatePDF(data: FormData): Promise<string> {
     const lw = doc.getTextWidth(notePrefix + " ")
     const noteText = doc.splitTextToSize("A $460 Security deposit is required for applicable setups and is fully refundable after the first three successful deliveries.", W - margin * 2 - lw)
     noteText.forEach((l: string, i: number) => {
-      checkPage(16)
+      checkPage(18)
       doc.text(l, margin + (i === 0 ? lw : 0), y)
-      y += 16
+      y += 18
     })
     
-    y += 14
-    doc.setDrawColor(229, 231, 235)
-    doc.line(margin, y, W - margin, y)
-    y += 30
+    divider()
 
     // ── Services ──
     sectionTitle("Selected Services With Fees:")
@@ -266,14 +277,12 @@ function generatePDF(data: FormData): Promise<string> {
       doc.setFont("helvetica", "italic")
       doc.text("No services selected.", margin, y)
       doc.setFont("helvetica", "normal")
-      y += 16
+      y += 18
     } else {
       selectedServices.forEach(bullet)
     }
-    y += 14
-    doc.setDrawColor(229, 231, 235)
-    doc.line(margin, y, W - margin, y)
-    y += 30
+    
+    divider()
 
     // ── Payment ──
     sectionTitle("Payment Method")
@@ -287,10 +296,7 @@ function generatePDF(data: FormData): Promise<string> {
     bodyText("Payments may be processed via third-party accounts to enable same-day service")
     bodyText("A digital receipt will be issued upon payment")
     
-    y += 14
-    doc.setDrawColor(229, 231, 235)
-    doc.line(margin, y, W - margin, y)
-    y += 30
+    divider()
 
     // ── Refund Policy ──
     sectionTitle("Refund Policy")
@@ -300,10 +306,7 @@ function generatePDF(data: FormData): Promise<string> {
     y += 8
     bodyText("Refunds will be issued via the original payment method within 5–7 business days, if applicable")
     
-    y += 14
-    doc.setDrawColor(229, 231, 235)
-    doc.line(margin, y, W - margin, y)
-    y += 30
+    divider()
 
     // ── Client Responsibilities ──
     sectionTitle("Client Responsibilities")
@@ -314,19 +317,13 @@ function generatePDF(data: FormData): Promise<string> {
     bullet("Communicate in a timely and professional manner")
     bullet("Not engage in fraud, chargebacks, or misrepresentation")
     
-    y += 14
-    doc.setDrawColor(229, 231, 235)
-    doc.line(margin, y, W - margin, y)
-    y += 30
+    divider()
 
     // ── No Employment ──
     sectionTitle("No Employer-Employee Relationship")
     bodyText("This Agreement does not create an employment relationship. The Client is an independent carrier and assumes all responsibility for tax, insurance, regulatory compliance, and FMCSA obligations.")
     
-    y += 14
-    doc.setDrawColor(229, 231, 235)
-    doc.line(margin, y, W - margin, y)
-    y += 30
+    divider()
 
     // ── Liability ──
     sectionTitle("Limitation of Liability")
@@ -336,35 +333,27 @@ function generatePDF(data: FormData): Promise<string> {
     bullet("Legal or regulatory penalties due to false or missing information provided by the Client")
     bullet("Broker cancellations or third-party payment processing delays")
     
-    y += 14
-    doc.setDrawColor(229, 231, 235)
-    doc.line(margin, y, W - margin, y)
-    y += 30
+    divider()
 
     // ── Term ──
     sectionTitle("Term and Termination")
     bodyText("This agreement becomes effective upon payment and remains active until the completion of the contracted services. Either party may terminate in writing at any time. Refund terms apply as per Section 4.")
     
-    y += 14
-    doc.setDrawColor(229, 231, 235)
-    doc.line(margin, y, W - margin, y)
-    y += 30
+    divider()
 
     // ── Entire Agreement ──
     sectionTitle("Entire Agreement")
     bodyText("This Agreement contains the entire understanding between both parties and supersedes all prior agreements, written or oral.")
     
-    y += 14
-    doc.setDrawColor(229, 231, 235)
-    doc.line(margin, y, W - margin, y)
-    y += 30
+    divider()
 
     // ── Signatures ──
     sectionTitle("Carrier Details")
     field("Signature", data.signature)
     field("Print Name", data.printName)
     field("Date", TODAY_ISO)
-    y += 14
+
+    divider()
 
     sectionTitle("Dispatch/Service Provider Representative")
     doc.setFont("helvetica", "bold")
@@ -373,9 +362,7 @@ function generatePDF(data: FormData): Promise<string> {
     y += 24
     field("Date", TODAY_ISO)
     
-    y += 14
-    doc.setDrawColor(229, 231, 235)
-    doc.line(margin, y, W - margin, y)
+    divider()
 
     const jsPdfBytes = doc.output("arraybuffer")
     
@@ -500,7 +487,7 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
         <br />
         Address: <strong className="text-white">67 Beacon Street, Buffalo, NY 14220</strong>
         <br />
-        Phone: <strong className="text-white">330-756-7732</strong> | Email: <strong className="text-white">info@transportbrokersinc.com</strong>
+        Phone: <strong className="text-white">330-756-7732</strong> | Email: <strong className="text-white">ethoncollins@transportbrokersinc.com</strong>
       </div>
 
       <div className="bg-[#1a1a1a] border border-[#333] rounded-md px-4 py-3 mb-5">
@@ -966,7 +953,7 @@ export default function CarrierSetupAgreement() {
         {/* Header */}
         <div className="text-center mb-6">
           <div className="flex justify-center mb-3">
-            <BrandLogo size={64} />
+            <BrandLogo size={64} dark />
           </div>
           <h1 className="text-2xl font-bold text-white">Carrier Setup Agreement</h1>
           <p className="text-xs text-[#D4AF37] font-semibold mt-0.5 tracking-wide">
