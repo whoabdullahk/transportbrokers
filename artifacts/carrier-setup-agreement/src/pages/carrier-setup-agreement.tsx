@@ -87,348 +87,320 @@ const TODAY_DMY = new Date().toLocaleDateString("en-GB").replace(/\//g, "/")
 function generatePDF(data: FormData): Promise<string> {
   return new Promise(async (resolve) => {
     const doc = new jsPDF({ unit: "pt", format: "letter" })
-  const W = doc.internal.pageSize.getWidth()
-  const margin = 56
-  let y = margin
+    const W = doc.internal.pageSize.getWidth()
+    const margin = 56
+    let y = margin
 
-  const addPage = () => {
-    doc.addPage()
-    y = margin
-  }
-
-  const checkPage = (needed = 40) => {
-    if (y + needed > doc.internal.pageSize.getHeight() - margin) addPage()
-  }
-
-  const selectedServices: string[] = []
-  if (data.otherServices.twicCard) selectedServices.push("TWIC Card Application — $360 (Same-day processing)")
-  if (data.otherServices.trailerRental) selectedServices.push("Trailer Rental (3 months) — $500 (Subject to availability)")
-  if (data.otherServices.factoringSetup) selectedServices.push("Factoring Setup — $250 (Same-day registration)")
-  if (data.otherServices.insuranceAssistance) selectedServices.push("Insurance Assistance — $399 (Fast-track insurance quote & setup)")
-
-  // ── Header bar ──
-  doc.setFillColor(255, 255, 255)
-  doc.rect(0, 0, W, 68, "F")
-
-  // TB truck/arrow mark + wordmark
-  doc.setFillColor(0, 0, 0)
-  doc.setDrawColor(0, 0, 0)
-  
-  // Custom simple vector truck
-  const lx = margin, ly = 16
-  // Tractor body
-  doc.rect(lx + 4, ly + 8, 14, 12, "F")
-  // Cab
-  doc.rect(lx + 18, ly + 13, 8, 7, "F")
-  // Windshield (cutout/white)
-  doc.setFillColor(255, 255, 255)
-  doc.rect(lx + 20, ly + 14, 4, 3, "F")
-  doc.setFillColor(0, 0, 0)
-  // Wheels
-  doc.circle(lx + 8, ly + 22, 3, "F")
-  doc.circle(lx + 22, ly + 22, 3, "F")
-  // Arrow element in body (cutout/white)
-  doc.setFillColor(255, 255, 255)
-  doc.rect(lx + 8, ly + 11, 6, 2, "F")
-  doc.triangle(lx + 14, ly + 10, lx + 14, ly + 14, lx + 17, ly + 12, "F")
-  
-  // Company name
-  doc.setTextColor(13, 13, 13)
-  doc.setFontSize(11)
-  doc.setFont("helvetica", "bold")
-  doc.text("TRANSPORT BROKERS INC.", margin + 34, 25)
-  doc.setTextColor(13, 13, 13)
-  doc.setFontSize(8.5)
-  doc.text("MC #: 172356  |  DOT #: 2212598  |  67 Beacon Street, Buffalo, NY 14220", margin + 34, 42)
-  doc.setTextColor(80, 80, 80)
-  doc.setFontSize(7.5)
-  doc.text("info@transportbrokersinc.com  |  Ph: 330-756-7732", margin + 34, 55)
-
-  y = 90
-
-  // ── Title ──
-  doc.setTextColor(13, 13, 13)
-  doc.setFontSize(15)
-  doc.setFont("helvetica", "bold")
-  doc.text("TRUCKING SERVICE AGREEMENT", W / 2, y, { align: "center" })
-  y += 14
-  doc.setFontSize(9)
-  doc.setFont("helvetica", "normal")
-  doc.setTextColor(80, 80, 80)
-  doc.text("(Dedicated Lanes, Dispatch, Trailer Rental, and Setup Services)", W / 2, y, { align: "center" })
-  y += 18
-
-  // Gold divider
-  doc.setDrawColor(212, 175, 55)
-  doc.setLineWidth(1.2)
-  doc.line(margin, y, W - margin, y)
-  y += 16
-
-  // ── Parties ──
-  doc.setFontSize(9)
-  doc.setTextColor(50, 50, 50)
-  doc.setFont("helvetica", "normal")
-  const partyText = [
-    `This Agreement is made and entered into on ${TODAY_ISO}, by and between: TRANSPORT BROKERS INC.`,
-    `MC #: 172356 | DOT #: 2212598`,
-    `Address: 67 Beacon Street, Buffalo, NY 14220`,
-    `Email: info@transportbrokersinc.com | Ph: 330-756-7732`,
-    ``,
-    `Dispatch Company: ${data.dispatchCompany}`,
-    `(Hereinafter referred to as the TRANSPORT BROKERS INC.)`,
-  ]
-  partyText.forEach((line) => {
-    checkPage()
-    doc.text(line, margin, y)
-    y += 13
-  })
-  y += 6
-
-  // ── Section helper ──
-  const sectionTitle = (title: string) => {
-    checkPage(30)
-    doc.setFillColor(245, 245, 245)
-    doc.rect(margin, y - 10, W - margin * 2, 18, "F")
-    doc.setDrawColor(212, 175, 55)
-    doc.setLineWidth(0.6)
-    doc.rect(margin, y - 10, W - margin * 2, 18)
-    doc.setFontSize(9.5)
-    doc.setFont("helvetica", "bold")
-    doc.setTextColor(13, 13, 13)
-    doc.text(title, margin + 6, y + 3)
-    y += 18
-    doc.setFont("helvetica", "normal")
-    doc.setFontSize(9)
-    doc.setTextColor(50, 50, 50)
-  }
-
-  const bullet = (text: string) => {
-    checkPage()
-    doc.text(`• ${text}`, margin + 10, y)
-    y += 13
-  }
-
-  const field = (label: string, value: string) => {
-    checkPage()
-    doc.setFont("helvetica", "bold")
-    doc.text(`${label}:`, margin, y)
-    doc.setFont("helvetica", "normal")
-    const lw = doc.getTextWidth(`${label}: `)
-    doc.text(value || "—", margin + lw, y)
-    y += 13
-  }
-
-  const bodyText = (text: string) => {
-    checkPage()
-    const lines = doc.splitTextToSize(text, W - margin * 2)
-    lines.forEach((l: string) => {
-      checkPage()
-      doc.text(l, margin, y)
-      y += 13
-    })
-  }
-
-  // ── Carrier Information ──
-  y += 4
-  sectionTitle("Carrier Information")
-  y += 4
-  field("Carrier Full Name", data.carrierFullName)
-  field("Company Name (if applicable)", data.companyName || "N/A")
-  field("MC Number", data.mcNumber || "N/A")
-  field("DOT Number", data.dotNumber || "N/A")
-  field("Driving License Number", data.drivingLicense || "N/A")
-  field("Carrier Phone Number", data.phone || "N/A")
-  field("Email", data.email || "N/A")
-  y += 8
-
-  // ── Purpose of Agreement ──
-  sectionTitle("Purpose of Agreement")
-  y += 4
-  bodyText(
-    "This Agreement outlines the terms and conditions under which the Company provides setup and logistics services to the Client, including but not limited to:"
-  )
-  y += 4
-  bullet("Dedicated freight lanes")
-  bullet("Dispatch assistance")
-  bullet("Trailer rental")
-  bullet("TWIC card application support")
-  bullet("Commercial insurance setup")
-  bullet("Factoring registration")
-  y += 4
-  bodyText("Access to high-paying loads through partnered shippers including Amazon & government contracts")
-  y += 8
-
-  // ── Lane Setup Option ──
-  sectionTitle("Selected Dedicated Lane Setup Option")
-  y += 4
-  bodyText(LANE_LABEL[data.laneSetupOption] || data.laneSetupOption || "—")
-  y += 4
-  doc.setFontSize(8.5)
-  doc.setTextColor(120, 90, 0)
-  bodyText(
-    "Note: A $460 Security deposit is required for applicable setups and is fully refundable after the first three successful deliveries."
-  )
-  doc.setTextColor(50, 50, 50)
-  doc.setFontSize(9)
-  y += 8
-
-  // ── Services ──
-  sectionTitle("Selected Services With Fees")
-  y += 4
-  if (selectedServices.length === 0) {
-    bodyText("No additional services selected.")
-  } else {
-    selectedServices.forEach(bullet)
-  }
-  y += 8
-
-  // ── Payment ──
-  sectionTitle("Payment Method")
-  y += 4
-  field("Selected Payment Method", data.paymentMethod)
-  y += 4
-  bullet("Payment is due prior to service activation")
-  bullet("Payments may be processed via third-party accounts to enable same-day service")
-  bullet("A digital receipt will be issued upon payment")
-  y += 8
-
-  // ── Refund Policy ──
-  sectionTitle("Refund Policy")
-  y += 4
-  bullet("The $460 dedicated lane setup fee is refundable after the Client completes their first three successful deliveries arranged by the Company")
-  bullet("Other service fees are non-refundable once service begins, as these are time-sensitive administrative tasks")
-  bullet("Refunds will be issued via the original payment method within 5–7 business days, if applicable")
-  y += 8
-
-  // ── Client Responsibilities ──
-  sectionTitle("Client Responsibilities")
-  y += 4
-  bodyText("The Client agrees to:")
-  y += 4
-  bullet("Provide accurate legal business and driver information")
-  bullet("Maintain active authority (MC/DOT) and valid insurance, unless Company is assisting with setup")
-  bullet("Communicate in a timely and professional manner")
-  bullet("Not engage in fraud, chargebacks, or misrepresentation")
-  y += 8
-
-  // ── No Employment ──
-  sectionTitle("No Employer-Employee Relationship")
-  y += 4
-  bodyText(
-    "This Agreement does not create an employment relationship. The Client is an independent carrier and assumes all responsibility for tax, insurance, regulatory compliance, and FMCSA obligations."
-  )
-  y += 8
-
-  // ── Liability ──
-  sectionTitle("Limitation of Liability")
-  y += 4
-  bodyText("The Company is not liable for:")
-  y += 4
-  bullet("Any loss of income due to delays, market rates, or missed loads")
-  bullet("Legal or regulatory penalties due to false or missing information provided by the Client")
-  bullet("Broker cancellations or third-party payment processing delays")
-  y += 8
-
-  // ── Term ──
-  sectionTitle("Term and Termination")
-  y += 4
-  bodyText(
-    "This agreement becomes effective upon payment and remains active until the completion of the contracted services. Either party may terminate in writing at any time. Refund terms apply as per Section 4."
-  )
-  y += 8
-
-  // ── Entire Agreement ──
-  sectionTitle("Entire Agreement")
-  y += 4
-  bodyText(
-    "This Agreement contains the entire understanding between both parties and supersedes all prior agreements, written or oral."
-  )
-  y += 16
-
-  // ── Signatures ──
-  checkPage(90)
-  doc.setDrawColor(212, 175, 55)
-  doc.setLineWidth(1)
-  doc.line(margin, y, W - margin, y)
-  y += 16
-
-  doc.setFontSize(9.5)
-  doc.setFont("helvetica", "bold")
-  doc.setTextColor(13, 13, 13)
-  doc.text("Carrier Details", margin, y)
-  y += 14
-
-  doc.setFont("helvetica", "normal")
-  doc.setFontSize(9)
-  doc.setTextColor(50, 50, 50)
-
-  // Carrier signature block
-  const halfW = (W - margin * 2) / 2 - 10
-  doc.setFont("helvetica", "bold")
-  doc.text("Signature:", margin, y)
-  doc.setFont("helvetica", "normal")
-  doc.text(data.signature, margin + 60, y)
-  doc.line(margin + 60, y + 2, margin + 60 + halfW - 30, y + 2)
-  y += 20
-  doc.setFont("helvetica", "bold")
-  doc.text("Print Name:", margin, y)
-  doc.setFont("helvetica", "normal")
-  doc.text(data.printName, margin + 60, y)
-  y += 20
-  doc.setFont("helvetica", "bold")
-  doc.text("Date:", margin, y)
-  doc.setFont("helvetica", "normal")
-  doc.text(TODAY_ISO, margin + 60, y)
-  y += 28
-
-  // Company representative block
-  doc.setFontSize(9.5)
-  doc.setFont("helvetica", "bold")
-  doc.setTextColor(13, 13, 13)
-  doc.text("Dispatch/Service Provider Representative", margin, y)
-  y += 14
-  doc.setFont("helvetica", "normal")
-  doc.setFontSize(9)
-  doc.setTextColor(50, 50, 50)
-  doc.text("TRANSPORT BROKERS INC.", margin, y)
-  y += 13
-  doc.text(`Date: ${TODAY_ISO}`, margin, y)
-  y += 20
-
-  // Footer
-  const pageCount = doc.getNumberOfPages()
-  for (let i = 1; i <= pageCount; i++) {
-    doc.setPage(i)
-    doc.setFontSize(7.5)
-    doc.setTextColor(160, 160, 160)
-    doc.text(
-      `TRANSPORT BROKERS INC.  ·  67 Beacon Street, Buffalo, NY 14220  ·  Phone: 330-756-7732  ·  Page ${i} of ${pageCount}`,
-      W / 2,
-      doc.internal.pageSize.getHeight() - 24,
-      { align: "center" }
-    )
-  }
-
-  const jsPdfBytes = doc.output("arraybuffer")
-  
-  import("pdf-lib").then(async ({ PDFDocument }) => {
-    try {
-      const mainPdf = await PDFDocument.load(jsPdfBytes)
-      const certRes = await fetch("/certificate.pdf")
-      if (certRes.ok) {
-        const certBytes = await certRes.arrayBuffer()
-        const certPdf = await PDFDocument.load(certBytes)
-        const copiedPages = await mainPdf.copyPages(certPdf, certPdf.getPageIndices())
-        copiedPages.forEach((p) => mainPdf.addPage(p))
-      }
-      resolve(await mainPdf.saveAsBase64())
-    } catch (err) {
-      console.error("Failed to merge PDF", err)
-      resolve(doc.output("datauristring").split(",")[1])
+    const addPage = () => {
+      doc.addPage()
+      y = margin
     }
-  }).catch(() => {
-    resolve(doc.output("datauristring").split(",")[1])
-  })
+
+    const checkPage = (needed = 40) => {
+      if (y + needed > doc.internal.pageSize.getHeight() - margin) addPage()
+    }
+
+    const selectedServices: string[] = []
+    if (data.otherServices.twicCard) selectedServices.push("TWIC card application support")
+    if (data.otherServices.trailerRental) selectedServices.push("Trailer rental")
+    if (data.otherServices.factoringSetup) selectedServices.push("Factoring registration")
+    if (data.otherServices.insuranceAssistance) selectedServices.push("Commercial insurance setup")
+
+    // ── TB truck/arrow mark + wordmark (Black on White) ──
+    const lx = margin, ly = margin
+    
+    // Custom simple vector truck
+    doc.setFillColor(0, 0, 0)
+    doc.setDrawColor(0, 0, 0)
+    // Tractor body
+    doc.rect(lx + 4, ly + 8, 14, 12, "F")
+    // Cab
+    doc.rect(lx + 18, ly + 13, 8, 7, "F")
+    // Windshield (cutout/white)
+    doc.setFillColor(255, 255, 255)
+    doc.rect(lx + 20, ly + 14, 4, 3, "F")
+    doc.setFillColor(0, 0, 0)
+    // Wheels
+    doc.circle(lx + 8, ly + 22, 3, "F")
+    doc.circle(lx + 22, ly + 22, 3, "F")
+    // Arrow element in body (cutout/white)
+    doc.setFillColor(255, 255, 255)
+    doc.rect(lx + 8, ly + 11, 6, 2, "F")
+    doc.triangle(lx + 14, ly + 10, lx + 14, ly + 14, lx + 17, ly + 12, "F")
+    
+    // Company name
+    doc.setTextColor(0, 0, 0)
+    doc.setFontSize(14)
+    doc.setFont("helvetica", "bold")
+    doc.text("TRANSPORT BROKERS INC.", margin + 34, ly + 20)
+    
+    y += 50
+
+    // ── Title ──
+    doc.setFontSize(16)
+    doc.setFont("helvetica", "bold")
+    doc.text("TRUCKING SERVICE AGREEMENT", W / 2, y, { align: "center" })
+    y += 18
+    doc.setFontSize(10)
+    doc.setFont("helvetica", "normal")
+    doc.text("(Dedicated Lanes, Dispatch, Trailer Rental, and Setup Services)", W / 2, y, { align: "center" })
+    y += 30
+
+    // ── Intro text ──
+    doc.setFontSize(10)
+    doc.setFont("helvetica", "normal")
+    doc.text(`This Agreement is made and entered into on ${TODAY_ISO}, by and between: TRANSPORT BROKERS INC.`, margin, y)
+    y += 16
+    doc.text(`MC #: 172356 | DOT #: 2212598`, margin, y)
+    y += 16
+    doc.text(`Address: 67 Beacon Street, Buffalo, NY 14220`, margin, y)
+    y += 16
+    doc.text(`Email: info@transportbrokersinc.com`, margin, y)
+    y += 30
+    
+    doc.setFontSize(14)
+    doc.setFont("helvetica", "bold")
+    doc.text(`Dispatch Company: ${data.dispatchCompany}`, margin, y)
+    y += 20
+    
+    doc.setFontSize(10)
+    doc.setFont("helvetica", "normal")
+    doc.text(`(Hereinafter referred to as the TRANSPORT BROKERS INC.)`, margin, y)
+    y += 16
+
+    // Gray divider
+    doc.setDrawColor(229, 231, 235)
+    doc.setLineWidth(1)
+    doc.line(margin, y, W - margin, y)
+    y += 30
+
+    // ── Helper functions ──
+    const sectionTitle = (title: string) => {
+      checkPage(40)
+      doc.setFontSize(14)
+      doc.setFont("helvetica", "bold")
+      doc.setTextColor(0, 0, 0)
+      doc.text(title, margin, y)
+      y += 20
+      doc.setFont("helvetica", "normal")
+      doc.setFontSize(10)
+    }
+
+    const field = (label: string, value: string) => {
+      checkPage(16)
+      doc.setFont("helvetica", "normal")
+      doc.text(`${label}: ${value || ""}`, margin, y)
+      y += 16
+    }
+    
+    const bullet = (text: string) => {
+      checkPage(16)
+      doc.text(`• ${text}`, margin + 10, y)
+      y += 16
+    }
+    
+    const bodyText = (text: string) => {
+      checkPage(16)
+      const lines = doc.splitTextToSize(text, W - margin * 2)
+      lines.forEach((l: string) => {
+        checkPage(16)
+        doc.text(l, margin, y)
+        y += 16
+      })
+    }
+
+    // ── Carrier Information ──
+    sectionTitle("Carrier Information")
+    field("Carrier Full Name", data.carrierFullName)
+    field("Company Name (if applicable)", data.companyName)
+    field("MC Number", data.mcNumber)
+    field("DOT Number", data.dotNumber)
+    field("Driving license Number", data.drivingLicense)
+    field("Carrier Phone number", data.phone)
+    field("Email", data.email)
+    y += 14
+
+    doc.setDrawColor(229, 231, 235)
+    doc.line(margin, y, W - margin, y)
+    y += 30
+
+    // ── Purpose of Agreement ──
+    sectionTitle("Purpose of Agreement")
+    bodyText("This Agreement outlines the terms and conditions under which the Company provides setup and logistics services to the Client, including but not limited to:")
+    y += 4
+    bullet("Dedicated freight lanes")
+    bullet("Dispatch assistance")
+    selectedServices.forEach(bullet)
+    y += 4
+    bodyText("Access to high-paying loads through partnered shippers including Amazon & government contracts")
+    
+    y += 14
+    doc.setDrawColor(229, 231, 235)
+    doc.line(margin, y, W - margin, y)
+    y += 30
+
+    // ── Lane Setup Option ──
+    sectionTitle("Selected Dedicated Lane Setup Option:")
+    bullet(LANE_LABEL[data.laneSetupOption] || data.laneSetupOption || "None")
+    y += 8
+    doc.setFont("helvetica", "bold")
+    const notePrefix = "Note:"
+    doc.text(notePrefix, margin, y)
+    doc.setFont("helvetica", "normal")
+    const lw = doc.getTextWidth(notePrefix + " ")
+    const noteText = doc.splitTextToSize("A $460 Security deposit is required for applicable setups and is fully refundable after the first three successful deliveries.", W - margin * 2 - lw)
+    noteText.forEach((l: string, i: number) => {
+      checkPage(16)
+      doc.text(l, margin + (i === 0 ? lw : 0), y)
+      y += 16
+    })
+    
+    y += 14
+    doc.setDrawColor(229, 231, 235)
+    doc.line(margin, y, W - margin, y)
+    y += 30
+
+    // ── Services ──
+    sectionTitle("Selected Services With Fees:")
+    if (selectedServices.length === 0) {
+      doc.setFont("helvetica", "italic")
+      doc.text("No services selected.", margin, y)
+      doc.setFont("helvetica", "normal")
+      y += 16
+    } else {
+      selectedServices.forEach(bullet)
+    }
+    y += 14
+    doc.setDrawColor(229, 231, 235)
+    doc.line(margin, y, W - margin, y)
+    y += 30
+
+    // ── Payment ──
+    sectionTitle("Payment Method")
+    doc.setFont("helvetica", "bold")
+    doc.text("Selected Payment Method:", margin, y)
+    doc.setFont("helvetica", "normal")
+    doc.text(` ${data.paymentMethod}`, margin + doc.getTextWidth("Selected Payment Method:"), y)
+    y += 24
+    
+    bodyText("Payment is due prior to service activation")
+    bodyText("Payments may be processed via third-party accounts to enable same-day service")
+    bodyText("A digital receipt will be issued upon payment")
+    
+    y += 14
+    doc.setDrawColor(229, 231, 235)
+    doc.line(margin, y, W - margin, y)
+    y += 30
+
+    // ── Refund Policy ──
+    sectionTitle("Refund Policy")
+    bodyText("The $460 dedicated lane setup fee is refundable after the Client completes their first three successful deliveries arranged by the Company")
+    y += 8
+    bodyText("Other service fees are non-refundable once service begins, as these are time-sensitive administrative tasks")
+    y += 8
+    bodyText("Refunds will be issued via the original payment method within 5–7 business days, if applicable")
+    
+    y += 14
+    doc.setDrawColor(229, 231, 235)
+    doc.line(margin, y, W - margin, y)
+    y += 30
+
+    // ── Client Responsibilities ──
+    sectionTitle("Client Responsibilities")
+    bodyText("The Client agrees to:")
+    y += 4
+    bullet("Provide accurate legal business and driver information")
+    bullet("Maintain active authority (MC/DOT) and valid insurance, unless Company is assisting with setup")
+    bullet("Communicate in a timely and professional manner")
+    bullet("Not engage in fraud, chargebacks, or misrepresentation")
+    
+    y += 14
+    doc.setDrawColor(229, 231, 235)
+    doc.line(margin, y, W - margin, y)
+    y += 30
+
+    // ── No Employment ──
+    sectionTitle("No Employer-Employee Relationship")
+    bodyText("This Agreement does not create an employment relationship. The Client is an independent carrier and assumes all responsibility for tax, insurance, regulatory compliance, and FMCSA obligations.")
+    
+    y += 14
+    doc.setDrawColor(229, 231, 235)
+    doc.line(margin, y, W - margin, y)
+    y += 30
+
+    // ── Liability ──
+    sectionTitle("Limitation of Liability")
+    bodyText("The Company is not liable for:")
+    y += 4
+    bullet("Any loss of income due to delays, market rates, or missed loads")
+    bullet("Legal or regulatory penalties due to false or missing information provided by the Client")
+    bullet("Broker cancellations or third-party payment processing delays")
+    
+    y += 14
+    doc.setDrawColor(229, 231, 235)
+    doc.line(margin, y, W - margin, y)
+    y += 30
+
+    // ── Term ──
+    sectionTitle("Term and Termination")
+    bodyText("This agreement becomes effective upon payment and remains active until the completion of the contracted services. Either party may terminate in writing at any time. Refund terms apply as per Section 4.")
+    
+    y += 14
+    doc.setDrawColor(229, 231, 235)
+    doc.line(margin, y, W - margin, y)
+    y += 30
+
+    // ── Entire Agreement ──
+    sectionTitle("Entire Agreement")
+    bodyText("This Agreement contains the entire understanding between both parties and supersedes all prior agreements, written or oral.")
+    
+    y += 14
+    doc.setDrawColor(229, 231, 235)
+    doc.line(margin, y, W - margin, y)
+    y += 30
+
+    // ── Signatures ──
+    sectionTitle("Carrier Details")
+    field("Signature", data.signature)
+    field("Print Name", data.printName)
+    field("Date", TODAY_ISO)
+    y += 14
+
+    sectionTitle("Dispatch/Service Provider Representative")
+    doc.setFont("helvetica", "bold")
+    doc.text("TRANSPORT BROKERS INC.", margin, y)
+    doc.setFont("helvetica", "normal")
+    y += 24
+    field("Date", TODAY_ISO)
+    
+    y += 14
+    doc.setDrawColor(229, 231, 235)
+    doc.line(margin, y, W - margin, y)
+
+    const jsPdfBytes = doc.output("arraybuffer")
+    
+    import("pdf-lib").then(async ({ PDFDocument }) => {
+      try {
+        const mainPdf = await PDFDocument.load(jsPdfBytes)
+        const certRes = await fetch("/certificate.pdf")
+        if (certRes.ok) {
+          const certBytes = await certRes.arrayBuffer()
+          const certPdf = await PDFDocument.load(certBytes)
+          
+          // CRITICAL FIX: Only copy the VERY LAST page (which is the actual certificate)
+          // Index is 0-based, so getPageCount() - 1 is the last page.
+          const lastPageIndex = certPdf.getPageCount() - 1
+          const copiedPages = await mainPdf.copyPages(certPdf, [lastPageIndex])
+          copiedPages.forEach((p) => mainPdf.addPage(p))
+        }
+        resolve(await mainPdf.saveAsBase64())
+      } catch (err) {
+        console.error("Failed to merge PDF", err)
+        resolve(doc.output("datauristring").split(",")[1])
+      }
+    }).catch(() => {
+      resolve(doc.output("datauristring").split(",")[1])
+    })
   })
 }
 
