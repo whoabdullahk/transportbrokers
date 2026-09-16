@@ -24,14 +24,14 @@ export const defaultTrackSupport: FooterLink[] = [
 ]
 
 export const defaultContactInfo: ContactInfo = {
-  emails: ['brandon@TBItransportation.com', 'billing@TBItransportation.com'],
+  emails: ['ethoncollins@transportbrokersinc.com'],
   address: {
-    street: '111 Pecan Row Ln',
-    city: 'Alexandria',
-    state: 'LA',
-    zip: '71303',
+    street: '67 BEACON STREET',
+    city: 'BUFFALO',
+    state: 'NY',
+    zip: '14220',
   },
-  phones: ['(318) 555-0123', '(318) 555-0124'],
+  phones: ['330-756-7732'],
 }
 
 export const defaultSocialLinks: SocialLink[] = [

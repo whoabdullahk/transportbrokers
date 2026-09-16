@@ -85,18 +85,15 @@ const defaultTrackSupport: FooterLink[] = [
 ]
 
 const defaultContactInfo: ContactInfo = {
-  emails: ['info@transportbrokersinc.com', 'billing@transportbrokersinc.com'],
+  emails: ['ethoncollins@transportbrokersinc.com'],
   address: {
-    street: '111 Pecan Row Ln',
-    city: 'Alexandria',
-    state: 'LA',
-    zip: '71303',
+    street: '67 BEACON STREET',
+    city: 'BUFFALO',
+    state: 'NY',
+    zip: '14220',
   },
   phones: [
-    '(443) 560-0311',
-    '(443) 560-0542',
-    '(318) 555-0123',
-    '(318) 555-0124',
+    '330-756-7732',
   ],
 }
 
@@ -136,14 +133,14 @@ export function Footer({
       <div className="border-b border-white/8 py-3.5 bg-black/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-gray-500 gap-2">
           <div className="flex items-center space-x-3">
-            <ShieldCheck className="h-4 w-4 text-amber-500" />
+            <ShieldCheck className="h-4 w-4 text-[#D4AF37]" />
             <span className="text-white font-bold tracking-wide">TRANSPORT BROKERS INC.</span>
             <span className="text-gray-500">• USDOT #2212598 • MC-172356</span>
           </div>
           <div className="flex items-center space-x-4">
             <span className="font-semibold text-gray-400">OPERATING STATUS: ACTIVE</span>
             <span className="text-white/20">|</span>
-            <span className="text-amber-500 font-semibold">48-STATE CORRIDOR NETWORK</span>
+            <span className="text-[#D4AF37] font-semibold">48-STATE CORRIDOR NETWORK</span>
           </div>
         </div>
       </div>
@@ -165,7 +162,7 @@ export function Footer({
                     className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium flex items-center group"
                   >
                     <span>{link.label}</span>
-                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-amber-500" />
+                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-[#D4AF37]" />
                   </Link>
                 </li>
               ))}
@@ -185,7 +182,7 @@ export function Footer({
                     className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium flex items-center group"
                   >
                     <span>{link.label}</span>
-                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-amber-500" />
+                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-[#D4AF37]" />
                   </Link>
                 </li>
               ))}
@@ -205,7 +202,7 @@ export function Footer({
                     className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium flex items-center group"
                   >
                     <span>{link.label}</span>
-                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-amber-500" />
+                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-[#D4AF37]" />
                   </Link>
                 </li>
               ))}
@@ -222,7 +219,7 @@ export function Footer({
               <div className="space-y-1.5">
                 {contactInfo.emails.map((email) => (
                   <div key={email} className="flex items-start space-x-2.5">
-                    <Mail className="h-4 w-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                    <Mail className="h-4 w-4 text-[#D4AF37] mt-0.5 flex-shrink-0" />
                     <a 
                       href={`mailto:${email}`}
                       className="text-gray-400 hover:text-white transition-colors text-xs font-mono break-all font-medium"
@@ -235,7 +232,7 @@ export function Footer({
 
               {/* Physical Address */}
               <div className="flex items-start space-x-2.5 pt-1">
-                <MapPin className="h-4 w-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                <MapPin className="h-4 w-4 text-[#D4AF37] mt-0.5 flex-shrink-0" />
                 <address className="text-gray-400 text-xs font-mono not-italic leading-relaxed">
                   {contactInfo.address.street}<br />
                   {contactInfo.address.city}, {contactInfo.address.state} {contactInfo.address.zip}
@@ -247,7 +244,7 @@ export function Footer({
                 <div className="space-y-1 pt-1">
                   {contactInfo.phones.map((phone) => (
                     <div key={phone} className="flex items-start space-x-2.5">
-                      <Phone className="h-3.5 w-3.5 text-amber-500 mt-0.5 flex-shrink-0" />
+                      <Phone className="h-3.5 w-3.5 text-[#D4AF37] mt-0.5 flex-shrink-0" />
                       <a 
                         href={`tel:${phone.replace(/[^0-9]/g, '')}`}
                         className="text-gray-400 hover:text-white transition-colors text-xs font-mono font-medium"
@@ -272,7 +269,7 @@ export function Footer({
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 rounded-lg bg-white/5 text-gray-400 hover:text-black hover:bg-amber-400 transition-all border border-white/10"
+                className="p-2.5 rounded-lg bg-white/5 text-gray-400 hover:text-black hover:bg-[#D4AF37] transition-all border border-white/10"
                 aria-label={`Visit our ${social.platform} page`}
               >
                 {getSocialIcon(social.icon)}
