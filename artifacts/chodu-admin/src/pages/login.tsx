@@ -59,7 +59,14 @@ export default function AdminLogin() {
     });
   };
 
-  if (isChecking) return null;
+  if (isChecking) {
+    return (
+      <div className="min-h-[100dvh] flex flex-col items-center justify-center bg-background">
+        <Loader2 className="w-10 h-10 animate-spin text-[#D4AF37] mb-4" />
+        <p className="text-sm text-muted-foreground font-mono uppercase tracking-widest animate-pulse">Initializing Secure Connection...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[100dvh] flex items-center justify-center bg-background relative overflow-hidden p-4">
