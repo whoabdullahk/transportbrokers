@@ -80,15 +80,39 @@ async function fetchShipmentData(rawId: string): Promise<TrackOrderRecord | null
     const res = await fetch(`${baseUrl}/api/shipments/${encodeURIComponent(cleanId)}`)
     if (res.ok) {
       const data = await res.json()
+      
+      const originStr = data.origin || 'Alexandria, LA'
+      const destStr = data.destination || 'Dallas, TX'
+      
+      let originCoords: [number, number] = [31.3113, -92.4451]
+      let destCoords: [number, number] = [32.7767, -96.7970]
+
+      try {
+        const [orgRes, dstRes] = await Promise.all([
+          fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(originStr)}&format=json&limit=1`),
+          fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(destStr)}&format=json&limit=1`)
+        ])
+        const orgData = await orgRes.json()
+        const dstData = await dstRes.json()
+        if (orgData && orgData[0]) originCoords = [parseFloat(orgData[0].lat), parseFloat(orgData[0].lon)]
+        if (dstData && dstData[0]) destCoords = [parseFloat(dstData[0].lat), parseFloat(dstData[0].lon)]
+      } catch (e) {
+        // Fallback to default coordinates if geocoding fails
+      }
+
       return {
         ...defaultRecord,
         trackingId: data.trackingNumber || cleanId,
         status: (data.status || 'Active Contract • Dispatched').toUpperCase(),
         carrier: data.carrierName || defaultRecord.carrier,
-        outboundRoute: `${data.origin || 'Alexandria, LA'} → ${data.destination || 'Dallas, TX'}`,
-        returnRoute: `${data.destination || 'Dallas, TX'} → ${data.origin || 'Alexandria, LA'}`,
-        pickupLocation: `${data.origin || 'Alexandria, LA'} Regional Logistics Hub`,
-        deliveryLocation: `${data.destination || 'Dallas, TX'} Distribution Terminal`,
+        originName: originStr,
+        destName: destStr,
+        originCoords,
+        destCoords,
+        outboundRoute: `${originStr} → ${destStr}`,
+        returnRoute: `${destStr} → ${originStr}`,
+        pickupLocation: `${originStr} Regional Logistics Hub`,
+        deliveryLocation: `${destStr} Distribution Terminal`,
         reservationFee: data.pendingFees || defaultRecord.reservationFee,
         startDate: data.estimatedDelivery
           ? new Date(data.estimatedDelivery).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
