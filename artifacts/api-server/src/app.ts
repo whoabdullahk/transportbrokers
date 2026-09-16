@@ -29,9 +29,26 @@ app.use(
     },
   }),
 );
+const ALLOWED_ORIGINS_DEFAULT = [
+  "https://chodu-admin.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:5175",
+];
+
+const allowedOrigins: string[] = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim())
+  : ALLOWED_ORIGINS_DEFAULT;
+
 app.use(
   cors({
-    origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : true,
+    origin: (origin, callback) => {
+      // Allow server-to-server requests (no origin header)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      // Allow any vercel.app preview deploy
+      if (origin.endsWith(".vercel.app")) return callback(null, true);
+      callback(new Error(`CORS: origin not allowed: ${origin}`));
+    },
     credentials: true,
   }),
 );
