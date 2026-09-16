@@ -60,14 +60,30 @@ export const TrackShipmentParams = zod.object({
 
 export const TrackShipmentResponse = zod.object({
   "id": zod.number(),
-  "trackingNumber": zod.string(),
+  "trackingId": zod.string(),
   "status": zod.string(),
-  "origin": zod.string(),
-  "destination": zod.string(),
   "carrierName": zod.string(),
-  "estimatedDelivery": zod.coerce.date(),
-  "lastUpdate": zod.string(),
-  "pendingFees": zod.string()
+  "dot": zod.string().nullable(),
+  "truck": zod.string().nullable(),
+  "slotFeeStatus": zod.string().nullable(),
+  "tripsPerWeek": zod.number().nullable(),
+  "outboundRoute": zod.string().nullable(),
+  "returnRoute": zod.string().nullable(),
+  "pickupAddress": zod.string().nullable(),
+  "deliveryAddress": zod.string().nullable(),
+  "milesPerSide": zod.number().nullable(),
+  "totalRoundTripMiles": zod.number().nullable(),
+  "commodity": zod.string().nullable(),
+  "outboundWeightLbs": zod.number().nullable(),
+  "backhaulWeightLbs": zod.number().nullable(),
+  "outboundRate": zod.number(),
+  "startDate": zod.coerce.date(),
+  "contractType": zod.string().nullable(),
+  "purpose": zod.string().nullable(),
+  "refundableStatus": zod.string().nullable(),
+  "appliesTowardContract": zod.boolean().nullable(),
+  "billOfLadingPath": zod.string().nullable(),
+  "createdAt": zod.coerce.date()
 })
 
 

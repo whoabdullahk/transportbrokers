@@ -230,9 +230,9 @@ export const getTrackShipmentUrl = (trackingNumber: string,) => {
 /**
  * @summary Look up a shipment by tracking number
  */
-export const trackShipment = async (trackingNumber: string, options?: RequestInit): Promise<Shipment> => {
+export const trackShipment = async (trackingNumber: string, options?: RequestInit): Promise<Load> => {
 
-  return customFetch<Shipment>(getTrackShipmentUrl(trackingNumber),
+  return customFetch<Load>(getTrackShipmentUrl(trackingNumber),
   {
     ...options,
     method: 'GET'

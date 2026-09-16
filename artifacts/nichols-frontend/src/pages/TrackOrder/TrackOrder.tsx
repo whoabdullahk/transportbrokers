@@ -13,6 +13,7 @@ interface TrackOrderRecord {
   tripsPerWeek: string
   startDate: string
   contractNumber: string
+  contractType: string
   totalPerRoundTrip: string
   dailyRate: string
   weeklyRate: string
@@ -47,6 +48,7 @@ const defaultRecord: TrackOrderRecord = {
   tripsPerWeek: '5 Trips / Week',
   startDate: 'September 15, 2026',
   contractNumber: 'DFA-2026-88',
+  contractType: '60 Day Dedicated',
   totalPerRoundTrip: '$2,450.00',
   dailyRate: '$2,450.00',
   weeklyRate: '$12,250.00',
@@ -81,8 +83,8 @@ async function fetchShipmentData(rawId: string): Promise<TrackOrderRecord | null
     if (res.ok) {
       const data = await res.json()
       
-      const originStr = data.origin || 'Alexandria, LA'
-      const destStr = data.destination || 'Dallas, TX'
+      const originStr = data.pickupAddress || 'Alexandria, LA'
+      const destStr = data.deliveryAddress || 'Dallas, TX'
       
       let originCoords: [number, number] = [31.3113, -92.4451]
       let destCoords: [number, number] = [32.7767, -96.7970]
@@ -102,23 +104,40 @@ async function fetchShipmentData(rawId: string): Promise<TrackOrderRecord | null
 
       return {
         ...defaultRecord,
-        trackingId: data.trackingNumber || cleanId,
+        trackingId: data.trackingId || cleanId,
         status: (data.status || 'Active Contract • Dispatched').toUpperCase(),
         carrier: data.carrierName || defaultRecord.carrier,
-        originName: originStr,
-        destName: destStr,
-        originCoords,
-        destCoords,
-        outboundRoute: `${originStr} → ${destStr}`,
-        returnRoute: `${destStr} → ${originStr}`,
-        pickupLocation: `${originStr} Regional Logistics Hub`,
-        deliveryLocation: `${destStr} Distribution Terminal`,
-        reservationFee: data.pendingFees || defaultRecord.reservationFee,
-        startDate: data.estimatedDelivery
-          ? new Date(data.estimatedDelivery).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+        dotNumber: data.dot || defaultRecord.dotNumber,
+        truckNumber: data.truck || defaultRecord.truckNumber,
+        tripsPerWeek: data.tripsPerWeek ? `${data.tripsPerWeek} Trips / Week` : defaultRecord.tripsPerWeek,
+        outboundRoute: data.outboundRoute || `${originStr} → ${destStr}`,
+        returnRoute: data.returnRoute || `${destStr} → ${originStr}`,
+        pickupLocation: data.pickupAddress || `${originStr} Regional Logistics Hub`,
+        deliveryLocation: data.deliveryAddress || `${destStr} Distribution Terminal`,
+        eachSideMiles: data.milesPerSide ? `${data.milesPerSide} Miles` : defaultRecord.eachSideMiles,
+        totalRoundTripMiles: data.totalRoundTripMiles ? `${data.totalRoundTripMiles} Miles` : defaultRecord.totalRoundTripMiles,
+        commodity: data.commodity || defaultRecord.commodity,
+        outboundWeight: data.outboundWeightLbs ? `${data.outboundWeightLbs.toLocaleString()} lbs` : defaultRecord.outboundWeight,
+        backhaulWeight: data.backhaulWeightLbs ? `${data.backhaulWeightLbs.toLocaleString()} lbs` : defaultRecord.backhaulWeight,
+        totalPerRoundTrip: data.outboundRate ? `$${Number(data.outboundRate).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : defaultRecord.totalPerRoundTrip,
+        dailyRate: data.outboundRate ? `$${Number(data.outboundRate).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : defaultRecord.dailyRate,
+        weeklyRate: (data.outboundRate && data.tripsPerWeek) ? `$${(Number(data.outboundRate) * data.tripsPerWeek).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : defaultRecord.weeklyRate,
+        monthlyRate: (data.outboundRate && data.tripsPerWeek) ? `$${(Number(data.outboundRate) * data.tripsPerWeek * 4).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : defaultRecord.monthlyRate,
+        reservationFee: data.slotFeeStatus || defaultRecord.reservationFee,
+        startDate: data.startDate
+          ? new Date(data.startDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
           : defaultRecord.startDate,
         contractNumber: `DFA-${cleanId.replace(/\D/g, '').slice(0, 4) || '2026'}-88`,
-        appliesToContract: `DFA-${cleanId.replace(/\D/g, '').slice(0, 4) || '2026'}-88`,
+        appliesToContract: data.appliesTowardContract !== null && data.appliesTowardContract !== undefined
+            ? (data.appliesTowardContract ? 'YES' : 'NO') 
+            : `DFA-${cleanId.replace(/\D/g, '').slice(0, 4) || '2026'}-88`,
+        contractType: data.contractType || defaultRecord.contractNumber, // Map contractType or fallback
+        purpose: data.purpose || defaultRecord.purpose,
+        refundable: data.refundableStatus || defaultRecord.refundable,
+        originName: originStr.split(',')[0],
+        destName: destStr.split(',')[0],
+        originCoords,
+        destCoords,
       }
     }
   } catch {

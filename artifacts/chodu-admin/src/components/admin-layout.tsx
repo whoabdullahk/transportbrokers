@@ -48,7 +48,6 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   const navItems = [
     { href: "/", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/shipments", label: "Shipments", icon: Truck },
     { href: "/loads", label: "Loads", icon: Package },
     { href: "/rate-confirmations", label: "Rate Confirmations", icon: FileText },
     { href: "/leads", label: "Leads", icon: Inbox },

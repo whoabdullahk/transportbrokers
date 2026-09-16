@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
 import { eq } from "drizzle-orm";
-import { db, shipmentsTable } from "@workspace/db";
+import { db, loadsTable } from "@workspace/db";
 import { TrackShipmentParams, TrackShipmentResponse } from "@workspace/api-zod";
 
 const router: IRouter = Router();
@@ -12,17 +12,17 @@ router.get("/shipments/:trackingNumber", async (req, res): Promise<void> => {
     return;
   }
 
-  const [shipment] = await db
+  const [load] = await db
     .select()
-    .from(shipmentsTable)
-    .where(eq(shipmentsTable.trackingNumber, params.data.trackingNumber));
+    .from(loadsTable)
+    .where(eq(loadsTable.trackingId, params.data.trackingNumber));
 
-  if (!shipment) {
+  if (!load) {
     res.status(404).json({ error: "Shipment not found" });
     return;
   }
 
-  res.json(TrackShipmentResponse.parse(shipment));
+  res.json(TrackShipmentResponse.parse(load));
 });
 
 export default router;
