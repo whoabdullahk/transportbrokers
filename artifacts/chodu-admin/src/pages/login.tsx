@@ -23,17 +23,17 @@ export default function AdminLogin() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const { data: admin, isLoading: isChecking } = useAdminMe({
+  const { data: admin, isLoading: isChecking, isError: isMeError } = useAdminMe({
     query: { retry: false, queryKey: getAdminMeQueryKey() }
   });
 
   const login = useAdminLogin();
 
   useEffect(() => {
-    if (admin) {
+    if (admin && !isMeError) {
       setLocation("/");
     }
-  }, [admin, setLocation]);
+  }, [admin, isMeError, setLocation]);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),

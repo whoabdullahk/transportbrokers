@@ -17,9 +17,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isError) {
+      queryClient.removeQueries({ queryKey: getAdminMeQueryKey() });
       setLocation("/login");
     }
-  }, [isError, setLocation]);
+  }, [isError, setLocation, queryClient]);
 
   const handleLogout = () => {
     logout.mutate(undefined, {
@@ -35,7 +36,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     window.scrollTo(0, 0);
   }, [location]);
 
-  if (isLoading) {
+  if (isLoading || !admin) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-[#D4AF37] mb-4" />
@@ -43,8 +44,6 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       </div>
     );
   }
-
-  if (!admin) return null;
 
   const navItems = [
     { href: "/", label: "Dashboard", icon: LayoutDashboard },
