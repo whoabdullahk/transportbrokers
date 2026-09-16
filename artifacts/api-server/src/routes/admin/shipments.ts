@@ -32,6 +32,8 @@ router.post(
       return;
     }
 
+    parsed.data.trackingNumber = parsed.data.trackingNumber.trim().toUpperCase();
+
     const [shipment] = await db
       .insert(shipmentsTable)
       .values(parsed.data)
@@ -64,6 +66,10 @@ router.patch(
     if (!parsed.success) {
       res.status(400).json({ error: parsed.error.message });
       return;
+    }
+
+    if (parsed.data.trackingNumber) {
+      parsed.data.trackingNumber = parsed.data.trackingNumber.trim().toUpperCase();
     }
 
     const [existing] = await db

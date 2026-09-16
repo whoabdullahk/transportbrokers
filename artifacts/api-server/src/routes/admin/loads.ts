@@ -32,6 +32,8 @@ router.post(
       return;
     }
 
+    parsed.data.trackingId = parsed.data.trackingId.trim().toUpperCase();
+
     const [existing] = await db
       .select({ id: loadsTable.id })
       .from(loadsTable)
@@ -76,6 +78,10 @@ router.patch(
     if (!parsed.success) {
       res.status(400).json({ error: parsed.error.message });
       return;
+    }
+
+    if (parsed.data.trackingId) {
+      parsed.data.trackingId = parsed.data.trackingId.trim().toUpperCase();
     }
 
     const [existing] = await db
