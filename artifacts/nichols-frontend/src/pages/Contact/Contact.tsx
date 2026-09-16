@@ -85,13 +85,13 @@ export function Contact() {
       } else {
         setSubmissionStatus({
           type: 'error',
-          message: res.message || 'Submission failed. Please call our direct line at (443) 560-0311.',
+          message: res.message || 'Submission failed. Please call our direct line at 330-756-7732.',
         })
       }
     } catch {
       setSubmissionStatus({
         type: 'error',
-        message: 'Network issue. Please call our direct line at (443) 560-0311.',
+        message: 'Network issue. Please call our direct line at 330-756-7732.',
       })
     } finally {
       setIsSubmitting(false)
@@ -147,11 +147,8 @@ export function Contact() {
                   </div>
                   <div className="space-y-1">
                     <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Direct Phone Channels</div>
-                    <a href="tel:4435600311" className="block text-base font-bold text-gray-900 hover:text-black transition-colors">
-                      (443) 560-0311 <span className="text-xs text-gray-500 font-normal font-mono">— Primary Operations</span>
-                    </a>
-                    <a href="tel:4435600542" className="block text-sm font-semibold text-gray-700 hover:text-black transition-colors">
-                      (443) 560-0542 <span className="text-xs text-gray-500 font-normal font-mono">— Secondary Dispatch</span>
+                    <a href="tel:3307567732" className="block text-base font-bold text-gray-900 hover:text-black transition-colors">
+                      330-756-7732 <span className="text-xs text-gray-500 font-normal font-mono">— Primary Operations</span>
                     </a>
                   </div>
                 </div>
@@ -162,11 +159,8 @@ export function Contact() {
                   </div>
                   <div className="space-y-1">
                     <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Email Inquiries</div>
-                    <a href="mailto:brandon@TBItransportation.com" className="block text-sm font-bold text-gray-900 hover:text-black transition-colors">
-                      brandon@TBItransportation.com
-                    </a>
-                    <a href="mailto:billing@TBItransportation.com" className="block text-sm font-semibold text-gray-700 hover:text-black transition-colors">
-                      billing@TBItransportation.com
+                    <a href="mailto:ethoncollins@transportbrokersinc.com" className="block text-sm font-bold text-gray-900 hover:text-black transition-colors">
+                      ethoncollins@transportbrokersinc.com
                     </a>
                   </div>
                 </div>
@@ -178,10 +172,10 @@ export function Contact() {
                   <div className="space-y-1">
                     <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Operating Terminal & Office</div>
                     <div className="text-sm font-bold text-gray-900">
-                      111 Pecan Row Ln
+                      67 BEACON STREET
                     </div>
                     <div className="text-xs text-gray-600">
-                      Alexandria, LA 71303
+                      BUFFALO, NY 14220
                     </div>
                   </div>
                 </div>

@@ -59,9 +59,9 @@ export function Privacy() {
           </p>
           <div className="p-4 rounded-lg bg-brand-surface border border-white/10 text-xs font-mono space-y-1 text-gray-300">
             <div>Transport Brokers Inc.</div>
-            <div>111 Pecan Row Ln, Alexandria, LA 71303</div>
+            <div>67 BEACON STREET, BUFFALO, NY 14220</div>
             <div>Email: billing@TBItransportation.com</div>
-            <div>Direct: (443) 560-0311</div>
+            <div>Direct: 330-756-7732</div>
           </div>
         </div>
       </section>

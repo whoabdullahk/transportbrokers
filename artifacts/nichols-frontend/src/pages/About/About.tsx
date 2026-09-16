@@ -94,7 +94,7 @@ export function About() {
               <div className="pt-4 flex items-center space-x-6 text-xs font-mono text-gray-600">
                 <div className="flex items-center space-x-2">
                   <MapPin className="h-4 w-4 text-lime-600" />
-                  <span>Alexandria, LA 71303</span>
+                  <span>BUFFALO, NY 14220</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Building2 className="h-4 w-4 text-lime-600" />

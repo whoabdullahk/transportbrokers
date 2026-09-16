@@ -55,7 +55,7 @@ const defaultRecord: TrackOrderRecord = {
   monthlyRate: '$49,000.00',
   outboundRoute: 'Alexandria, LA → Dallas, TX',
   returnRoute: 'Dallas, TX → Alexandria, LA',
-  pickupLocation: '111 Pecan Row Ln, Alexandria, LA 71303',
+  pickupLocation: '67 BEACON STREET, BUFFALO, NY 14220',
   deliveryLocation: '4200 Logistics Pkwy, Dallas, TX 75241',
   eachSideMiles: '312 Miles',
   totalRoundTripMiles: '624 Miles',
@@ -588,11 +588,11 @@ export function TrackOrder() {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a 
-                  href="tel:4435600311"
+                  href="tel:3307567732"
                   className="px-6 py-3 rounded-full bg-black text-white font-bold text-sm uppercase tracking-wider inline-flex items-center gap-2 hover:bg-neutral-800 transition-colors"
                 >
                   <Phone className="w-4 h-4 text-lime-400" />
-                  Call (443) 560-0311
+                  Call 330-756-7732
                 </a>
                 <Link href="/contact-us">
                   <button className="px-6 py-3 rounded-full bg-white text-black font-bold text-sm uppercase tracking-wider inline-flex items-center border border-gray-300 hover:border-black transition-colors">

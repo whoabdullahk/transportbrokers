@@ -48,26 +48,26 @@ describe('Footer Component', () => {
   it('displays Contact Us section with email addresses', () => {
     render(<Footer />)
     expect(screen.getByRole('heading', { name: 'Contact Us' })).toBeInTheDocument()
-    expect(screen.getByText('brandon@TBItransportation.com')).toBeInTheDocument()
+    expect(screen.getByText('ethoncollins@transportbrokersinc.com')).toBeInTheDocument()
     expect(screen.getByText('billing@TBItransportation.com')).toBeInTheDocument()
   })
 
   it('displays address information', () => {
     render(<Footer />)
-    expect(screen.getByText(/111 Pecan Row Ln/)).toBeInTheDocument()
-    expect(screen.getByText(/Alexandria, LA 71303/)).toBeInTheDocument()
+    expect(screen.getByText(/67 BEACON STREET/)).toBeInTheDocument()
+    expect(screen.getByText(/BUFFALO, NY 14220/)).toBeInTheDocument()
   })
 
   it('displays phone numbers when provided', () => {
     render(<Footer />)
-    expect(screen.getByText('(318) 555-0123')).toBeInTheDocument()
-    expect(screen.getByText('(318) 555-0124')).toBeInTheDocument()
+    expect(screen.getByText('330-756-7732')).toBeInTheDocument()
+    expect(screen.getByText('330-756-7732')).toBeInTheDocument()
   })
 
   it('email links have proper mailto href', () => {
     render(<Footer />)
-    const emailLink = screen.getByText('brandon@TBItransportation.com')
-    expect(emailLink.closest('a')).toHaveAttribute('href', 'mailto:brandon@TBItransportation.com')
+    const emailLink = screen.getByText('ethoncollins@transportbrokersinc.com')
+    expect(emailLink.closest('a')).toHaveAttribute('href', 'mailto:ethoncollins@transportbrokersinc.com')
   })
 
   it('displays social media icons', () => {
