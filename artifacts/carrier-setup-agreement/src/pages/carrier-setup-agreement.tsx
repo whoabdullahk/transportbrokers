@@ -84,8 +84,9 @@ const TODAY_DMY = new Date().toLocaleDateString("en-GB").replace(/\//g, "/")
 
 // ─── PDF Generator ───────────────────────────────────────────────────────────
 
-function generatePDF(data: FormData): string {
-  const doc = new jsPDF({ unit: "pt", format: "letter" })
+function generatePDF(data: FormData): Promise<string> {
+  return new Promise(async (resolve) => {
+    const doc = new jsPDF({ unit: "pt", format: "letter" })
   const W = doc.internal.pageSize.getWidth()
   const margin = 56
   let y = margin
@@ -106,28 +107,29 @@ function generatePDF(data: FormData): string {
   if (data.otherServices.insuranceAssistance) selectedServices.push("Insurance Assistance — $399 (Fast-track insurance quote & setup)")
 
   // ── Header bar ──
-  doc.setFillColor(13, 13, 13)
+  doc.setFillColor(255, 255, 255)
   doc.rect(0, 0, W, 68, "F")
 
-  // Gold circle logo placeholder
-  doc.setFillColor(212, 175, 55)
-  doc.circle(margin + 20, 34, 18, "F")
-  doc.setTextColor(13, 13, 13)
-  doc.setFontSize(16)
-  doc.setFont("helvetica", "bold")
-  doc.text("B", margin + 20, 39, { align: "center" })
+  // Black geometric logo
+  doc.setFillColor(0, 0, 0)
+  const lx = margin, ly = 16, scale = 0.8
+  doc.roundedRect(lx + 3 * scale, ly + 4 * scale, 34 * scale, 7 * scale, 0.5 * scale, 0.5 * scale, "F")
+  doc.roundedRect(lx + 3 * scale, ly + 4 * scale, 7.5 * scale, 32 * scale, 0.5 * scale, 0.5 * scale, "F")
+  doc.roundedRect(lx + 15 * scale, ly + 16.5 * scale, 17 * scale, 6.5 * scale, 0.5 * scale, 0.5 * scale, "F")
+  doc.roundedRect(lx + 24.5 * scale, ly + 16.5 * scale, 7.5 * scale, 19.5 * scale, 0.5 * scale, 0.5 * scale, "F")
+  doc.roundedRect(lx + 3 * scale, ly + 29 * scale, 29 * scale, 7 * scale, 0.5 * scale, 0.5 * scale, "F")
 
   // Company name
-  doc.setTextColor(255, 255, 255)
+  doc.setTextColor(13, 13, 13)
   doc.setFontSize(11)
   doc.setFont("helvetica", "bold")
   doc.text("TRANSPORT BROKERS INC.", margin + 46, 30)
-  doc.setTextColor(212, 175, 55)
+  doc.setTextColor(13, 13, 13)
   doc.setFontSize(8.5)
-  doc.text("MC #: 130697  |  DOT #: 2217864  |  50 Emjay Blvd, Brentwood, NY 11786", margin + 46, 46)
-  doc.setTextColor(180, 180, 180)
+  doc.text("MC #: 172356  |  DOT #: 2212598  |  67 Beacon Street, Buffalo, NY 14220", margin + 46, 46)
+  doc.setTextColor(80, 80, 80)
   doc.setFontSize(7.5)
-  doc.text("info@transportbrokersinc.com", margin + 46, 59)
+  doc.text("info@transportbrokersinc.com  |  Ph: 330-756-7732", margin + 46, 59)
 
   y = 90
 
@@ -155,9 +157,9 @@ function generatePDF(data: FormData): string {
   doc.setFont("helvetica", "normal")
   const partyText = [
     `This Agreement is made and entered into on ${TODAY_ISO}, by and between: TRANSPORT BROKERS INC.`,
-    `MC #: 130697 | DOT #: 2217864`,
-    `Address: 50 EMJAY BLVD BRENTWOOD, NY 11786`,
-    `Email: info@transportbrokersinc.com`,
+    `MC #: 172356 | DOT #: 2212598`,
+    `Address: 67 Beacon Street, Buffalo, NY 14220`,
+    `Email: info@transportbrokersinc.com | Ph: 330-756-7732`,
     ``,
     `Dispatch Company: ${data.dispatchCompany}`,
     `(Hereinafter referred to as the TRANSPORT BROKERS INC.)`,
@@ -387,14 +389,34 @@ function generatePDF(data: FormData): string {
     doc.setFontSize(7.5)
     doc.setTextColor(160, 160, 160)
     doc.text(
-      `TRANSPORT BROKERS INC.  ·  50 Emjay Blvd, Brentwood, NY 11786  ·  Page ${i} of ${pageCount}`,
+      `TRANSPORT BROKERS INC.  ·  67 Beacon Street, Buffalo, NY 14220  ·  Phone: 330-756-7732  ·  Page ${i} of ${pageCount}`,
       W / 2,
       doc.internal.pageSize.getHeight() - 24,
       { align: "center" }
     )
   }
 
-  return doc.output("datauristring").split(",")[1]
+  const jsPdfBytes = doc.output("arraybuffer")
+  
+  import("pdf-lib").then(async ({ PDFDocument }) => {
+    try {
+      const mainPdf = await PDFDocument.load(jsPdfBytes)
+      const certRes = await fetch("/certificate.pdf")
+      if (certRes.ok) {
+        const certBytes = await certRes.arrayBuffer()
+        const certPdf = await PDFDocument.load(certBytes)
+        const copiedPages = await mainPdf.copyPages(certPdf, certPdf.getPageIndices())
+        copiedPages.forEach((p) => mainPdf.addPage(p))
+      }
+      resolve(await mainPdf.saveAsBase64())
+    } catch (err) {
+      console.error("Failed to merge PDF", err)
+      resolve(doc.output("datauristring").split(",")[1])
+    }
+  }).catch(() => {
+    resolve(doc.output("datauristring").split(",")[1])
+  })
+  })
 }
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
@@ -489,11 +511,11 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
         This Agreement is made and entered into on <strong className="text-white">{TODAY}</strong>, by and between:{" "}
         <strong className="text-white">TRANSPORT BROKERS INC.</strong>
         <br />
-        MC #: <strong className="text-white">130697</strong> | DOT #: <strong className="text-white">2217864</strong>
+        MC #: <strong className="text-white">172356</strong> | DOT #: <strong className="text-white">2212598</strong>
         <br />
-        Address: <strong className="text-white">50 EMJAY BLVD, BRENTWOOD, NY 11786</strong>
+        Address: <strong className="text-white">67 Beacon Street, Buffalo, NY 14220</strong>
         <br />
-        Email: <strong className="text-white">info@transportbrokersinc.com</strong>
+        Phone: <strong className="text-white">330-756-7732</strong> | Email: <strong className="text-white">info@transportbrokersinc.com</strong>
       </div>
 
       <div className="bg-[#1a1a1a] border border-[#333] rounded-md px-4 py-3 mb-5">
@@ -923,7 +945,7 @@ export default function CarrierSetupAgreement() {
     setSubmitError(null)
     try {
       // 1. Generate PDF
-      const pdfBase64 = generatePDF(data)
+      const pdfBase64 = await generatePDF(data)
 
       // 2. Send to API
       const envApiUrl = import.meta.env.VITE_API_URL
@@ -1048,7 +1070,7 @@ export default function CarrierSetupAgreement() {
 
         {/* Footer */}
         <p className="text-center text-[10px] text-[#444] mt-4">
-          TRANSPORT BROKERS INC. · 50 Emjay Blvd, Brentwood, NY 11786
+          TRANSPORT BROKERS INC. · 67 Beacon Street, Buffalo, NY 14220
         </p>
       </div>
     </div>

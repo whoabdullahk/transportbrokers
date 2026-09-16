@@ -57,12 +57,8 @@ router.post("/carrier-agreement", async (req, res) => {
 <body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,sans-serif;">
   <div style="max-width:620px;margin:30px auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.12);">
     <div style="background:#0d0d0d;padding:24px 32px;display:flex;align-items:center;gap:16px;">
-      <div style="width:48px;height:48px;background:#D4AF37;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <span style="color:#000;font-size:20px;font-weight:900;">B</span>
-      </div>
       <div>
-        <div style="color:#ffffff;font-size:16px;font-weight:700;letter-spacing:.5px;">BROKERAGE COMPANY OF</div>
-        <div style="color:#D4AF37;font-size:14px;font-weight:700;letter-spacing:.5px;">AMERICAN INC</div>
+        <div style="color:#ffffff;font-size:16px;font-weight:700;letter-spacing:.5px;">TRANSPORT BROKERS INC.</div>
       </div>
     </div>
     <div style="padding:28px 32px;">
@@ -117,7 +113,7 @@ router.post("/carrier-agreement", async (req, res) => {
       <p style="margin:24px 0 0;font-size:12px;color:#888;">The signed Carrier Setup Agreement PDF is attached to this email.</p>
     </div>
     <div style="background:#f9f9f9;padding:16px 32px;text-align:center;border-top:1px solid #eee;">
-      <p style="margin:0;font-size:11px;color:#aaa;">TRANSPORT BROKERS INC. · 50 Emjay Blvd, Brentwood, NY 11786</p>
+      <p style="margin:0;font-size:11px;color:#aaa;">TRANSPORT BROKERS INC. · 67 Beacon Street, Buffalo, NY 14220</p>
     </div>
   </div>
 </body>
