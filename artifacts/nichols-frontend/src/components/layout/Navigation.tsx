@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'wouter'
-import { Menu, X, ArrowUpRight, Phone, ShieldCheck } from 'lucide-react'
+import { Menu, X, ArrowUpRight, Phone, ShieldCheck, Truck } from 'lucide-react'
 
 export interface NavLink {
   label: string
@@ -128,19 +128,11 @@ export function Navigation({ links }: NavigationProps) {
             onClick={closeMobileMenu}
             aria-label="Transport Brokers Inc. - Home"
           >
-            <svg
-              className="h-8 w-8 flex-shrink-0 transition-colors duration-300"
-              viewBox="0 0 40 40"
-              fill="none"
+            <Truck
+              className={`h-8 w-8 flex-shrink-0 transition-colors duration-300 ${isTransparent ? 'text-white' : 'text-black'}`}
+              strokeWidth={2.5}
               aria-hidden="true"
-            >
-              {/* Minimalist Geometric Architectural Monogram */}
-              <rect x="3" y="4" width="34" height="7" rx="0.5" fill={isTransparent ? '#FFFFFF' : '#000000'} />
-              <rect x="3" y="4" width="7.5" height="32" rx="0.5" fill={isTransparent ? '#FFFFFF' : '#000000'} />
-              <rect x="15" y="16.5" width="17" height="6.5" rx="0.5" fill={isTransparent ? '#FFFFFF' : '#000000'} />
-              <rect x="24.5" y="16.5" width="7.5" height="19.5" rx="0.5" fill={isTransparent ? '#FFFFFF' : '#000000'} />
-              <rect x="3" y="29" width="29" height="7" rx="0.5" fill={isTransparent ? '#FFFFFF' : '#000000'} />
-            </svg>
+            />
             <div className="flex items-baseline space-x-1.5 leading-none">
               <span className={`font-black text-lg sm:text-xl tracking-tight uppercase font-sans transition-colors duration-300 ${
                 isTransparent ? 'text-white' : 'text-black'

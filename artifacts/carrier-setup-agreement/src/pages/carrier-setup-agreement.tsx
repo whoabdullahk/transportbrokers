@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Truck, CheckCircle2, Loader2, Send } from "lucide-react"
+import { Truck, CheckCircle2, Loader2, Send, Route, Headset, IdCard, ShieldCheck, Landmark, AlertCircle, DollarSign, FileText } from "lucide-react"
 import { cn } from "@/lib/utils"
 import BrandLogo from "@/components/BrandLogo"
 import { jsPDF } from "jspdf"
@@ -110,26 +110,39 @@ function generatePDF(data: FormData): Promise<string> {
   doc.setFillColor(255, 255, 255)
   doc.rect(0, 0, W, 68, "F")
 
-  // Black geometric logo
+  // TB truck/arrow mark + wordmark
   doc.setFillColor(0, 0, 0)
-  const lx = margin, ly = 16, scale = 0.8
-  doc.roundedRect(lx + 3 * scale, ly + 4 * scale, 34 * scale, 7 * scale, 0.5 * scale, 0.5 * scale, "F")
-  doc.roundedRect(lx + 3 * scale, ly + 4 * scale, 7.5 * scale, 32 * scale, 0.5 * scale, 0.5 * scale, "F")
-  doc.roundedRect(lx + 15 * scale, ly + 16.5 * scale, 17 * scale, 6.5 * scale, 0.5 * scale, 0.5 * scale, "F")
-  doc.roundedRect(lx + 24.5 * scale, ly + 16.5 * scale, 7.5 * scale, 19.5 * scale, 0.5 * scale, 0.5 * scale, "F")
-  doc.roundedRect(lx + 3 * scale, ly + 29 * scale, 29 * scale, 7 * scale, 0.5 * scale, 0.5 * scale, "F")
-
+  doc.setDrawColor(0, 0, 0)
+  
+  // Custom simple vector truck
+  const lx = margin, ly = 16
+  // Tractor body
+  doc.rect(lx + 4, ly + 8, 14, 12, "F")
+  // Cab
+  doc.rect(lx + 18, ly + 13, 8, 7, "F")
+  // Windshield (cutout/white)
+  doc.setFillColor(255, 255, 255)
+  doc.rect(lx + 20, ly + 14, 4, 3, "F")
+  doc.setFillColor(0, 0, 0)
+  // Wheels
+  doc.circle(lx + 8, ly + 22, 3, "F")
+  doc.circle(lx + 22, ly + 22, 3, "F")
+  // Arrow element in body (cutout/white)
+  doc.setFillColor(255, 255, 255)
+  doc.rect(lx + 8, ly + 11, 6, 2, "F")
+  doc.triangle(lx + 14, ly + 10, lx + 14, ly + 14, lx + 17, ly + 12, "F")
+  
   // Company name
   doc.setTextColor(13, 13, 13)
   doc.setFontSize(11)
   doc.setFont("helvetica", "bold")
-  doc.text("TRANSPORT BROKERS INC.", margin + 46, 30)
+  doc.text("TRANSPORT BROKERS INC.", margin + 34, 25)
   doc.setTextColor(13, 13, 13)
   doc.setFontSize(8.5)
-  doc.text("MC #: 172356  |  DOT #: 2212598  |  67 Beacon Street, Buffalo, NY 14220", margin + 46, 46)
+  doc.text("MC #: 172356  |  DOT #: 2212598  |  67 Beacon Street, Buffalo, NY 14220", margin + 34, 42)
   doc.setTextColor(80, 80, 80)
   doc.setFontSize(7.5)
-  doc.text("info@transportbrokersinc.com  |  Ph: 330-756-7732", margin + 46, 59)
+  doc.text("info@transportbrokersinc.com  |  Ph: 330-756-7732", margin + 34, 55)
 
   y = 90
 
@@ -553,12 +566,12 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
 
 function StepCarrierInfo({ data, setData }: { data: FormData; setData: (d: FormData) => void }) {
   const SERVICE_BADGES = [
-    "Dedicated freight lanes",
-    "Dispatch assistance",
-    "Trailer rental",
-    "TWIC card application support",
-    "Commercial insurance setup",
-    "Factoring registration",
+    { label: "Dedicated freight lanes", icon: Route },
+    { label: "Dispatch assistance", icon: Headset },
+    { label: "Trailer rental", icon: Truck },
+    { label: "TWIC card application support", icon: IdCard },
+    { label: "Commercial insurance setup", icon: ShieldCheck },
+    { label: "Factoring registration", icon: Landmark },
   ]
 
   return (
@@ -606,8 +619,8 @@ function StepCarrierInfo({ data, setData }: { data: FormData; setData: (d: FormD
 
       <div className="border-t border-[#2a2a2a] pt-5">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-6 h-6 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center">
-            <span className="text-[#D4AF37] text-xs font-bold">⊕</span>
+          <div className="w-6 h-6 rounded bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center">
+            <FileText className="w-3.5 h-3.5 text-[#D4AF37]" />
           </div>
           <h3 className="text-sm font-bold text-white">Purpose of Agreement</h3>
         </div>
@@ -616,10 +629,10 @@ function StepCarrierInfo({ data, setData }: { data: FormData; setData: (d: FormD
           services to the Client, including but not limited to:
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
-          {SERVICE_BADGES.map((badge) => (
-            <div key={badge} className="flex items-center gap-1.5 bg-[#1a1a1a] border border-[#2a2a2a] rounded-md px-2.5 py-1.5">
-              <span className="text-[#D4AF37] text-xs">🚛</span>
-              <span className="text-xs text-[#CBD5E1]">{badge}</span>
+          {SERVICE_BADGES.map(({ label, icon: Icon }) => (
+            <div key={label} className="flex items-center gap-1.5 bg-[#1a1a1a] border border-[#2a2a2a] rounded-md px-2.5 py-1.5">
+              <Icon className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <span className="text-xs text-[#CBD5E1]">{label}</span>
             </div>
           ))}
         </div>
@@ -727,7 +740,7 @@ function StepServicesFinal({ data, setData }: { data: FormData; setData: (d: For
       <div>
         <div className="flex items-center gap-2 mb-3">
           <div className="w-6 h-6 rounded bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center">
-            <span className="text-[#D4AF37] text-xs">⚠</span>
+            <AlertCircle className="w-3.5 h-3.5 text-[#D4AF37]" />
           </div>
           <h3 className="text-sm font-bold text-white">Select Other Services With Fees</h3>
         </div>
@@ -774,7 +787,7 @@ function StepServicesFinal({ data, setData }: { data: FormData; setData: (d: For
       <div>
         <div className="flex items-center gap-2 mb-3">
           <div className="w-6 h-6 rounded bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center">
-            <span className="text-[#D4AF37] text-xs">$</span>
+            <DollarSign className="w-3.5 h-3.5 text-[#D4AF37]" />
           </div>
           <h3 className="text-sm font-bold text-white">Payment Method Selection</h3>
         </div>
