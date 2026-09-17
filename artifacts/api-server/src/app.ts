@@ -31,7 +31,10 @@ app.use(
 );
 const ALLOWED_ORIGINS_DEFAULT = [
   "https://chodu-admin.vercel.app",
+  "https://transportbrokersinc.com",
+  "https://www.transportbrokersinc.com",
   "http://localhost:5173",
+  "http://localhost:5174",
   "http://localhost:5175",
 ];
 
@@ -47,6 +50,8 @@ app.use(
       if (allowedOrigins.includes(origin)) return callback(null, true);
       // Allow any vercel.app preview deploy
       if (origin.endsWith(".vercel.app")) return callback(null, true);
+      // Allow production domain and any subdomains
+      if (origin === "https://transportbrokersinc.com" || origin.endsWith(".transportbrokersinc.com")) return callback(null, true);
       callback(new Error(`CORS: origin not allowed: ${origin}`));
     },
     credentials: true,
