@@ -31,7 +31,7 @@ export const defaultContactInfo: ContactInfo = {
     state: 'NY',
     zip: '14220',
   },
-  phones: ['330-756-7732'],
+  phones: ['572-220-2488'],
 }
 
 export const defaultSocialLinks: SocialLink[] = [

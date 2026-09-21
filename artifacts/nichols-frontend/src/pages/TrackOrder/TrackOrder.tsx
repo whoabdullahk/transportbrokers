@@ -588,11 +588,11 @@ export function TrackOrder() {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a 
-                  href="tel:3307567732"
+                  href="tel:5722202488"
                   className="px-6 py-3 rounded-full bg-black text-white font-bold text-sm uppercase tracking-wider inline-flex items-center gap-2 hover:bg-neutral-800 transition-colors"
                 >
                   <Phone className="w-4 h-4 text-lime-400" />
-                  Call 330-756-7732
+                  Call 572-220-2488
                 </a>
                 <Link href="/contact-us">
                   <button className="px-6 py-3 rounded-full bg-white text-black font-bold text-sm uppercase tracking-wider inline-flex items-center border border-gray-300 hover:border-black transition-colors">

@@ -85,13 +85,13 @@ export function Contact() {
       } else {
         setSubmissionStatus({
           type: 'error',
-          message: res.message || 'Submission failed. Please call our direct line at 330-756-7732.',
+          message: res.message || 'Submission failed. Please call our direct line at 572-220-2488.',
         })
       }
     } catch {
       setSubmissionStatus({
         type: 'error',
-        message: 'Network issue. Please call our direct line at 330-756-7732.',
+        message: 'Network issue. Please call our direct line at 572-220-2488.',
       })
     } finally {
       setIsSubmitting(false)
@@ -147,8 +147,8 @@ export function Contact() {
                   </div>
                   <div className="space-y-1">
                     <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Direct Phone Channels</div>
-                    <a href="tel:3307567732" className="block text-base font-bold text-gray-900 hover:text-black transition-colors">
-                      330-756-7732 <span className="text-xs text-gray-500 font-normal font-mono">— Primary Operations</span>
+                    <a href="tel:5722202488" className="block text-base font-bold text-gray-900 hover:text-black transition-colors">
+                      572-220-2488 <span className="text-xs text-gray-500 font-normal font-mono">— Primary Operations</span>
                     </a>
                   </div>
                 </div>
