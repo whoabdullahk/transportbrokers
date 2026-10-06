@@ -93,7 +93,7 @@ const defaultContactInfo: ContactInfo = {
     zip: '14220',
   },
   phones: [
-    '572-220-2488',
+    '917-672-3364',
   ],
 }
 

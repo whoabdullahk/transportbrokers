@@ -200,10 +200,10 @@ export function Permits() {
               <ArrowUpRight className="ml-2 h-4 w-4 text-lime-400" />
             </Link>
             <a
-              href="tel:5722202488"
+              href="tel:9176723364"
               className="w-full sm:w-auto px-8 py-4 rounded-full bg-white hover:bg-gray-100 text-gray-900 font-bold text-sm uppercase tracking-wider transition-all border border-gray-300 shadow-sm inline-flex items-center justify-center"
             >
-              <span>Call Permit Desk: 572-220-2488</span>
+              <span>Call Permit Desk: 917-672-3364</span>
             </a>
           </div>
         </div>

@@ -266,18 +266,18 @@ export function Navigation({ links }: NavigationProps) {
               </div>
               <div className="space-y-1 pt-1">
                 <a 
-                  href="tel:5722202488" 
+                  href="tel:9176723364" 
                   className="flex items-center text-sm font-semibold text-white hover:text-lime-400 transition-colors"
                 >
                   <Phone className="h-3.5 w-3.5 mr-2 text-lime-400" />
-                  <span>572-220-2488</span>
+                  <span>917-672-3364</span>
                 </a>
                 <a 
-                  href="tel:5722202488" 
+                  href="tel:9176723364" 
                   className="flex items-center text-sm font-semibold text-white hover:text-lime-400 transition-colors"
                 >
                   <Phone className="h-3.5 w-3.5 mr-2 text-lime-400" />
-                  <span>572-220-2488</span>
+                  <span>917-672-3364</span>
                 </a>
               </div>
             </div>

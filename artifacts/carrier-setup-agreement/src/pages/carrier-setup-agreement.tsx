@@ -487,7 +487,7 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
         <br />
         Address: <strong className="text-white">67 Beacon Street, Buffalo, NY 14220</strong>
         <br />
-        Phone: <strong className="text-white">572-220-2488</strong> | Email: <strong className="text-white">ethoncollins@transportbrokersinc.com</strong>
+        Phone: <strong className="text-white">917-672-3364</strong> | Email: <strong className="text-white">ethoncollins@transportbrokersinc.com</strong>
       </div>
 
       <div className="bg-[#1a1a1a] border border-[#333] rounded-md px-4 py-3 mb-5">

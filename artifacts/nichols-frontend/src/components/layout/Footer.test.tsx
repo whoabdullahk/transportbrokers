@@ -60,8 +60,8 @@ describe('Footer Component', () => {
 
   it('displays phone numbers when provided', () => {
     render(<Footer />)
-    expect(screen.getByText('572-220-2488')).toBeInTheDocument()
-    expect(screen.getByText('572-220-2488')).toBeInTheDocument()
+    expect(screen.getByText('917-672-3364')).toBeInTheDocument()
+    expect(screen.getByText('917-672-3364')).toBeInTheDocument()
   })
 
   it('email links have proper mailto href', () => {

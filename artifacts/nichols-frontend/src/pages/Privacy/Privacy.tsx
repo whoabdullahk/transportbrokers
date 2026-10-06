@@ -61,7 +61,7 @@ export function Privacy() {
             <div>Transport Brokers Inc.</div>
             <div>67 BEACON STREET, BUFFALO, NY 14220</div>
             <div>Email: billing@TBItransportation.com</div>
-            <div>Direct: 572-220-2488</div>
+            <div>Direct: 917-672-3364</div>
           </div>
         </div>
       </section>
