@@ -273,11 +273,11 @@ export function Navigation({ links }: NavigationProps) {
                   <span>917-672-3364</span>
                 </a>
                 <a 
-                  href="tel:9176723364" 
+                  href="tel:5722202488" 
                   className="flex items-center text-sm font-semibold text-white hover:text-lime-400 transition-colors"
                 >
                   <Phone className="h-3.5 w-3.5 mr-2 text-lime-400" />
-                  <span>917-672-3364</span>
+                  <span>572-220-2488</span>
                 </a>
               </div>
             </div>

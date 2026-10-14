@@ -190,7 +190,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </div>
                   <div>
                     <div className="text-[13px] text-[#94A3B8] mb-0.5">24/7 Support</div>
-                    <div className="text-[15px] font-medium text-foreground">917-672-3364</div>
+                    <div className="text-[15px] font-medium text-foreground">
+                      <a href="tel:9176723364" className="hover:text-[#D4AF37] transition-colors">917-672-3364</a>
+                      <span className="mx-2 text-[#94A3B8]">/</span>
+                      <a href="tel:5722202488" className="hover:text-[#D4AF37] transition-colors">(572) 220-2488</a>
+                    </div>
                   </div>
                 </li>
                 <li className="flex gap-4 group">

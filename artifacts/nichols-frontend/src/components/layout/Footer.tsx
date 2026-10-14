@@ -94,6 +94,7 @@ const defaultContactInfo: ContactInfo = {
   },
   phones: [
     '917-672-3364',
+    '572-220-2488',
   ],
 }
 

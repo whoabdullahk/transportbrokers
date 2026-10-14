@@ -127,7 +127,11 @@ export default function Contact() {
                     </div>
                     <div>
                       <div className="font-semibold uppercase tracking-wider text-xs text-[#94A3B8] mb-2">Phone</div>
-                      <div className="text-2xl font-medium text-foreground">917-672-3364</div>
+                      <div className="text-2xl font-medium text-foreground">
+                        <a href="tel:9176723364" className="hover:text-[#D4AF37] transition-colors">917-672-3364</a>
+                        <span className="mx-3 text-[#94A3B8]">/</span>
+                        <a href="tel:5722202488" className="hover:text-[#D4AF37] transition-colors">(572) 220-2488</a>
+                      </div>
                       <div className="text-[15px] text-[#CBD5E1] mt-2">24/7 Dispatch Support</div>
                     </div>
                   </div>

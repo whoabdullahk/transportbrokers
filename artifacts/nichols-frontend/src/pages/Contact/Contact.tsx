@@ -85,13 +85,13 @@ export function Contact() {
       } else {
         setSubmissionStatus({
           type: 'error',
-          message: res.message || 'Submission failed. Please call our direct line at 917-672-3364.',
+          message: res.message || 'Submission failed. Please call our direct line at 917-672-3364 or 572-220-2488.',
         })
       }
     } catch {
       setSubmissionStatus({
         type: 'error',
-        message: 'Network issue. Please call our direct line at 917-672-3364.',
+        message: 'Network issue. Please call our direct line at 917-672-3364 or 572-220-2488.',
       })
     } finally {
       setIsSubmitting(false)
@@ -145,10 +145,13 @@ export function Contact() {
                   <div className="p-3 rounded-lg bg-lime-100 text-gray-900 border border-lime-300 shrink-0">
                     <Phone className="h-5 w-5" />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-1.5">
                     <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Direct Phone Channels</div>
                     <a href="tel:9176723364" className="block text-base font-bold text-gray-900 hover:text-black transition-colors">
                       917-672-3364 <span className="text-xs text-gray-500 font-normal font-mono">— Primary Operations</span>
+                    </a>
+                    <a href="tel:5722202488" className="block text-base font-bold text-gray-900 hover:text-black transition-colors">
+                      572-220-2488 <span className="text-xs text-gray-500 font-normal font-mono">— Dispatch & Support</span>
                     </a>
                   </div>
                 </div>
