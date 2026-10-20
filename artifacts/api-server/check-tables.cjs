@@ -3,7 +3,7 @@ const { createRequire } = require('module');
 const r = createRequire(require('url').pathToFileURL(__filename).href);
 const pg = r('C:\\Users\\iabdu\\Downloads\\chodulogistics\\node_modules\\.pnpm\\pg@8.22.0\\node_modules\\pg');
 
-const DATABASE_URL = 'postgresql://postgres.tnvhhkqxvdqdlbmrqwnj:Ahmadchodu%221@35.79.125.133:6543/postgres?sslmode=no-verify';
+const DATABASE_URL = 'postgresql://postgres.ovmswssycymeuvhuythi:Dispatch%40007722@aws-0-ap-northeast-1.pooler.supabase.com:6543/postgres?sslmode=no-verify';
 const pool = new pg.Pool({ connectionString: DATABASE_URL });
 
 async function main() {
