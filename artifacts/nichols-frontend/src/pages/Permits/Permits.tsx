@@ -206,10 +206,10 @@ export function Permits() {
               <span>Call Permit Desk: 917-672-3364</span>
             </a>
             <a
-              href="tel:5722202488"
+              href="tel:6802047669"
               className="w-full sm:w-auto px-8 py-4 rounded-full bg-white hover:bg-gray-100 text-gray-900 font-bold text-sm uppercase tracking-wider transition-all border border-gray-300 shadow-sm inline-flex items-center justify-center"
             >
-              <span>Dispatch Line: 572-220-2488</span>
+              <span>Dispatch Line: (680)204-7669</span>
             </a>
           </div>
         </div>

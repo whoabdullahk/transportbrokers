@@ -595,11 +595,11 @@ export function TrackOrder() {
                   Call 917-672-3364
                 </a>
                 <a 
-                  href="tel:5722202488"
+                  href="tel:6802047669"
                   className="px-6 py-3 rounded-full bg-black text-white font-bold text-sm uppercase tracking-wider inline-flex items-center gap-2 hover:bg-neutral-800 transition-colors"
                 >
                   <Phone className="w-4 h-4 text-lime-400" />
-                  Call 572-220-2488
+                  Call (680)204-7669
                 </a>
                 <Link href="/contact-us">
                   <button className="px-6 py-3 rounded-full bg-white text-black font-bold text-sm uppercase tracking-wider inline-flex items-center border border-gray-300 hover:border-black transition-colors">

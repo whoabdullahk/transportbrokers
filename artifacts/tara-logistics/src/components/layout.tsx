@@ -193,7 +193,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     <div className="text-[15px] font-medium text-foreground">
                       <a href="tel:9176723364" className="hover:text-[#D4AF37] transition-colors">917-672-3364</a>
                       <span className="mx-2 text-[#94A3B8]">/</span>
-                      <a href="tel:5722202488" className="hover:text-[#D4AF37] transition-colors">(572) 220-2488</a>
+                      <a href="tel:6802047669" className="hover:text-[#D4AF37] transition-colors">(680)204-7669</a>
                     </div>
                   </div>
                 </li>

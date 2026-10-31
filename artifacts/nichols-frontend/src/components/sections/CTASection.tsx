@@ -67,11 +67,11 @@ export function CTASection({
           </a>
 
           <a
-            href="tel:5722202488"
+            href="tel:6802047669"
             className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/20 text-white font-semibold text-base transition-all backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-white"
           >
             <PhoneCall className="mr-2.5 h-5 w-5 text-lime-400" />
-            <span className="font-mono">572-220-2488</span>
+            <span className="font-mono">(680)204-7669</span>
           </a>
         </div>
 
