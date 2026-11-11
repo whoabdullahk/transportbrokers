@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Plus, Pencil, Trash2, Loader2, FileText, Hash, Building2,
-  Route, Package, DollarSign, Save, MessageSquare, Printer, RotateCcw, AlertCircle
+  Route, Package, DollarSign, Save, MessageSquare, Printer, RotateCcw, AlertCircle, Mail
 } from "lucide-react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter
@@ -1138,10 +1138,58 @@ export default function AdminRateConfirmations() {
   const { data: rateConfirmations, isLoading } = useAdminListRateConfirmations();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingRc, setEditingRc] = useState<RateConfirmation | null>(null);
+  const [sendingEmailId, setSendingEmailId] = useState<number | null>(null);
   const [, setLocation] = useLocation();
 
   const queryClient = useQueryClient();
   const { toast } = useToast();
+
+  const onSendEmail = async (rc: RateConfirmation) => {
+    const carrierEmail = rc.carrierEmail;
+    if (!carrierEmail) {
+      toast({
+        title: "No carrier email",
+        description: "Please edit this rate confirmation and add a carrier email address first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setSendingEmailId(rc.id);
+    try {
+      const pdfBase64 = generateRcPDF(fromRateConfirmation(rc));
+      const baseUrl = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+      const res = await fetch(`${baseUrl}/api/admin/rate-confirmations/${rc.id}/send-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(localStorage.getItem("admin_token")
+            ? { Authorization: `Bearer ${localStorage.getItem("admin_token")}` }
+            : {}),
+        },
+        body: JSON.stringify({ pdfBase64, toEmail: carrierEmail }),
+      });
+
+      if (res.ok) {
+        toast({ title: "Email Sent!", description: `Rate confirmation sent to ${carrierEmail}` });
+      } else {
+        const err = await res.json().catch(() => ({}));
+        toast({
+          title: "Failed to send email",
+          description: err.error || `Server error (${res.status})`,
+          variant: "destructive",
+        });
+      }
+    } catch (e: any) {
+      toast({
+        title: "Network error",
+        description: e.message || "Could not connect to server",
+        variant: "destructive",
+      });
+    } finally {
+      setSendingEmailId(null);
+    }
+  };
 
   const createMutation = useAdminCreateRateConfirmation();
   const updateMutation = useAdminUpdateRateConfirmation();
@@ -1291,7 +1339,21 @@ export default function AdminRateConfirmations() {
                       <TableCell className="text-sm text-muted-foreground">{rc.rcDateTime.slice(0, 10)}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-[#D4AF37]" onClick={() => setLocation(`/rate-confirmations/${rc.id}/print`)}>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-muted-foreground hover:text-[#D4AF37]"
+                            title={rc.carrierEmail ? `Email to ${rc.carrierEmail}` : "No carrier email"}
+                            disabled={sendingEmailId === rc.id}
+                            onClick={() => onSendEmail(rc)}
+                          >
+                            {sendingEmailId === rc.id ? (
+                              <Loader2 className="w-4 h-4 animate-spin text-[#D4AF37]" />
+                            ) : (
+                              <Mail className="w-4 h-4" />
+                            )}
+                          </Button>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-[#D4AF37]" title="Print" onClick={() => setLocation(`/rate-confirmations/${rc.id}/print`)}>
                             <Printer className="w-4 h-4" />
                           </Button>
                           <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-[#D4AF37]" onClick={() => openEdit(rc)}>
