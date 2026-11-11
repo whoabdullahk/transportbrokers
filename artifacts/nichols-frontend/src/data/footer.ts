@@ -26,10 +26,10 @@ export const defaultTrackSupport: FooterLink[] = [
 export const defaultContactInfo: ContactInfo = {
   emails: ['ethoncollins@transportbrokersinc.com'],
   address: {
-    street: '67 BEACON STREET',
-    city: 'BUFFALO',
-    state: 'NY',
-    zip: '14220',
+    street: '9424 REEDS ROAD',
+    city: 'OVERLAND PARK',
+    state: 'KS',
+    zip: '66207',
   },
   phones: ['917-672-3364', '(680)204-7669'],
 }

@@ -212,7 +212,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </div>
                   <div>
                     <div className="text-[13px] text-[#94A3B8] mb-0.5">Headquarters</div>
-                    <div className="text-[15px] font-medium text-foreground leading-snug">50 Emjay Blvd<br />Brentwood, NY 11786</div>
+                    <div className="text-[15px] font-medium text-foreground leading-snug">9424 REEDS ROAD<br />OVERLAND PARK, KS 66207</div>
                   </div>
                 </li>
               </ul>

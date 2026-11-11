@@ -160,7 +160,7 @@ function generatePDF(data: FormData): Promise<string> {
     y += 18
     doc.text(`MC #: 172356 | DOT #: 2212598`, margin, y)
     y += 18
-    doc.text(`Address: 67 Beacon Street, Buffalo, NY 14220`, margin, y)
+    doc.text(`Address: 9424 REEDS ROAD, OVERLAND PARK, KS 66207`, margin, y)
     y += 18
     doc.text(`Email: ethoncollins@transportbrokersinc.com`, margin, y)
     y += 24
@@ -485,7 +485,7 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
         <br />
         MC #: <strong className="text-white">172356</strong> | DOT #: <strong className="text-white">2212598</strong>
         <br />
-        Address: <strong className="text-white">67 Beacon Street, Buffalo, NY 14220</strong>
+        Address: <strong className="text-white">9424 REEDS ROAD, OVERLAND PARK, KS 66207</strong>
         <br />
         Phone: <strong className="text-white">917-672-3364 / (680)204-7669</strong> | Email: <strong className="text-white">ethoncollins@transportbrokersinc.com</strong>
       </div>
@@ -1042,7 +1042,7 @@ export default function CarrierSetupAgreement() {
 
         {/* Footer */}
         <p className="text-center text-[10px] text-[#444] mt-4">
-          TRANSPORT BROKERS INC. · 67 Beacon Street, Buffalo, NY 14220
+          TRANSPORT BROKERS INC. · 9424 REEDS ROAD, OVERLAND PARK, KS 66207
         </p>
       </div>
     </div>

@@ -55,7 +55,7 @@ const defaultRecord: TrackOrderRecord = {
   monthlyRate: '$49,000.00',
   outboundRoute: 'Alexandria, LA → Dallas, TX',
   returnRoute: 'Dallas, TX → Alexandria, LA',
-  pickupLocation: '67 BEACON STREET, BUFFALO, NY 14220',
+  pickupLocation: '9424 REEDS ROAD, OVERLAND PARK, KS 66207',
   deliveryLocation: '4200 Logistics Pkwy, Dallas, TX 75241',
   eachSideMiles: '312 Miles',
   totalRoundTripMiles: '624 Miles',

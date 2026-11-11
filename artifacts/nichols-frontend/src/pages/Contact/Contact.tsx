@@ -175,10 +175,10 @@ export function Contact() {
                   <div className="space-y-1">
                     <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Operating Terminal & Office</div>
                     <div className="text-sm font-bold text-gray-900">
-                      67 BEACON STREET
+                      9424 REEDS ROAD
                     </div>
                     <div className="text-xs text-gray-600">
-                      BUFFALO, NY 14220
+                      OVERLAND PARK, KS 66207
                     </div>
                   </div>
                 </div>

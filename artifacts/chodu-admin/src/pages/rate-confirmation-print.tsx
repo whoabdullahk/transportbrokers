@@ -128,7 +128,7 @@ export default function RateConfirmationPrint() {
     );
   }
   const companyName = "Transport Brokers Inc.";
-  const companyAddress = "67 Beacon Street\nBuffalo, NY 14220";
+  const companyAddress = "9424 REEDS ROAD\nOVERLAND PARK, KS 66207";
   const proNumber = rc.proNumber || "—";
   const docId = rc.id ? `2026${String(rc.id).padStart(8, "0")}` : "20260504160917";
   const rcDate = new Date(rc.rcDateTime).toISOString().split("T")[0];

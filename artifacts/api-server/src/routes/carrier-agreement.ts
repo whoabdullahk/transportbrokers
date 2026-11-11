@@ -113,7 +113,7 @@ router.post("/carrier-agreement", async (req, res) => {
       <p style="margin:24px 0 0;font-size:12px;color:#888;">The signed Carrier Setup Agreement PDF is attached to this email.</p>
     </div>
     <div style="background:#f9f9f9;padding:16px 32px;text-align:center;border-top:1px solid #eee;">
-      <p style="margin:0;font-size:11px;color:#aaa;">TRANSPORT BROKERS INC. · 67 Beacon Street, Buffalo, NY 14220</p>
+      <p style="margin:0;font-size:11px;color:#aaa;">TRANSPORT BROKERS INC. · 9424 REEDS ROAD, OVERLAND PARK, KS 66207</p>
     </div>
   </div>
 </body>

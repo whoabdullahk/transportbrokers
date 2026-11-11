@@ -154,8 +154,8 @@ export default function Contact() {
                     <div>
                       <div className="font-semibold uppercase tracking-wider text-xs text-[#94A3B8] mb-2">Corporate HQ</div>
                       <div className="text-xl font-medium text-foreground leading-relaxed">
-                        50 Emjay Blvd<br />
-                        Brentwood, NY 11786
+                        9424 REEDS ROAD<br />
+                        OVERLAND PARK, KS 66207
                       </div>
                     </div>
                   </div>

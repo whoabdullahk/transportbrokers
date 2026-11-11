@@ -54,8 +54,8 @@ describe('Footer Component', () => {
 
   it('displays address information', () => {
     render(<Footer />)
-    expect(screen.getByText(/67 BEACON STREET/)).toBeInTheDocument()
-    expect(screen.getByText(/BUFFALO, NY 14220/)).toBeInTheDocument()
+    expect(screen.getByText(/9424 REEDS ROAD/)).toBeInTheDocument()
+    expect(screen.getByText(/OVERLAND PARK, KS 66207/)).toBeInTheDocument()
   })
 
   it('displays phone numbers when provided', () => {

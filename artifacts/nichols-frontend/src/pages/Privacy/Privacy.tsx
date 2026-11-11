@@ -59,7 +59,7 @@ export function Privacy() {
           </p>
           <div className="p-4 rounded-lg bg-brand-surface border border-white/10 text-xs font-mono space-y-1 text-gray-300">
             <div>Transport Brokers Inc.</div>
-            <div>67 BEACON STREET, BUFFALO, NY 14220</div>
+            <div>9424 REEDS ROAD, OVERLAND PARK, KS 66207</div>
             <div>Email: billing@TBItransportation.com</div>
             <div>Direct: 917-672-3364</div>
             <div>Dispatch: (680)204-7669</div>

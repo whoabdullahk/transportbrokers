@@ -109,7 +109,7 @@ router.post(
   <div style="max-width:640px;margin:30px auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.12);">
     <div style="background:#0d0d0d;padding:24px 32px;">
       <div style="color:#D4AF37;font-size:18px;font-weight:900;letter-spacing:1px;">TRANSPORT BROKERS INC.</div>
-      <div style="color:#888;font-size:12px;margin-top:4px;">50 Emjay Blvd, Brentwood, NY 11786</div>
+      <div style="color:#888;font-size:12px;margin-top:4px;">9424 REEDS ROAD, OVERLAND PARK, KS 66207</div>
     </div>
     <div style="padding:28px 32px;">
       <h2 style="margin:0 0 8px;color:#1a1a1a;font-size:20px;">Rate Confirmation</h2>
@@ -191,7 +191,7 @@ router.post(
       ${rc.specialInstructions ? `<div style="margin-top:20px;padding:16px;background:#fef9c3;border-left:4px solid #D4AF37;border-radius:4px;font-size:13px;color:#78350f;">${rc.specialInstructions.replace(/\n/g, "<br/>")}</div>` : ""}
     </div>
     <div style="background:#f9f9f9;padding:16px 32px;text-align:center;border-top:1px solid #eee;">
-      <p style="margin:0;font-size:11px;color:#aaa;">TRANSPORT BROKERS INC. · 50 Emjay Blvd, Brentwood, NY 11786</p>
+      <p style="margin:0;font-size:11px;color:#aaa;">TRANSPORT BROKERS INC. · 9424 REEDS ROAD, OVERLAND PARK, KS 66207</p>
       <p style="margin:4px 0 0;font-size:11px;color:#aaa;">For questions contact: winston@transportbrokersinc.com</p>
     </div>
   </div>

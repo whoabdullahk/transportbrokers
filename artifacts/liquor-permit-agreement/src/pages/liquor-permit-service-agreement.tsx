@@ -107,7 +107,7 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
         <br />
         MC #: 1551407 | DOT #: 4079068
         <br />
-        Address: 50 EMJAY BLVD BRENTWOOD, NY 11786
+        Address: 9424 REEDS ROAD, OVERLAND PARK, KS 66207
         <br />
         Email: fred@taralogisticsllc.com
       </div>
@@ -483,7 +483,7 @@ function StepCertificate({ data }: { data: FormData }) {
           <div className="text-sm font-semibold">MC-1551407</div>
           <div className="text-xs text-gray-600">U.S. DOT No. 4079068</div>
           <div className="text-sm font-semibold mt-1">Brokerage Co. of American INC</div>
-          <div className="text-xs text-gray-600">50 EMJAY BLVD BRENTWOOD, NY 11786</div>
+          <div className="text-xs text-gray-600">9424 REEDS ROAD, OVERLAND PARK, KS 66207</div>
         </div>
 
         <div className="px-6 py-4 text-xs text-gray-700 leading-relaxed border-b border-gray-200 space-y-2">

@@ -703,8 +703,8 @@ function generateRcPDF(values: RcFormValues): string {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8.5);
   doc.setTextColor(80);
-  doc.text("67 Beacon Street", W / 2, 81, { align: "center" });
-  doc.text("Buffalo, NY 14220", W / 2, 91, { align: "center" });
+  doc.text("9424 REEDS ROAD", W / 2, 81, { align: "center" });
+  doc.text("OVERLAND PARK, KS 66207", W / 2, 91, { align: "center" });
 
   // Rounded gray bars
   let y = 104;
@@ -737,7 +737,7 @@ function generateRcPDF(values: RcFormValues): string {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.setTextColor(80);
-  doc.text("67 Beacon Street\nBuffalo, NY 14220\ninfo@transportbrokersinc.com", margin + 8, y + 34);
+  doc.text("9424 REEDS ROAD\nOVERLAND PARK, KS 66207\ninfo@transportbrokersinc.com", margin + 8, y + 34);
 
   // Right Box
   doc.rect(margin + boxW + 12, y, boxW, boxH);
@@ -951,7 +951,7 @@ function generateRcPDF(values: RcFormValues): string {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8.5);
   doc.setTextColor(80);
-  doc.text("50 Emjay Blvd\nBrentwood, NY 11786", W / 2, y + 26, { align: "center" });
+  doc.text("9424 REEDS ROAD\nOVERLAND PARK, KS 66207", W / 2, y + 26, { align: "center" });
 
   y += 50;
   doc.setFillColor(243, 244, 246);
@@ -971,7 +971,7 @@ function generateRcPDF(values: RcFormValues): string {
   doc.text("Transport Brokers Inc.", margin + 8, y + 23);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
-  doc.text("50 Emjay Blvd\nBrentwood, NY 11786\ninfo@transportbrokersinc.com", margin + 8, y + 34);
+  doc.text("9424 REEDS ROAD\nOVERLAND PARK, KS 66207\ninfo@transportbrokersinc.com", margin + 8, y + 34);
 
   doc.rect(margin + boxW + 12, y, boxW, boxH);
   doc.setFont("helvetica", "bold");
@@ -1111,7 +1111,7 @@ Additional Terms:
   doc.setTextColor(120, 90, 0);
   doc.text(`PRO # ${values.proNumber || "—"} must appear on all Invoices`, W / 2, y + 14, { align: "center" });
   doc.setFont("helvetica", "normal");
-  doc.text("Send Carrier Bills to: 50 Emjay Blvd, Brentwood, NY 11786", W / 2, y + 24, { align: "center" });
+  doc.text("Send Carrier Bills to: 9424 REEDS ROAD, OVERLAND PARK, KS 66207", W / 2, y + 24, { align: "center" });
   doc.setFont("helvetica", "normal");
   doc.text(`Doc ID: ${docId}`, W / 2, y + 33, { align: "center" });
 
