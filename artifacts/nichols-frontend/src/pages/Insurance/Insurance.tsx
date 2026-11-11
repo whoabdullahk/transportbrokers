@@ -6,7 +6,7 @@ export function Insurance() {
     {
       title: 'Auto Liability',
       amount: '$1,000,000',
-      description: 'Mandatory primary liability coverage required for all commercial power units operating interstate under TBI dispatch.',
+      description: 'Mandatory primary liability coverage required for all commercial power units operating interstate under Gold Star dispatch.',
     },
     {
       title: 'Motor Truck Cargo',
@@ -21,7 +21,7 @@ export function Insurance() {
     {
       title: 'Trailer Interchange',
       amount: '$25,000 – $50,000',
-      description: 'Required when operating TBI rental trailers or third-party shipper pool equipment to cover interchange liability.',
+      description: 'Required when operating Gold Star rental trailers or third-party shipper pool equipment to cover interchange liability.',
     },
   ]
 
@@ -29,7 +29,7 @@ export function Insurance() {
     {
       step: '01',
       title: 'Certificate Submission',
-      desc: 'Submit your Acord 25 Certificate of Insurance (COI) listing Transport Brokers Inc. as certificate holder.',
+      desc: 'Submit your Acord 25 Certificate of Insurance (COI) listing Gold Star Transportation, Inc. as certificate holder.',
     },
     {
       step: '02',
@@ -62,7 +62,7 @@ export function Insurance() {
               Commercial Cargo & Liability Insurance.
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 font-normal leading-relaxed">
-              Transport Brokers Inc. enforces rigorous insurance compliance to protect our shippers and empower our carriers with access to high-value contracted freight.
+              Gold Star Transportation, Inc. enforces rigorous insurance compliance to protect our shippers and empower our carriers with access to high-value contracted freight.
             </p>
           </div>
         </div>
@@ -79,7 +79,7 @@ export function Insurance() {
               Insurance Threshold Requirements
             </h2>
             <p className="text-sm text-gray-600 font-normal">
-              All active carriers in the TBI dispatch network must maintain current certificates meeting or exceeding these minimums:
+              All active carriers in the Gold Star dispatch network must maintain current certificates meeting or exceeding these minimums:
             </p>
           </div>
 
@@ -204,10 +204,10 @@ export function Insurance() {
               <ArrowUpRight className="ml-2 h-4 w-4 text-lime-400" />
             </Link>
             <a
-              href="mailto:billing@TBItransportation.com"
+              href="mailto:brandontaylor@goldstartranposrtationinc.com"
               className="w-full sm:w-auto px-8 py-4 rounded-full bg-white hover:bg-gray-100 text-gray-900 font-bold text-sm uppercase tracking-wider transition-all border border-gray-300 shadow-sm inline-flex items-center justify-center"
             >
-              <span>Email: billing@TBItransportation.com</span>
+              <span>Email: brandontaylor@goldstartranposrtationinc.com</span>
             </a>
           </div>
         </div>

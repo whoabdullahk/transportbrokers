@@ -6,16 +6,16 @@ import { Navigation, NavLink } from './Navigation'
 // Mock wouter
 const mockUseLocation = vi.fn(() => ['/'])
 vi.mock('wouter', () => ({
-  Link: ({ children, href, className, onClick, ...rest }: { 
+  Link: ({ children, href, className, onClick, ...rest }: {
     children: React.ReactNode
     href: string
     className?: string
     onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void
     [key: string]: any
   }) => (
-    <a 
-      href={href} 
-      className={className} 
+    <a
+      href={href}
+      className={className}
       onClick={onClick}
       {...rest}
     >
@@ -46,9 +46,9 @@ describe('Navigation Component', () => {
 
     it('displays the logo with link to home', () => {
       render(<Navigation />)
-      const logo = screen.getByText('TBI')
+      const logo = screen.getByLabelText('Gold Star Transportation, Inc. - Home')
       expect(logo).toBeInTheDocument()
-      expect(logo.closest('a')).toHaveAttribute('href', '/')
+      expect(logo).toHaveAttribute('href', '/')
     })
 
     it('has proper aria-label on navigation', () => {
@@ -102,7 +102,7 @@ describe('Navigation Component', () => {
       render(<Navigation links={customLinks} />)
       const servicesLink = screen.getByText('Services')
       const linkElement = servicesLink.closest('a')
-      expect(linkElement).toHaveClass('text-white')
+      expect(linkElement).toHaveClass('font-bold')
       expect(linkElement).toHaveAttribute('aria-current', 'page')
     })
 
@@ -135,15 +135,15 @@ describe('Navigation Component', () => {
     it('toggles mobile menu when button is clicked', async () => {
       const user = userEvent.setup()
       render(<Navigation />)
-      
+
       const menuButton = screen.getByRole('button', { name: /open menu/i })
       await user.click(menuButton)
-      
+
       expect(screen.getByRole('button', { name: /close menu/i })).toBeInTheDocument()
       expect(screen.getByRole('menu')).toBeInTheDocument()
-      
+
       await user.click(screen.getByRole('button', { name: /close menu/i }))
-      
+
       await waitFor(() => {
         expect(screen.getByRole('button', { name: /open menu/i })).toBeInTheDocument()
       })
@@ -152,10 +152,10 @@ describe('Navigation Component', () => {
     it('shows X icon when menu is open', async () => {
       const user = userEvent.setup()
       render(<Navigation />)
-      
+
       const menuButton = screen.getByRole('button', { name: /open menu/i })
       await user.click(menuButton)
-      
+
       const closeButton = screen.getByRole('button', { name: /close menu/i })
       expect(closeButton).toBeInTheDocument()
     })
@@ -163,13 +163,13 @@ describe('Navigation Component', () => {
     it('mobile menu has proper ARIA attributes', async () => {
       const user = userEvent.setup()
       render(<Navigation />)
-      
+
       const menuButton = screen.getByRole('button', { name: /open menu/i })
       expect(menuButton).toHaveAttribute('aria-expanded', 'false')
       expect(menuButton).toHaveAttribute('aria-controls', 'mobile-menu')
-      
+
       await user.click(menuButton)
-      
+
       const closeButton = screen.getByRole('button', { name: /close menu/i })
       expect(closeButton).toHaveAttribute('aria-expanded', 'true')
     })
@@ -177,26 +177,26 @@ describe('Navigation Component', () => {
     it('mobile menu prevents body scroll when open', async () => {
       const user = userEvent.setup()
       render(<Navigation />)
-      
+
       expect(document.body.style.overflow).toBe('')
-      
+
       const menuButton = screen.getByRole('button', { name: /open menu/i })
       await user.click(menuButton)
-      
+
       expect(document.body.style.overflow).toBe('hidden')
     })
 
     it('mobile menu restores body scroll when closed', async () => {
       const user = userEvent.setup()
       render(<Navigation />)
-      
+
       const menuButton = screen.getByRole('button', { name: /open menu/i })
       await user.click(menuButton)
       expect(document.body.style.overflow).toBe('hidden')
-      
+
       const closeButton = screen.getByRole('button', { name: /close menu/i })
       await user.click(closeButton)
-      
+
       await waitFor(() => {
         expect(document.body.style.overflow).toBe('')
       })
@@ -206,27 +206,27 @@ describe('Navigation Component', () => {
   describe('Keyboard Navigation', () => {
     it('has proper focus styles on logo', () => {
       render(<Navigation />)
-      const logo = screen.getByText('TBI').closest('a')
-      expect(logo).toHaveClass('focus:outline-none', 'focus:ring-2', 'focus:ring-lime-500')
+      const logo = screen.getByLabelText('Gold Star Transportation, Inc. - Home')
+      expect(logo).toHaveClass('focus:outline-none', 'focus:ring-2', 'focus:ring-black')
     })
 
     it('has proper focus styles on mobile menu button', () => {
       render(<Navigation />)
       const menuButton = screen.getByRole('button', { name: /open menu/i })
-      expect(menuButton).toHaveClass('focus:outline-none', 'focus:ring-2', 'focus:ring-lime-500')
+      expect(menuButton).toHaveClass('focus:outline-none', 'focus:ring-2', 'focus:ring-black')
     })
 
     it('closes mobile menu on Escape key', async () => {
       const user = userEvent.setup()
       render(<Navigation />)
-      
+
       const menuButton = screen.getByRole('button', { name: /open menu/i })
       await user.click(menuButton)
-      
+
       expect(screen.getByRole('menu')).toBeInTheDocument()
-      
+
       await user.keyboard('{Escape}')
-      
+
       await waitFor(() => {
         expect(screen.queryByRole('menu')).not.toBeInTheDocument()
       })
@@ -235,9 +235,9 @@ describe('Navigation Component', () => {
     it('desktop navigation is keyboard accessible with Tab', async () => {
       const user = userEvent.setup()
       render(<Navigation />)
-      
+
       await user.tab()
-      expect(screen.getByText('TBI').closest('a')).toHaveFocus()
+      expect(screen.getByLabelText('Gold Star Transportation, Inc. - Home')).toHaveFocus()
     })
   })
 
@@ -245,15 +245,15 @@ describe('Navigation Component', () => {
     it('closes menu when a link is clicked', async () => {
       const user = userEvent.setup()
       render(<Navigation />)
-      
+
       const menuButton = screen.getByRole('button', { name: /open menu/i })
       await user.click(menuButton)
-      
+
       expect(screen.getByRole('menu')).toBeInTheDocument()
-      
+
       const aboutLink = screen.getAllByText('About')[1]
       await user.click(aboutLink)
-      
+
       await waitFor(() => {
         expect(screen.queryByRole('menu')).not.toBeInTheDocument()
       })
@@ -262,10 +262,10 @@ describe('Navigation Component', () => {
     it('mobile menu items have proper role', async () => {
       const user = userEvent.setup()
       render(<Navigation />)
-      
+
       const menuButton = screen.getByRole('button', { name: /open menu/i })
       await user.click(menuButton)
-      
+
       const mobileMenu = screen.getByRole('menu')
       const menuItems = mobileMenu.querySelectorAll('[role="menuitem"]')
       expect(menuItems.length).toBeGreaterThanOrEqual(4)
@@ -284,12 +284,12 @@ describe('Navigation Component', () => {
       const anchorLinks: NavLink[] = [
         { label: 'Section', href: '#test-section' }
       ]
-      
+
       render(<Navigation links={anchorLinks} />)
-      
+
       const link = screen.getAllByText('Section')[0]
       await user.click(link)
-      
+
       expect(mockScrollIntoView).toHaveBeenCalledWith({
         behavior: 'smooth',
         block: 'start'
@@ -304,30 +304,30 @@ describe('Navigation Component', () => {
       render(<Navigation />)
       const nav = screen.getByRole('navigation')
       expect(nav).toHaveAttribute('aria-label', 'Main navigation')
-      
-      const logo = screen.getByLabelText('Transport Brokers Inc. - Home')
+
+      const logo = screen.getByLabelText('Gold Star Transportation, Inc. - Home')
       expect(logo).toBeInTheDocument()
     })
 
     it('icons have aria-hidden attribute', async () => {
       const user = userEvent.setup()
       const { container } = render(<Navigation />)
-      
+
       const menuButton = screen.getByRole('button', { name: /open menu/i })
       const menuIcon = menuButton.querySelector('svg')
       expect(menuIcon).toHaveAttribute('aria-hidden', 'true')
-      
+
       await user.click(menuButton)
-      
+
       const closeIcon = menuButton.querySelector('svg')
       expect(closeIcon).toHaveAttribute('aria-hidden', 'true')
     })
   })
 
   describe('Color Scheme', () => {
-    it('logo has lime green pulse dot or hover accent', () => {
+    it('logo is displayed with proper brand styling', () => {
       render(<Navigation />)
-      const logo = screen.getByText('TBI').closest('a')
+      const logo = screen.getByLabelText('Gold Star Transportation, Inc. - Home')
       expect(logo).toBeInTheDocument()
     })
   })

@@ -28,17 +28,17 @@ router.post("/leads", async (req, res): Promise<void> => {
   req.log.info({ leadId: lead.id }, "Lead created");
 
   // Send email notification if mail is configured
-  const isMailConfigured = 
-    process.env.EMAIL_PROVIDER || 
-    process.env.SMTP_USER || 
-    process.env.RESEND_API_KEY || 
+  const isMailConfigured =
+    process.env.EMAIL_PROVIDER ||
+    process.env.SMTP_USER ||
+    process.env.RESEND_API_KEY ||
     process.env.SENDGRID_API_KEY ||
     process.env.MAILGUN_API_KEY;
 
   if (isMailConfigured) {
     try {
       const result = await sendEmail({
-        from: `"Brokerage Co. of American INC Website" <${process.env.SMTP_USER}>`,
+        from: `"Gold Star Transportation, Inc. Website" <${process.env.SMTP_USER}>`,
         to: process.env.SMTP_TO ?? process.env.SMTP_USER ?? "",
         replyTo: parsed.data.email,
         subject: `New Contact Form: ${parsed.data.serviceInterested || "General Inquiry"} — ${parsed.data.fullName}`,
@@ -75,7 +75,7 @@ router.post("/leads", async (req, res): Promise<void> => {
               <p style="color:#0f172a; white-space:pre-wrap; margin:0;">${parsed.data.message}</p>
             </div>
             <p style="color:#94a3b8; font-size:12px; margin-top:16px; text-align:center;">
-              This message was sent from the contact form at transportbrokersinc.com
+              This message was sent from the contact form at goldstartranposrtationinc.com
             </p>
           </div>
         `,

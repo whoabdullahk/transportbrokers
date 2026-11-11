@@ -85,7 +85,7 @@ const defaultTrackSupport: FooterLink[] = [
 ]
 
 const defaultContactInfo: ContactInfo = {
-  emails: ['ethoncollins@transportbrokersinc.com'],
+  emails: ['brandontaylor@goldstartranposrtationinc.com'],
   address: {
     street: '9424 REEDS ROAD',
     city: 'OVERLAND PARK',
@@ -93,16 +93,15 @@ const defaultContactInfo: ContactInfo = {
     zip: '66207',
   },
   phones: [
-    '917-672-3364',
-    '(680)204-7669',
+    '+1 (917) 672-3364',
   ],
 }
 
 const defaultSocialLinks: SocialLink[] = [
-  { platform: 'Facebook', url: 'https://facebook.com/transportbrokersinc', icon: 'facebook' },
-  { platform: 'Twitter', url: 'https://twitter.com/transportbrokersinc', icon: 'twitter' },
-  { platform: 'LinkedIn', url: 'https://linkedin.com/company/transportbrokersinc', icon: 'linkedin' },
-  { platform: 'Instagram', url: 'https://instagram.com/transportbrokersinc', icon: 'instagram' },
+  { platform: 'Facebook', url: 'https://facebook.com/goldstartransportation', icon: 'facebook' },
+  { platform: 'Twitter', url: 'https://twitter.com/goldstartrans', icon: 'twitter' },
+  { platform: 'LinkedIn', url: 'https://linkedin.com/company/goldstartransportation', icon: 'linkedin' },
+  { platform: 'Instagram', url: 'https://instagram.com/goldstartransportation', icon: 'instagram' },
 ]
 
 const getSocialIcon = (icon: string) => {
@@ -135,8 +134,8 @@ export function Footer({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-gray-500 gap-2">
           <div className="flex items-center space-x-3">
             <ShieldCheck className="h-4 w-4 text-[#D4AF37]" />
-            <span className="text-white font-bold tracking-wide">TRANSPORT BROKERS INC.</span>
-            <span className="text-gray-500">• USDOT #2212598 • MC-172356</span>
+            <span className="text-white font-bold tracking-wide">GOLD STAR TRANSPORTATION, INC.</span>
+            <span className="text-gray-500">• USDOT #253494 • MC-179608</span>
           </div>
           <div className="flex items-center space-x-4">
             <span className="font-semibold text-gray-400">OPERATING STATUS: ACTIVE</span>
@@ -149,7 +148,7 @@ export function Footer({
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
-          
+
           {/* Sitemap Section */}
           <div className="space-y-4">
             <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-gray-500">
@@ -158,7 +157,7 @@ export function Footer({
             <ul className="space-y-2.5">
               {sitemap.map((link) => (
                 <li key={link.label}>
-                  <Link 
+                  <Link
                     href={link.href}
                     className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium flex items-center group"
                   >
@@ -178,7 +177,7 @@ export function Footer({
             <ul className="space-y-2.5">
               {quickLinks.map((link) => (
                 <li key={link.label}>
-                  <Link 
+                  <Link
                     href={link.href}
                     className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium flex items-center group"
                   >
@@ -198,7 +197,7 @@ export function Footer({
             <ul className="space-y-2.5">
               {trackSupport.map((link) => (
                 <li key={link.label}>
-                  <Link 
+                  <Link
                     href={link.href}
                     className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium flex items-center group"
                   >
@@ -221,7 +220,7 @@ export function Footer({
                 {contactInfo.emails.map((email) => (
                   <div key={email} className="flex items-start space-x-2.5">
                     <Mail className="h-4 w-4 text-[#D4AF37] mt-0.5 flex-shrink-0" />
-                    <a 
+                    <a
                       href={`mailto:${email}`}
                       className="text-gray-400 hover:text-white transition-colors text-xs font-mono break-all font-medium"
                     >
@@ -246,7 +245,7 @@ export function Footer({
                   {contactInfo.phones.map((phone) => (
                     <div key={phone} className="flex items-start space-x-2.5">
                       <Phone className="h-3.5 w-3.5 text-[#D4AF37] mt-0.5 flex-shrink-0" />
-                      <a 
+                      <a
                         href={`tel:${phone.replace(/[^0-9]/g, '')}`}
                         className="text-gray-400 hover:text-white transition-colors text-xs font-mono font-medium"
                       >
@@ -279,16 +278,16 @@ export function Footer({
           </div>
 
           <p className="text-gray-600 text-xs font-mono">
-            © {new Date().getFullYear()} Transport Brokers Inc. All rights reserved. Commercial Carrier Services.
+            © {new Date().getFullYear()} Gold Star Transportation, Inc. All rights reserved. Commercial Carrier Services.
           </p>
         </div>
       </div>
 
-      {/* Giant TBI Watermark Branding Text — dark on dark like Nichols */}
+      {/* Giant Gold Star Watermark Branding Text — dark on dark like Nichols */}
       <div className="py-8 md:py-14 border-t border-white/5 select-none overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-5xl sm:text-8xl md:text-[9rem] lg:text-[12rem] font-black text-white/[0.04] tracking-widest leading-none font-mono uppercase">
-            TBI
+            GOLD STAR
           </h2>
         </div>
       </div>

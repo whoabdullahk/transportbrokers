@@ -121,7 +121,7 @@ function toPayload(values: LoadFormValues, billOfLadingPath: string | null) {
     refundableStatus: values.refundableStatus || undefined,
     appliesTowardContract:
       values.appliesTowardContract === "yes" ? true :
-      values.appliesTowardContract === "no" ? false : undefined,
+        values.appliesTowardContract === "no" ? false : undefined,
     billOfLadingPath: billOfLadingPath || undefined,
   };
 }
@@ -522,7 +522,7 @@ export default function AdminLoads() {
               <Truck className="w-5 h-5 text-[#D4AF37]" strokeWidth={2} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">Transport Brokers Inc.</h1>
+              <h1 className="text-2xl font-bold tracking-tight">Gold Star Transportation, Inc.</h1>
               <p className="text-xs text-muted-foreground uppercase tracking-widest">Load Management Dashboard</p>
             </div>
           </div>

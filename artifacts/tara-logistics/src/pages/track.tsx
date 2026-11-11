@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useParams, useLocation } from "wouter"
-import { 
-  Search, Package, Calendar, Clock, AlertCircle, 
+import {
+  Search, Package, Calendar, Clock, AlertCircle,
   CheckCircle2, ArrowRight, RotateCcw, Navigation, ShieldCheck
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -18,7 +18,7 @@ const getCoordinatesForLocation = (locStr: string) => {
   const clean = locStr.trim();
   const parts = clean.split(",");
   const state = parts[parts.length - 1]?.trim().toUpperCase() || "";
-  
+
   const stateMap: Record<string, { x: number; y: number }> = {
     CA: { x: 120, y: 250 },
     NY: { x: 680, y: 160 },
@@ -140,7 +140,7 @@ const getStatusColorConfig = (status: string) => {
 export default function Track() {
   const params = useParams<{ shipmentId?: string }>()
   const [, setLocation] = useLocation()
-  
+
   const [searchInput, setSearchInput] = useState(params.shipmentId || "")
   const [activeTracking, setActiveTracking] = useState<string | null>(params.shipmentId || null)
 
@@ -149,15 +149,16 @@ export default function Track() {
   const [mapCenterOffset, setMapCenterOffset] = useState({ x: 0, y: 0 })
   const [liveGpsJitter, setLiveGpsJitter] = useState({ lat: 0, lng: 0 })
 
-  const { data: shipment, isLoading, isError } = useTrackShipment(
-    activeTracking as string, 
-    { 
-      query: { 
-        enabled: !!activeTracking, 
-        queryKey: getTrackShipmentQueryKey(activeTracking || "") 
-      } 
+  const { data: rawShipment, isLoading, isError } = useTrackShipment(
+    activeTracking as string,
+    {
+      query: {
+        enabled: !!activeTracking,
+        queryKey: getTrackShipmentQueryKey(activeTracking || "")
+      }
     }
   )
+  const shipment = rawShipment as any
 
   // Synchronize route param changes with state
   useEffect(() => {
@@ -217,7 +218,7 @@ export default function Track() {
   const origin = shipment?.origin || ""
   const destination = shipment?.destination || ""
   const status = shipment?.status || "Dispatched"
-  const carrierName = shipment?.carrierName || "Brokerage Co. of American INC"
+  const carrierName = shipment?.carrierName || "Gold Star Transportation, Inc."
   const shipmentId = shipment?.id || 0
 
   const originCoord = getCoordinatesForLocation(origin)
@@ -233,7 +234,7 @@ export default function Track() {
 
   // Sample bezier coordinate point at progression time t
   const t = statusConfig.progress
-  const getBezierPoint = (p0: {x: number, y: number}, p1: {x: number, y: number}, p2: {x: number, y: number}, time: number) => {
+  const getBezierPoint = (p0: { x: number, y: number }, p1: { x: number, y: number }, p2: { x: number, y: number }, time: number) => {
     const x = (1 - time) * (1 - time) * p0.x + 2 * (1 - time) * time * p1.x + time * time * p2.x
     const y = (1 - time) * (1 - time) * p0.y + 2 * (1 - time) * time * p1.y + time * time * p2.y
     return { x, y }
@@ -252,7 +253,7 @@ export default function Track() {
     const deliveryDate = shipment ? new Date(shipment.estimatedDelivery) : new Date()
     const baseDate = new Date(deliveryDate.getTime() - 3 * 24 * 60 * 60 * 1000)
     const diffMs = deliveryDate.getTime() - baseDate.getTime()
-    
+
     const steps = [
       {
         id: 1,
@@ -311,7 +312,7 @@ export default function Track() {
           <circle cx="50%" cy="50%" r="400" stroke="#D4AF37" strokeWidth="1" fill="none" strokeDasharray="4 12" />
           <circle cx="50%" cy="50%" r="600" stroke="#D4AF37" strokeWidth="1" fill="none" strokeDasharray="4 12" />
         </svg>
-        
+
         <div className="absolute top-0 left-1/2 w-[800px] h-[800px] bg-[#D4AF37]/5 blur-[120px] rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2" />
 
         <div className="container mx-auto px-6 md:px-10 max-w-4xl text-center relative z-10">
@@ -324,17 +325,17 @@ export default function Track() {
               <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/20 to-transparent opacity-50 rounded-2xl" />
               <Search className="w-8 h-8 text-[#D4AF37] relative z-10" strokeWidth={2.5} />
             </div>
-            
+
             <h1 className="text-5xl md:text-7xl font-bold mb-6 text-foreground tracking-tight leading-[1.05]">
               Track <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#F4C542]">Shipment.</span>
             </h1>
-            
+
             <p className="text-xl text-[#CBD5E1] leading-relaxed mb-12 max-w-2xl mx-auto">
-              Enter your Brokerage Company of American INC tracking number below to view real-time status and delivery estimates.
+              Enter your Gold Star Transportation, Inc. tracking number below to view real-time status and delivery estimates.
             </p>
 
             <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto relative z-20">
-              <Input 
+              <Input
                 type="text"
                 placeholder="e.g. TL-TEST12345"
                 value={searchInput}
@@ -345,7 +346,7 @@ export default function Track() {
                 Track Load <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </form>
-            
+
             <p className="text-[15px] text-[#94A3B8] mt-8">
               Try test number: <span className="text-foreground font-medium bg-background/50 px-2 py-1 rounded border border-border">TL-TEST12345</span>
             </p>
@@ -355,10 +356,10 @@ export default function Track() {
 
       <div className="py-16 bg-background min-h-[50vh]">
         <div className="container mx-auto px-6 md:px-10 max-w-[1400px]">
-          
+
           <AnimatePresence mode="wait">
             {!activeTracking && !isLoading && (
-              <motion.div 
+              <motion.div
                 key="empty"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -373,7 +374,7 @@ export default function Track() {
             )}
 
             {isLoading && (
-              <motion.div 
+              <motion.div
                 key="loading"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -404,7 +405,7 @@ export default function Track() {
                     </div>
                     <h3 className="text-3xl font-bold text-foreground mb-4">Shipment Not Found</h3>
                     <p className="text-[#CBD5E1] text-lg max-w-lg mx-auto">
-                      No shipment found for tracking number <span className="font-bold text-foreground bg-background px-2 py-1 rounded border border-border">"{activeTracking}"</span>. 
+                      No shipment found for tracking number <span className="font-bold text-foreground bg-background px-2 py-1 rounded border border-border">"{activeTracking}"</span>.
                       Please check the number and try again.
                     </p>
                   </CardContent>
@@ -413,7 +414,7 @@ export default function Track() {
             )}
 
             {shipment && !isLoading && !isError && (
-              <motion.div 
+              <motion.div
                 key="result"
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -423,10 +424,10 @@ export default function Track() {
               >
                 {/* Unified Layout: Split Panel View */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                  
+
                   {/* Left Column / Main Panel: Map View */}
                   <div className="lg:col-span-7 xl:col-span-8 flex flex-col space-y-6">
-                    
+
                     {/* Header Summary for Map Column */}
                     <div className="bg-card border border-border rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg">
                       <div>
@@ -451,11 +452,11 @@ export default function Track() {
                     <div className="bg-card border border-border rounded-3xl overflow-hidden relative shadow-2xl w-full aspect-[4/3] md:aspect-[16/10] flex flex-col group/map">
                       {/* Grid background layer */}
                       <div className="absolute inset-0 pointer-events-none opacity-40 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:40px_40px]" />
-                      
+
                       {/* SVG Vector Drawing */}
                       <div className="w-full h-full relative overflow-hidden bg-[#0a0f1d] cursor-grab active:cursor-grabbing">
-                        <svg 
-                          className="w-full h-full select-none" 
+                        <svg
+                          className="w-full h-full select-none"
                           viewBox={`${(400 - 400 / zoom) + mapCenterOffset.x} ${(250 - 250 / zoom) + mapCenterOffset.y} ${800 / zoom} ${500 / zoom}`}
                           xmlns="http://www.w3.org/2000/svg"
                         >
@@ -486,20 +487,20 @@ export default function Track() {
                           </g>
 
                           {/* 1. Main Route Bezier Path */}
-                          <path 
-                            d={pathD} 
-                            fill="none" 
-                            stroke="rgba(212, 175, 55, 0.15)" 
-                            strokeWidth="5" 
-                            strokeLinecap="round" 
+                          <path
+                            d={pathD}
+                            fill="none"
+                            stroke="rgba(212, 175, 55, 0.15)"
+                            strokeWidth="5"
+                            strokeLinecap="round"
                           />
-                          <path 
+                          <path
                             id="route-path"
-                            d={pathD} 
-                            fill="none" 
-                            stroke="#D4AF37" 
-                            strokeWidth="3.5" 
-                            strokeDasharray="8 6" 
+                            d={pathD}
+                            fill="none"
+                            stroke="#D4AF37"
+                            strokeWidth="3.5"
+                            strokeDasharray="8 6"
                             strokeLinecap="round"
                             className="stroke-[url(#gradient-path)]"
                           />
@@ -556,14 +557,14 @@ export default function Track() {
                             )}
                             {/* Background fill */}
                             <circle r="11" className="fill-background stroke-primary stroke-2" style={{ filter: "drop-shadow(0 0 8px rgba(212,175,55,0.6))" }} />
-                            
+
                             {/* Truck icon overlay inside map marker */}
                             <g transform="translate(-5.5, -5.5) scale(0.45)">
-                              <path 
-                                d="M14 9V5a2 2 0 0 0-2-2l-4 0M14 9h4a2 2 0 0 1 2 2v2M14 9l-6 0M2 13h18M2 13V9a2 2 0 0 1 2-2h4M6 13a3 3 0 1 1-6 0" 
-                                stroke="#D4AF37" 
-                                strokeWidth="2.5" 
-                                fill="none" 
+                              <path
+                                d="M14 9V5a2 2 0 0 0-2-2l-4 0M14 9h4a2 2 0 0 1 2 2v2M14 9l-6 0M2 13h18M2 13V9a2 2 0 0 1 2-2h4M6 13a3 3 0 1 1-6 0"
+                                stroke="#D4AF37"
+                                strokeWidth="2.5"
+                                fill="none"
                                 strokeLinecap="round"
                               />
                               <circle cx="7" cy="13" r="2" fill="#D4AF37" />
@@ -574,25 +575,25 @@ export default function Track() {
 
                         {/* Interactive Zoom Controls */}
                         <div className="absolute bottom-4 right-4 flex flex-col space-y-2">
-                          <Button 
-                            variant="secondary" 
-                            size="icon" 
+                          <Button
+                            variant="secondary"
+                            size="icon"
                             className="w-10 h-10 rounded-xl bg-background/95 hover:bg-secondary border border-border shadow-lg"
                             onClick={() => handleZoom(0.3)}
                           >
                             <span className="text-xl font-bold text-foreground">+</span>
                           </Button>
-                          <Button 
-                            variant="secondary" 
-                            size="icon" 
+                          <Button
+                            variant="secondary"
+                            size="icon"
                             className="w-10 h-10 rounded-xl bg-background/95 hover:bg-secondary border border-border shadow-lg"
                             onClick={() => handleZoom(-0.3)}
                           >
                             <span className="text-xl font-bold text-foreground">-</span>
                           </Button>
-                          <Button 
-                            variant="secondary" 
-                            size="icon" 
+                          <Button
+                            variant="secondary"
+                            size="icon"
                             className="w-10 h-10 rounded-xl bg-background/95 hover:bg-secondary border border-border shadow-lg"
                             onClick={handleResetZoom}
                           >
@@ -600,7 +601,7 @@ export default function Track() {
                           </Button>
                         </div>
                       </div>
-                      
+
                       {/* Map Footer status */}
                       <div className="border-t border-border p-4 bg-background/40 flex items-center justify-between text-xs text-muted-foreground">
                         <span className="flex items-center gap-1.5">
@@ -613,7 +614,7 @@ export default function Track() {
 
                   {/* Right Column / Side Panel: Shipment Details */}
                   <div className="lg:col-span-5 xl:col-span-4 flex flex-col space-y-6">
-                    
+
                     {/* Live Progress Card (ETA & Transit Completion) */}
                     <Card className="shadow-lg border-border bg-card overflow-hidden">
                       <CardContent className="p-6 md:p-8 space-y-6">
@@ -631,10 +632,10 @@ export default function Track() {
                             <span className="text-muted-foreground block uppercase tracking-wider">Transit Progress</span>
                             <span className="text-primary font-bold">{(t * 100).toFixed(0)}%</span>
                           </div>
-                          
+
                           {/* Progress Line */}
                           <div className="relative w-full h-2 bg-background border border-border rounded-full overflow-hidden">
-                            <div 
+                            <div
                               className="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-[#F4C542] transition-all duration-1000 ease-out"
                               style={{ width: `${t * 100}%` }}
                             />
@@ -649,26 +650,25 @@ export default function Track() {
 
                         <div className="h-px bg-border" />
 
-                         <div>
-                           <span className="text-[10px] font-bold text-muted-foreground block uppercase tracking-wider mb-1">Last Update Status</span>
-                           <span className="text-xs font-semibold text-foreground leading-relaxed block">{shipment.lastUpdate}</span>
-                         </div>
+                        <div>
+                          <span className="text-[10px] font-bold text-muted-foreground block uppercase tracking-wider mb-1">Last Update Status</span>
+                          <span className="text-xs font-semibold text-foreground leading-relaxed block">{shipment.lastUpdate}</span>
+                        </div>
 
-                         <div className="h-px bg-border" />
+                        <div className="h-px bg-border" />
 
-                         <div className="bg-background/40 border border-border/50 rounded-xl p-4 flex items-center justify-between">
-                           <div>
-                             <span className="text-[10px] font-bold text-muted-foreground block uppercase tracking-wider mb-0.5">Setup & Lane Fees</span>
-                             <span className="text-sm font-semibold text-foreground">{shipment.pendingFees || "Pending 460$"}</span>
-                           </div>
-                           <span className={`px-2.5 py-1 rounded-full border text-[10px] font-bold uppercase tracking-wider ${
-                             (shipment.pendingFees || "Pending").toLowerCase().includes("paid") 
-                               ? "text-emerald-400 bg-emerald-400/10 border-emerald-400/20" 
-                               : "text-amber-400 bg-amber-400/10 border-amber-400/20 animate-pulse"
-                           }`}>
-                             {(shipment.pendingFees || "Pending").toLowerCase().includes("paid") ? "Paid" : "Pending Action"}
-                           </span>
-                         </div>
+                        <div className="bg-background/40 border border-border/50 rounded-xl p-4 flex items-center justify-between">
+                          <div>
+                            <span className="text-[10px] font-bold text-muted-foreground block uppercase tracking-wider mb-0.5">Setup & Lane Fees</span>
+                            <span className="text-sm font-semibold text-foreground">{shipment.pendingFees || "Pending 460$"}</span>
+                          </div>
+                          <span className={`px-2.5 py-1 rounded-full border text-[10px] font-bold uppercase tracking-wider ${(shipment.pendingFees || "Pending").toLowerCase().includes("paid")
+                              ? "text-emerald-400 bg-emerald-400/10 border-emerald-400/20"
+                              : "text-amber-400 bg-amber-400/10 border-amber-400/20 animate-pulse"
+                            }`}>
+                            {(shipment.pendingFees || "Pending").toLowerCase().includes("paid") ? "Paid" : "Pending Action"}
+                          </span>
+                        </div>
                       </CardContent>
                     </Card>
 
@@ -681,21 +681,20 @@ export default function Track() {
 
                         <div className="relative pl-6 space-y-8 before:absolute before:inset-y-1.5 before:left-[11px] before:w-0.5 before:bg-border">
                           {checkpoints.map((cp) => {
-                            const isCurrent = (cp.id === 3 && t >= 0.20 && t < 0.90) || 
-                                              (cp.id === 4 && t >= 0.90 && t < 1.0) || 
-                                              (cp.id === 5 && t >= 1.0) ||
-                                              (cp.id === 2 && t >= 0.20 && t < 0.65 && cp.id === 2);
-                            
+                            const isCurrent = (cp.id === 3 && t >= 0.20 && t < 0.90) ||
+                              (cp.id === 4 && t >= 0.90 && t < 1.0) ||
+                              (cp.id === 5 && t >= 1.0) ||
+                              (cp.id === 2 && t >= 0.20 && t < 0.65 && cp.id === 2);
+
                             return (
                               <div key={cp.id} className="relative group">
                                 {/* Connector Dot */}
-                                <div className={`absolute -left-[23px] top-1.5 w-[18px] h-[18px] rounded-full border bg-background flex items-center justify-center transition-all ${
-                                  cp.isCompleted 
-                                    ? "border-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.3)] text-emerald-400" 
-                                    : isCurrent 
+                                <div className={`absolute -left-[23px] top-1.5 w-[18px] h-[18px] rounded-full border bg-background flex items-center justify-center transition-all ${cp.isCompleted
+                                    ? "border-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.3)] text-emerald-400"
+                                    : isCurrent
                                       ? "border-primary shadow-[0_0_8px_rgba(212,175,55,0.4)] text-primary"
                                       : "border-border text-muted-foreground"
-                                }`}>
+                                  }`}>
                                   {cp.isCompleted ? (
                                     <CheckCircle2 className="w-3.5 h-3.5 fill-emerald-400/10 stroke-[2.5]" />
                                   ) : isCurrent ? (
@@ -707,9 +706,8 @@ export default function Track() {
 
                                 <div className="space-y-1">
                                   <div className="flex items-start sm:items-center justify-between flex-col sm:flex-row gap-0.5">
-                                    <span className={`text-sm font-bold tracking-tight ${
-                                      cp.isCompleted ? "text-foreground" : isCurrent ? "text-primary" : "text-muted-foreground"
-                                    }`}>
+                                    <span className={`text-sm font-bold tracking-tight ${cp.isCompleted ? "text-foreground" : isCurrent ? "text-primary" : "text-muted-foreground"
+                                      }`}>
                                       {cp.title}
                                     </span>
                                     <span className="text-[10px] font-semibold text-muted-foreground font-mono">

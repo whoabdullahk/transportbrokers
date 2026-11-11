@@ -14,7 +14,7 @@ export default function FactoringRegistration() {
           <div className="absolute inset-0 bg-background/90 mix-blend-multiply" />
           <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
         </div>
-        
+
         <div className="container mx-auto px-4 md:px-8 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-background/50 border border-border mb-6 backdrop-blur-sm">
             <CreditCard className="w-4 h-4 text-primary" />
@@ -41,7 +41,7 @@ export default function FactoringRegistration() {
                     Fuel, maintenance, and insurance bills don't wait for brokers to pay their invoices. Factoring allows you to get paid within 24 hours of delivering a load, giving you the liquid capital necessary to keep moving.
                   </p>
                   <p>
-                    Brokerage Company of American INC partners with reputable, transparent factoring companies. We assist you through the entire registration process, helping you avoid hidden fees, understand recourse vs. non-recourse options, and get your account funded rapidly.
+                    Gold Star Transportation, Inc. partners with reputable, transparent factoring companies. We assist you through the entire registration process, helping you avoid hidden fees, understand recourse vs. non-recourse options, and get your account funded rapidly.
                   </p>
                 </div>
               </section>

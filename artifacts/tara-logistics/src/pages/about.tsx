@@ -14,12 +14,12 @@ export default function About() {
           <img src={fleetImage} alt="Fleet Warehouse" className="w-full h-full object-cover opacity-30 grayscale-[30%] mix-blend-luminosity" />
           <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/50" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-          
+
           <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#D4AF37]/10 blur-[120px] rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2" />
         </div>
-        
+
         <div className="container relative z-10 mx-auto px-6 md:px-10 max-w-[1400px]">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
@@ -30,7 +30,7 @@ export default function About() {
               Built for the <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#F4C542]">Long Haul.</span>
             </h1>
             <p className="text-xl text-[#CBD5E1] leading-relaxed max-w-2xl">
-              Brokerage Company of American INC is a nationwide freight brokerage and carrier support partner committed to keeping the supply chain moving with precision, integrity, and operational excellence.
+              Gold Star Transportation, Inc. is a nationwide freight brokerage and carrier support partner committed to keeping the supply chain moving with precision, integrity, and operational excellence.
             </p>
           </motion.div>
         </div>
@@ -40,7 +40,7 @@ export default function About() {
       <div className="py-24 md:py-32 bg-background relative">
         <div className="container mx-auto px-6 md:px-10 max-w-[1400px]">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-100px" }}
@@ -51,7 +51,7 @@ export default function About() {
                 <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">Bridging the gap between freight and operations.</h2>
                 <div className="w-16 h-1 bg-[#D4AF37] mb-8 rounded-full" />
                 <p className="text-[#CBD5E1] leading-relaxed text-lg mb-6">
-                  Founded with a clear understanding of the challenges owner-operators face on the road, Brokerage Company of American INC was built to be more than just a load board connection. We saw a gap between finding freight and running a compliant, profitable trucking business.
+                  Founded with a clear understanding of the challenges owner-operators face on the road, Gold Star Transportation, Inc. was built to be more than just a load board connection. We saw a gap between finding freight and running a compliant, profitable trucking business.
                 </p>
                 <p className="text-[#CBD5E1] leading-relaxed text-lg">
                   Today, we bridge that gap. We act as a comprehensive operational partner for carriers, providing access to dependable freight while handling the back-office complexities—from insurance applications to factoring and permit compliance.
@@ -66,7 +66,7 @@ export default function About() {
               </div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-100px" }}
@@ -78,7 +78,7 @@ export default function About() {
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
                 <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[32px]" />
               </div>
-              
+
               <div className="absolute -bottom-10 -left-10 w-72 p-10 bg-card border border-border shadow-[0_24px_80px_-12px_rgba(0,0,0,0.5)] z-20 hidden md:block rounded-[24px] backdrop-blur-xl">
                 <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#D4AF37]/20 blur-[40px] rounded-full pointer-events-none" />
                 <div className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#F4C542] mb-3 leading-none">25<span className="text-4xl">+</span></div>
@@ -98,7 +98,7 @@ export default function About() {
         </svg>
 
         <div className="container mx-auto px-6 md:px-10 max-w-[1400px] relative z-10">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -128,8 +128,8 @@ export default function About() {
                 desc: "We respect the driver. We understand that our success relies entirely on the success and profitability of the carriers we work with."
               }
             ].map((value, i) => (
-              <motion.div 
-                key={i} 
+              <motion.div
+                key={i}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
@@ -138,7 +138,7 @@ export default function About() {
               >
                 {/* Hover Glow */}
                 <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
+
                 <div className="w-20 h-20 mx-auto bg-background border border-border rounded-2xl flex items-center justify-center mb-8 relative z-10 shadow-lg group-hover:border-[#D4AF37]/50 transition-colors">
                   <value.icon className="w-8 h-8 text-[#D4AF37]" strokeWidth={1.5} />
                 </div>

@@ -44,11 +44,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       >
         <div className="container mx-auto px-6 md:px-10 flex items-center justify-between max-w-[1400px]">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="bg-gradient-to-br from-[#D4AF37]/20 to-[#F4C542]/5 border border-[#D4AF37]/20 w-10 h-10 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.15)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-              <Truck className="w-5 h-5 text-[#D4AF37]" strokeWidth={2} />
+            <div className="bg-gradient-to-br from-[#D4AF37]/20 to-[#F4C542]/5 border border-[#D4AF37]/20 w-10 h-10 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.15)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 overflow-hidden p-1.5">
+              <img src="/favicon.svg" alt="Gold Star Transportation" className="w-full h-full object-contain" />
             </div>
             <span className="font-bold text-xl tracking-tight text-foreground">
-              Brokerage<span className="text-[#D4AF37]"> Co. of American INC</span>
+              GOLD STAR<span className="text-[#D4AF37]"> TRANSPORTATION</span>
             </span>
           </Link>
 
@@ -133,11 +133,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
             <div className="lg:col-span-4 space-y-6">
               <Link href="/" className="flex items-center gap-3 group inline-flex">
-                <div className="bg-gradient-to-br from-[#D4AF37]/20 to-[#F4C542]/5 border border-[#D4AF37]/20 w-10 h-10 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.15)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                  <Truck className="w-5 h-5 text-[#D4AF37]" strokeWidth={2} />
+                <div className="bg-gradient-to-br from-[#D4AF37]/20 to-[#F4C542]/5 border border-[#D4AF37]/20 w-10 h-10 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.15)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 overflow-hidden p-1.5">
+                  <img src="/favicon.svg" alt="Gold Star Transportation" className="w-full h-full object-contain" />
                 </div>
                 <span className="font-bold text-xl tracking-tight text-foreground">
-                  Brokerage<span className="text-[#D4AF37]"> Co. of American INC</span>
+                  GOLD STAR<span className="text-[#D4AF37]"> TRANSPORTATION</span>
                 </span>
               </Link>
               <p className="text-[#CBD5E1] text-[15px] leading-relaxed max-w-sm">
@@ -191,9 +191,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <div>
                     <div className="text-[13px] text-[#94A3B8] mb-0.5">24/7 Support</div>
                     <div className="text-[15px] font-medium text-foreground">
-                      <a href="tel:9176723364" className="hover:text-[#D4AF37] transition-colors">917-672-3364</a>
-                      <span className="mx-2 text-[#94A3B8]">/</span>
-                      <a href="tel:6802047669" className="hover:text-[#D4AF37] transition-colors">(680)204-7669</a>
+                      <a href="tel:19176723364" className="hover:text-[#D4AF37] transition-colors">+1 (917) 672-3364</a>
                     </div>
                   </div>
                 </li>
@@ -203,7 +201,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </div>
                   <div>
                     <div className="text-[13px] text-[#94A3B8] mb-0.5">Email Us</div>
-                    <a href="mailto:winston@brokeragecompanyofamericaninc.com" className="text-[15px] font-medium text-foreground break-all hover:text-[#D4AF37] transition-colors">winston@brokeragecompanyofamericaninc.com</a>
+                    <a href="mailto:brandontaylor@goldstartranposrtationinc.com" className="text-[15px] font-medium text-foreground break-all hover:text-[#D4AF37] transition-colors">brandontaylor@goldstartranposrtationinc.com</a>
                   </div>
                 </li>
                 <li className="flex gap-4 group">
@@ -221,7 +219,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-[14px] text-[#94A3B8]">
-              &copy; {new Date().getFullYear()} Brokerage Company of American INC. All rights reserved.
+              &copy; {new Date().getFullYear()} Gold Star Transportation, Inc. All rights reserved.
             </div>
 
             {/* Social Links */}

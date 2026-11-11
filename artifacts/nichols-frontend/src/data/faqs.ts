@@ -3,8 +3,8 @@ import type { FAQ } from '../types/faq'
 export const faqsData: FAQ[] = [
   {
     id: 'faq-1',
-    question: 'How do I get onboarded with Transport Brokers Inc. as a carrier?',
-    answer: 'Onboarding is fast and simple. Submit your MC authority certificate, current certificate of insurance (COI) naming Transport Brokers Inc. as certificate holder, and signed W-9. Our carrier relations team typically reviews and approves your packet within 2 to 4 business hours.',
+    question: 'How do I get onboarded with Gold Star Transportation, Inc. as a carrier?',
+    answer: 'Onboarding is fast and simple. Submit your MC authority certificate, current certificate of insurance (COI) naming Gold Star Transportation, Inc. as certificate holder, and signed W-9. Our carrier relations team typically reviews and approves your packet within 2 to 4 business hours.',
     category: 'Carrier Onboarding',
     order: 1,
   },

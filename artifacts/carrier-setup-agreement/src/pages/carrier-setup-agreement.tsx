@@ -58,7 +58,7 @@ const STEPS = [
 ]
 
 const DISPATCH_COMPANIES = [
-  "TRANSPORT BROKERS INC.",
+  "GOLD STAR TRANSPORTATION, INC.",
   "Prime Dispatch Services",
   "Eagle Freight Dispatch",
   "American Truck Dispatch",
@@ -107,35 +107,46 @@ function generatePDF(data: FormData): Promise<string> {
     if (data.otherServices.insuranceAssistance) selectedServices.push("Commercial insurance setup")
 
     // ── Header (Centered Logo & Text) ──
-    const headerText = "TRANSPORT BROKERS INC."
-    doc.setFontSize(18)
+    const headerText = "GOLD STAR TRANSPORTATION, INC."
+    doc.setFontSize(16)
     doc.setFont("helvetica", "bold")
     const headerWidth = doc.getTextWidth(headerText)
-    const iconWidth = 24
-    const spacing = 10
-    const totalWidth = iconWidth + spacing + headerWidth
-    
+    const iconRadius = 14
+    const spacing = 12
+    const totalWidth = iconRadius * 2 + spacing + headerWidth
+
     const startX = (W - totalWidth) / 2
-    const ly = margin
-    
-    // Truck Icon at startX
-    doc.setFillColor(0, 0, 0)
-    doc.setDrawColor(0, 0, 0)
-    doc.rect(startX + 4, ly + 8, 14, 12, "F")
-    doc.rect(startX + 18, ly + 13, 8, 7, "F")
-    doc.setFillColor(255, 255, 255)
-    doc.rect(startX + 20, ly + 14, 4, 3, "F")
-    doc.setFillColor(0, 0, 0)
-    doc.circle(startX + 8, ly + 22, 3, "F")
-    doc.circle(startX + 22, ly + 22, 3, "F")
-    doc.setFillColor(255, 255, 255)
-    doc.rect(startX + 8, ly + 11, 6, 2, "F")
-    doc.triangle(startX + 14, ly + 10, startX + 14, ly + 14, startX + 17, ly + 12, "F")
-    
+    const ly = margin + 12
+
+    // Faceted 3D Gold Star
+    const starCx = startX + iconRadius
+    const starCy = ly
+    const R = iconRadius
+    const r = R * 0.42
+
+    for (let i = 0; i < 5; i++) {
+      const aOuter = -Math.PI / 2 + (i * 2 * Math.PI) / 5
+      const aInnerLeft = -Math.PI / 2 + ((i - 0.5) * 2 * Math.PI) / 5
+      const aInnerRight = -Math.PI / 2 + ((i + 0.5) * 2 * Math.PI) / 5
+      const ox = starCx + R * Math.cos(aOuter)
+      const oy = starCy + R * Math.sin(aOuter)
+      const ilx = starCx + r * Math.cos(aInnerLeft)
+      const ily = starCy + r * Math.sin(aInnerLeft)
+      const irx = starCx + r * Math.cos(aInnerRight)
+      const iry = starCy + r * Math.sin(aInnerRight)
+
+      doc.setFillColor(255, 222, 115)
+      doc.triangle(starCx, starCy, ox, oy, ilx, ily, "F")
+      doc.setFillColor(184, 134, 11)
+      doc.triangle(starCx, starCy, ox, oy, irx, iry, "F")
+    }
+    doc.setFillColor(255, 248, 208)
+    doc.circle(starCx, starCy, R * 0.12, "F")
+
     doc.setTextColor(0, 0, 0)
-    doc.text(headerText, startX + iconWidth + spacing, ly + 20)
-    
-    y = ly + 40
+    doc.text(headerText, startX + iconRadius * 2 + spacing, ly + 5)
+
+    y = ly + 36
 
     // ── Title ──
     doc.setFontSize(16)
@@ -155,16 +166,18 @@ function generatePDF(data: FormData): Promise<string> {
     doc.text(`This Agreement is made and entered into on ${TODAY_ISO}, by and between:`, margin, y)
     y += 18
     doc.setFont("helvetica", "bold")
-    doc.text("TRANSPORT BROKERS INC.", margin, y)
+    doc.text("GOLD STAR TRANSPORTATION, INC.", margin, y)
     doc.setFont("helvetica", "normal")
     y += 18
-    doc.text(`MC #: 172356 | DOT #: 2212598`, margin, y)
+    doc.text(`MC #: 179608 | DOT #: 253494`, margin, y)
     y += 18
     doc.text(`Address: 9424 REEDS ROAD, OVERLAND PARK, KS 66207`, margin, y)
     y += 18
-    doc.text(`Email: ethoncollins@transportbrokersinc.com`, margin, y)
+    doc.text(`Email: brandontaylor@goldstartranposrtationinc.com`, margin, y)
+    y += 18
+    doc.text(`Phone: +1 (917) 672-3364`, margin, y)
     y += 24
-    
+
     if (data.dispatchCompany) {
       doc.setFontSize(11)
       doc.setFont("helvetica", "bold")
@@ -174,7 +187,7 @@ function generatePDF(data: FormData): Promise<string> {
     doc.setFontSize(9)
     doc.setFont("helvetica", "italic")
     doc.setTextColor(100, 100, 100)
-    doc.text(`(Hereinafter referred to as the TRANSPORT BROKERS INC.)`, margin, y)
+    doc.text(`(Hereinafter referred to as GOLD STAR TRANSPORTATION, INC.)`, margin, y)
     doc.setTextColor(0, 0, 0)
     y += 24
 
@@ -212,13 +225,13 @@ function generatePDF(data: FormData): Promise<string> {
       doc.text(` ${value || "N/A"}`, margin + doc.getTextWidth(`${label}:`), y)
       y += 18
     }
-    
+
     const bullet = (text: string) => {
       checkPage(18)
       doc.text(`•  ${text}`, margin + 10, y)
       y += 18
     }
-    
+
     const bodyText = (text: string) => {
       checkPage(18)
       const lines = doc.splitTextToSize(text, W - margin * 2)
@@ -250,7 +263,7 @@ function generatePDF(data: FormData): Promise<string> {
     selectedServices.forEach(bullet)
     y += 4
     bodyText("Access to high-paying loads through partnered shippers including Amazon & government contracts")
-    
+
     divider()
 
     // ── Lane Setup Option ──
@@ -268,7 +281,7 @@ function generatePDF(data: FormData): Promise<string> {
       doc.text(l, margin + (i === 0 ? lw : 0), y)
       y += 18
     })
-    
+
     divider()
 
     // ── Services ──
@@ -281,7 +294,7 @@ function generatePDF(data: FormData): Promise<string> {
     } else {
       selectedServices.forEach(bullet)
     }
-    
+
     divider()
 
     // ── Payment ──
@@ -291,11 +304,11 @@ function generatePDF(data: FormData): Promise<string> {
     doc.setFont("helvetica", "normal")
     doc.text(` ${data.paymentMethod}`, margin + doc.getTextWidth("Selected Payment Method:"), y)
     y += 24
-    
+
     bodyText("Payment is due prior to service activation")
     bodyText("Payments may be processed via third-party accounts to enable same-day service")
     bodyText("A digital receipt will be issued upon payment")
-    
+
     divider()
 
     // ── Refund Policy ──
@@ -305,7 +318,7 @@ function generatePDF(data: FormData): Promise<string> {
     bodyText("Other service fees are non-refundable once service begins, as these are time-sensitive administrative tasks")
     y += 8
     bodyText("Refunds will be issued via the original payment method within 5–7 business days, if applicable")
-    
+
     divider()
 
     // ── Client Responsibilities ──
@@ -316,13 +329,13 @@ function generatePDF(data: FormData): Promise<string> {
     bullet("Maintain active authority (MC/DOT) and valid insurance, unless Company is assisting with setup")
     bullet("Communicate in a timely and professional manner")
     bullet("Not engage in fraud, chargebacks, or misrepresentation")
-    
+
     divider()
 
     // ── No Employment ──
     sectionTitle("No Employer-Employee Relationship")
     bodyText("This Agreement does not create an employment relationship. The Client is an independent carrier and assumes all responsibility for tax, insurance, regulatory compliance, and FMCSA obligations.")
-    
+
     divider()
 
     // ── Liability ──
@@ -332,19 +345,19 @@ function generatePDF(data: FormData): Promise<string> {
     bullet("Any loss of income due to delays, market rates, or missed loads")
     bullet("Legal or regulatory penalties due to false or missing information provided by the Client")
     bullet("Broker cancellations or third-party payment processing delays")
-    
+
     divider()
 
     // ── Term ──
     sectionTitle("Term and Termination")
     bodyText("This agreement becomes effective upon payment and remains active until the completion of the contracted services. Either party may terminate in writing at any time. Refund terms apply as per Section 4.")
-    
+
     divider()
 
     // ── Entire Agreement ──
     sectionTitle("Entire Agreement")
     bodyText("This Agreement contains the entire understanding between both parties and supersedes all prior agreements, written or oral.")
-    
+
     divider()
 
     // ── Signatures ──
@@ -357,15 +370,15 @@ function generatePDF(data: FormData): Promise<string> {
 
     sectionTitle("Dispatch/Service Provider Representative")
     doc.setFont("helvetica", "bold")
-    doc.text("TRANSPORT BROKERS INC.", margin, y)
+    doc.text("GOLD STAR TRANSPORTATION, INC.", margin, y)
     doc.setFont("helvetica", "normal")
     y += 24
     field("Date", TODAY_ISO)
-    
+
     divider()
 
     const jsPdfBytes = doc.output("arraybuffer")
-    
+
     import("pdf-lib").then(async ({ PDFDocument }) => {
       try {
         const mainPdf = await PDFDocument.load(jsPdfBytes)
@@ -373,7 +386,7 @@ function generatePDF(data: FormData): Promise<string> {
         if (certRes.ok) {
           const certBytes = await certRes.arrayBuffer()
           const certPdf = await PDFDocument.load(certBytes)
-          
+
           // CRITICAL FIX: Only copy the VERY LAST page (which is the actual certificate)
           // Index is 0-based, so getPageCount() - 1 is the last page.
           const lastPageIndex = certPdf.getPageCount() - 1
@@ -444,8 +457,8 @@ function ProgressBar({ step }: { step: number }) {
                 i < step
                   ? "bg-[#D4AF37] border-[#D4AF37]"
                   : i === step
-                  ? "bg-[#D4AF37] border-[#D4AF37]"
-                  : "bg-[#1a1a1a] border-[#333]"
+                    ? "bg-[#D4AF37] border-[#D4AF37]"
+                    : "bg-[#1a1a1a] border-[#333]"
               )}
             >
               {i < step ? (
@@ -481,13 +494,13 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
 
       <div className="text-xs text-[#CBD5E1] leading-relaxed mb-5 pb-5 border-b border-[#2a2a2a]">
         This Agreement is made and entered into on <strong className="text-white">{TODAY}</strong>, by and between:{" "}
-        <strong className="text-white">TRANSPORT BROKERS INC.</strong>
+        <strong className="text-white">GOLD STAR TRANSPORTATION, INC.</strong>
         <br />
-        MC #: <strong className="text-white">172356</strong> | DOT #: <strong className="text-white">2212598</strong>
+        MC #: <strong className="text-white">179608</strong> | DOT #: <strong className="text-white">253494</strong>
         <br />
         Address: <strong className="text-white">9424 REEDS ROAD, OVERLAND PARK, KS 66207</strong>
         <br />
-        Phone: <strong className="text-white">917-672-3364 / (680)204-7669</strong> | Email: <strong className="text-white">ethoncollins@transportbrokersinc.com</strong>
+        Phone: <strong className="text-white">+1 (917) 672-3364</strong> | Email: <strong className="text-white">brandontaylor@goldstartranposrtationinc.com</strong>
       </div>
 
       <div className="bg-[#1a1a1a] border border-[#333] rounded-md px-4 py-3 mb-5">
@@ -515,7 +528,7 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
       </div>
 
       <p className="text-xs text-[#94A3B8] italic">
-        (Hereinafter referred to as the TRANSPORT BROKERS INC.)
+        (Hereinafter referred to as GOLD STAR TRANSPORTATION, INC.)
       </p>
     </div>
   )
@@ -768,7 +781,7 @@ function StepServicesFinal({ data, setData }: { data: FormData; setData: (d: For
               >
                 {data.paymentMethod === method && <div className="w-2 h-2 rounded-full bg-[#D4AF37]" />}
               </div>
-              <input type="radio" name="payment" value={method} checked={data.paymentMethod === method} onChange={() => {}} className="sr-only" />
+              <input type="radio" name="payment" value={method} checked={data.paymentMethod === method} onChange={() => { }} className="sr-only" />
               <span className="text-xs text-[#CBD5E1]">{method}</span>
             </label>
           ))}
@@ -957,7 +970,7 @@ export default function CarrierSetupAgreement() {
           </div>
           <h1 className="text-2xl font-bold text-white">Carrier Setup Agreement</h1>
           <p className="text-xs text-[#D4AF37] font-semibold mt-0.5 tracking-wide">
-            TRANSPORT BROKERS INC.
+            GOLD STAR TRANSPORTATION, INC.
           </p>
           <p className="text-xs text-[#94A3B8] mt-1">Dedicated Lanes, Dispatch, Trailer Rental, and Setup Services</p>
           <div className="inline-flex items-center gap-1.5 bg-[#D4AF37]/20 border border-[#D4AF37]/40 rounded-full px-3 py-1 mt-3">
@@ -1042,7 +1055,7 @@ export default function CarrierSetupAgreement() {
 
         {/* Footer */}
         <p className="text-center text-[10px] text-[#444] mt-4">
-          TRANSPORT BROKERS INC. · 9424 REEDS ROAD, OVERLAND PARK, KS 66207
+          GOLD STAR TRANSPORTATION, INC. · 9424 REEDS ROAD, OVERLAND PARK, KS 66207
         </p>
       </div>
     </div>

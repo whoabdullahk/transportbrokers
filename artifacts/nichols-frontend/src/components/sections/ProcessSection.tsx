@@ -69,7 +69,7 @@ export function ProcessSection() {
               <span>Streamlined Onboarding & Workflow</span>
             </div>
             <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white leading-tight">
-              How TBI Moves You <span className="text-lime-400">Forward.</span>
+              How Gold Star Moves You <span className="text-lime-400">Forward.</span>
             </h2>
           </div>
           <p className="text-sm sm:text-base text-gray-400 max-w-md font-light leading-relaxed">

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 120" width="540" height="120">
+  <defs>
+    <linearGradient id="lGoldLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF0A8"/>
+      <stop offset="35%" stop-color="#F5D061"/>
+      <stop offset="100%" stop-color="#D4AF37"/>
+    </linearGradient>
+    <linearGradient id="lGoldDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4AF37"/>
+      <stop offset="50%" stop-color="#B8860B"/>
+      <stop offset="100%" stop-color="#7A5200"/>
+    </linearGradient>
+    <linearGradient id="lGoldMid" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ECC648"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+    <linearGradient id="lNavyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0E1B38"/>
+      <stop offset="100%" stop-color="#060C18"/>
+    </linearGradient>
+    <filter id="lShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#000" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <g transform="translate(6, 6) scale(0.9)" filter="url(#lShadow)">
+    <path d="M60 8 L108 30 L108 80 L60 114 L12 80 L12 30 Z" 
+          fill="url(#lNavyGrad)" 
+          stroke="url(#lGoldMid)" 
+          stroke-width="2.5" 
+          stroke-linejoin="round"/>
+    
+    <path d="M60 16 L99 35 L99 76 L60 104 L21 76 L21 35 Z" 
+          fill="none" 
+          stroke="url(#lGoldLight)" 
+          stroke-width="0.75" 
+          stroke-opacity="0.5"/>
+
+    <polygon points="60,60 60,24 51.2,49.2" fill="url(#lGoldLight)"/>
+    <polygon points="60,60 60,24 68.8,49.2" fill="url(#lGoldDark)"/>
+    <polygon points="60,60 94.2,48.9 68.8,49.2" fill="url(#lGoldLight)"/>
+    <polygon points="60,60 94.2,48.9 74.2,64.6" fill="url(#lGoldDark)"/>
+    <polygon points="60,60 81.2,89.1 74.2,64.6" fill="url(#lGoldLight)"/>
+    <polygon points="60,60 81.2,89.1 60,75" fill="url(#lGoldDark)"/>
+    <polygon points="60,60 38.8,89.1 60,75" fill="url(#lGoldLight)"/>
+    <polygon points="60,60 38.8,89.1 45.8,64.6" fill="url(#lGoldDark)"/>
+    <polygon points="60,60 25.8,48.9 45.8,64.6" fill="url(#lGoldLight)"/>
+    <polygon points="60,60 25.8,48.9 51.2,49.2" fill="url(#lGoldDark)"/>
+
+    <circle cx="60" cy="60" r="3" fill="#FFF8D0"/>
+  </g>
+
+  <!-- Typography (For Light Background: Bold Charcoal Navy + Rich Gold) -->
+  <g transform="translate(132, 0)">
+    <text x="0" y="58" 
+          font-family="system-ui, -apple-system, 'Montserrat', 'Inter', 'Segoe UI', Arial, sans-serif" 
+          font-size="34" 
+          font-weight="900" 
+          letter-spacing="1.5" 
+          fill="#0B132B">
+      GOLD STAR
+    </text>
+
+    <line x1="0" y1="72" x2="380" y2="72" stroke="url(#lGoldMid)" stroke-width="1.8"/>
+
+    <text x="1" y="93" 
+          font-family="system-ui, -apple-system, 'Montserrat', 'Inter', 'Segoe UI', Arial, sans-serif" 
+          font-size="13" 
+          font-weight="800" 
+          letter-spacing="5.5" 
+          fill="#946C0B">
+      TRANSPORTATION, INC.
+    </text>
+  </g>
+</svg>

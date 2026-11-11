@@ -14,7 +14,7 @@ export default function LiquorPermit() {
           <div className="absolute inset-0 bg-background/90 mix-blend-multiply" />
           <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
         </div>
-        
+
         <div className="container mx-auto px-4 md:px-8 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-background/50 border border-border mb-6 backdrop-blur-sm">
             <span className="text-xs font-display uppercase tracking-widest text-primary font-semibold">Specialized Freight</span>
@@ -40,7 +40,7 @@ export default function LiquorPermit() {
                     Hauling alcoholic beverages requires specific state-issued permits. Because of the regulatory hurdles, these loads frequently pay above average market rates.
                   </p>
                   <p>
-                    Brokerage Company of American INC holds direct relationships with major beverage distributors and shippers. We connect permitted carriers with steady volume lanes, and we help non-permitted carriers obtain the necessary licenses to enter this lucrative market.
+                    Gold Star Transportation, Inc. holds direct relationships with major beverage distributors and shippers. We connect permitted carriers with steady volume lanes, and we help non-permitted carriers obtain the necessary licenses to enter this lucrative market.
                   </p>
                 </div>
               </section>

@@ -37,13 +37,13 @@ export function About() {
           <div className="max-w-3xl space-y-6">
             <div className="inline-flex items-center space-x-2 text-xs font-mono text-lime-700 uppercase tracking-widest px-3.5 py-1 rounded-full bg-lime-100 border border-lime-300 font-semibold">
               <ShieldCheck className="h-4 w-4" />
-              <span>About Transport Brokers Inc.</span>
+              <span>About Gold Star Transportation, Inc.</span>
             </div>
             <h1 className="text-4xl sm:text-6xl font-black text-gray-900 uppercase tracking-tight leading-tight">
               Moving American Freight With Precision & Integrity.
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 font-normal leading-relaxed">
-              Founded in Alexandria, Louisiana, Transport Brokers Inc. has grown into a premier freight coordination and carrier support firm connecting shippers with verified transportation assets across the continental United States.
+              Founded in Overland Park, Kansas, Gold Star Transportation, Inc. has grown into a premier freight coordination and carrier support firm connecting shippers with verified transportation assets across the continental United States.
             </p>
           </div>
         </div>
@@ -81,10 +81,10 @@ export function About() {
               </h2>
               <div className="space-y-4 text-gray-600 font-normal leading-relaxed text-sm sm:text-base">
                 <p>
-                  Transport Brokers Inc. was established with a singular objective: to eliminate the friction, opacity, and predatory practices that plague modern freight dispatching.
+                  Gold Star Transportation, Inc. was established with a singular objective: to eliminate the friction, opacity, and predatory practices that plague modern freight dispatching.
                 </p>
                 <p>
-                  Operating under federal authority <strong className="text-gray-900">USDOT 2212598</strong> and <strong className="text-gray-900">MC-172356</strong>, our operations headquarters in Alexandria, Louisiana coordinates heavy commercial freight across all 48 continental states.
+                  Operating under federal authority <strong className="text-gray-900">USDOT 253494</strong> and <strong className="text-gray-900">MC-179608</strong>, our operations headquarters in Overland Park, Kansas coordinates heavy commercial freight across all 48 continental states.
                 </p>
                 <p>
                   Whether managing dedicated high-volume shipper lanes, providing trailer rental assets to growing fleets, or assisting owner-operators with TWIC credentials and insurance verification, we deliver end-to-end operational dependability.
@@ -107,7 +107,7 @@ export function About() {
               <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-xl relative">
                 <img
                   src="/images/services/white-truck.jpg"
-                  alt="Transport Brokers Inc. fleet logistics"
+                  alt="Gold Star Transportation, Inc. fleet logistics"
                   className="w-full h-[400px] object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
@@ -116,7 +116,7 @@ export function About() {
                     Operational Credibility
                   </div>
                   <div className="text-sm font-bold text-gray-900 mt-1">
-                    Continuous 48-State Interstate Freight Authority • USDOT 2212598
+                    Continuous 48-State Interstate Freight Authority • USDOT 253494
                   </div>
                 </div>
               </div>
@@ -172,7 +172,7 @@ export function About() {
               <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-200">
                 <img
                   src="/images/services/driver-cab.jpg"
-                  alt="Transport Brokers Inc. professional dispatch operations and fleet driver"
+                  alt="Gold Star Transportation, Inc. professional dispatch operations and fleet driver"
                   className="w-full h-80 object-cover"
                 />
               </div>
@@ -183,7 +183,7 @@ export function About() {
                 <span>Dedicated Operations Desk</span>
               </div>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 uppercase tracking-tight">
-                Partner With TBI Today
+                Partner With Gold Star Today
               </h2>
               <p className="text-base text-gray-600 font-normal max-w-xl leading-relaxed">
                 Experience the difference of working with a dispatch and logistics partner dedicated to your bottom-line profitability and long-term fleet growth.

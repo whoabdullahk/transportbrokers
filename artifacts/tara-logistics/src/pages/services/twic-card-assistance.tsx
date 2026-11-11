@@ -14,7 +14,7 @@ export default function TwicCardAssistance() {
           <div className="absolute inset-0 bg-background/90 mix-blend-multiply" />
           <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
         </div>
-        
+
         <div className="container mx-auto px-4 md:px-8 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-background/50 border border-border mb-6 backdrop-blur-sm">
             <ShieldCheck className="w-4 h-4 text-primary" />
@@ -41,7 +41,7 @@ export default function TwicCardAssistance() {
                     A TWIC (Transportation Worker Identification Credential) card is mandatory for unescorted access to secure areas of maritime facilities and vessels. Without it, you are locked out of lucrative drayage and port-adjacent freight opportunities.
                   </p>
                   <p>
-                    The application process involves background checks, TSA coordination, and specific documentation. Brokerage Company of American INC simplifies this bureaucratic hurdle, ensuring your application is accurate, complete, and processed as quickly as possible.
+                    The application process involves background checks, TSA coordination, and specific documentation. Gold Star Transportation, Inc. simplifies this bureaucratic hurdle, ensuring your application is accurate, complete, and processed as quickly as possible.
                   </p>
                 </div>
               </section>

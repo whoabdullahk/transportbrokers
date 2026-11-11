@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'wouter'
-import { 
-  ArrowRight, 
-  ArrowDown, 
-  Plus, 
+import {
+  ArrowRight,
+  ArrowDown,
+  Plus,
   Minus
 } from 'lucide-react'
 
@@ -92,11 +92,11 @@ export function Home() {
 
   const faqs = [
     {
-      q: 'What services does Transport Brokers Inc. provide?',
-      a: 'Transport Brokers Inc. provides full-suite commercial freight brokerage, dedicated lane capacity, trailer rentals (dry van, reefer, flatbed), expedited invoice factoring assistance, TWIC maritime card compliance, and federal DOT/FMCSA permit filings.',
+      q: 'What services does Gold Star Transportation, Inc. provide?',
+      a: 'Gold Star Transportation, Inc. provides full-suite commercial freight brokerage, dedicated lane capacity, trailer rentals (dry van, reefer, flatbed), expedited invoice factoring assistance, TWIC maritime card compliance, and federal DOT/FMCSA permit filings.',
     },
     {
-      q: 'Who can work with Transport Brokers Inc.?',
+      q: 'Who can work with Gold Star Transportation, Inc.?',
       a: 'We partner with verified commercial motor carriers, independent owner-operators, and fleet managers holding active FMCSA operating authority, satisfactory safety ratings, and minimum $100K cargo / $1M liability insurance.',
     },
     {
@@ -108,8 +108,8 @@ export function Home() {
       a: 'Factoring converts completed load delivery receipts into immediate cash within 2 to 24 hours, eliminating 30-to-60-day broker payment delays and empowering carriers to cover fuel, maintenance, and payroll without high interest loans.',
     },
     {
-      q: 'How do I get started with Transport Brokers Inc.?',
-      a: 'Getting onboarded is straightforward: submit your MC/DOT certificate, current certificate of insurance (COI) naming Transport Brokers Inc. as certificate holder, and signed W-9. Our carrier relations desk reviews packets within 2 business hours.',
+      q: 'How do I get started with Gold Star Transportation, Inc.?',
+      a: 'Getting onboarded is straightforward: submit your MC/DOT certificate, current certificate of insurance (COI) naming Gold Star Transportation, Inc. as certificate holder, and signed W-9. Our carrier relations desk reviews packets within 2 business hours.',
     },
   ]
 
@@ -118,12 +118,12 @@ export function Home() {
       {/* ========================================================================= */}
       {/* 1. HERO SECTION (Matches Screenshot 1) */}
       {/* ========================================================================= */}
-      <section 
+      <section
         aria-label="Hero Section"
         className="relative min-h-screen flex items-center justify-between bg-black text-white overflow-hidden pb-10"
       >
         {/* Full-width background photo of semi-truck on desert highway */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none"
           style={{ backgroundImage: `url('/images/hero/desert-highway-truck.jpg')` }}
         >
@@ -133,7 +133,7 @@ export function Home() {
 
         {/* Hero Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 sm:pt-36 min-h-[calc(100vh-4rem)] flex flex-col justify-between">
-          
+
           <div className="max-w-4xl space-y-6">
             {/* Small uppercase eyebrow */}
             <div className="text-xs sm:text-sm font-mono uppercase tracking-[0.25em] text-white/80 leading-tight">
@@ -163,12 +163,12 @@ export function Home() {
 
             {/* Paragraph Text below button */}
             <p className="text-sm sm:text-base text-gray-200 font-normal leading-relaxed max-w-2xl pt-2 drop-shadow-md">
-              Transport Brokers Inc. is a professional freight brokerage and transportation support company committed to connecting carriers with dependable freight opportunities while helping them operate more efficiently and profitably.
+              Gold Star Transportation, Inc. is a professional freight brokerage and transportation support company committed to connecting carriers with dependable freight opportunities while helping them operate more efficiently and profitably.
             </p>
 
             {/* Accessibility aliases */}
             <div className="sr-only" aria-hidden="true">
-              <span>Transport Brokers Inc.</span>
+              <span>Gold Star Transportation, Inc.</span>
               <span>500+ Vetted Carriers</span>
               <span>97% Carrier Satisfaction</span>
               <span>24/7 Active Dispatch</span>
@@ -194,7 +194,7 @@ export function Home() {
       <section id="about-section" className="py-20 lg:py-28 bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-            
+
             {/* Left: Aerial Container Terminal Image */}
             <div className="lg:col-span-6">
               <div className="relative rounded-2xl overflow-hidden shadow-xl bg-gray-100 aspect-[4/3] group">
@@ -265,9 +265,9 @@ export function Home() {
       {/* ========================================================================= */}
       <section className="py-24 lg:py-32 bg-white border-b border-gray-100 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-start">
-            
+
             {/* Left Column: Heading & Button */}
             <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-8">
               <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold uppercase tracking-widest text-[#65a30d]">
@@ -381,9 +381,9 @@ export function Home() {
       {/* ========================================================================= */}
       <section className="bg-[#121214] text-white py-20 lg:py-28 overflow-hidden relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
+
             {/* Left: 10K+ Metric & 4 Feature Rows */}
             <div className="lg:col-span-6 space-y-8">
               <div className="space-y-2">
@@ -456,7 +456,7 @@ export function Home() {
       {/* FAQ Accordion Section (Clean White Background) */}
       <section className="py-24 bg-white border-b border-gray-100">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+
           <h2 className="text-3xl sm:text-4xl font-black uppercase text-center tracking-tight text-gray-900 mb-14">
             Frequently Asked Questions
           </h2>
@@ -495,7 +495,7 @@ export function Home() {
       {/* ========================================================================= */}
       <section className="relative py-28 lg:py-36 bg-black text-white text-center overflow-hidden">
         {/* Background Image: Semi-truck on Highway at Sunset */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-40"
           style={{ backgroundImage: `url('/images/services/mountain-highway-truck.jpg')` }}
         />
@@ -507,7 +507,7 @@ export function Home() {
           </h2>
 
           <p className="text-base sm:text-lg text-gray-300 font-light max-w-2xl mx-auto leading-relaxed">
-            Join the carriers who trust Transport Brokers Inc. for consistent lanes and real support.
+            Join the carriers who trust Gold Star Transportation, Inc. for consistent lanes and real support.
           </p>
 
           <div className="pt-4">

@@ -1,10 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
-  <!-- Background circle -->
-  <circle cx="100" cy="100" r="98" fill="#1B2A4A" stroke="#D4AF37" stroke-width="3"/>
-  <!-- Navy chevron/arrow shape (T shape going up-right) -->
-  <path d="M40 145 L70 85 L90 105 L75 120 L130 120 L130 145 Z" fill="#ffffff" opacity="0.95"/>
-  <!-- Gold accent arrow pointing right/up -->
-  <path d="M65 75 L155 75 L155 55 L175 95 L155 135 L155 115 L65 115 Z" fill="#D4AF37" opacity="0.9"/>
-  <!-- TBI text mark -->
-  <text x="100" y="175" font-family="Arial, sans-serif" font-weight="900" font-size="22" fill="#D4AF37" text-anchor="middle" letter-spacing="4">TBI</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="favNavy" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0E1B38"/>
+      <stop offset="100%" stop-color="#050B16"/>
+    </linearGradient>
+    <linearGradient id="favGoldL" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF0A8"/>
+      <stop offset="40%" stop-color="#F5D061"/>
+      <stop offset="100%" stop-color="#D4AF37"/>
+    </linearGradient>
+    <linearGradient id="favGoldD" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E5B232"/>
+      <stop offset="60%" stop-color="#B8860B"/>
+      <stop offset="100%" stop-color="#7A5200"/>
+    </linearGradient>
+    <linearGradient id="favGoldRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE885"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#favNavy)" stroke="url(#favGoldRing)" stroke-width="4"/>
+
+  <g>
+    <polygon points="64,64 64,20 53.4,50.7" fill="url(#favGoldL)"/>
+    <polygon points="64,64 64,20 74.6,50.7" fill="url(#favGoldD)"/>
+    <polygon points="64,64 105.8,50.4 74.6,50.7" fill="url(#favGoldL)"/>
+    <polygon points="64,64 105.8,50.4 81.3,69.6" fill="url(#favGoldD)"/>
+    <polygon points="64,64 89.9,99.6 81.3,69.6" fill="url(#favGoldL)"/>
+    <polygon points="64,64 89.9,99.6 64,82.4" fill="url(#favGoldD)"/>
+    <polygon points="64,64 38.1,99.6 64,82.4" fill="url(#favGoldL)"/>
+    <polygon points="64,64 38.1,99.6 46.7,69.6" fill="url(#favGoldD)"/>
+    <polygon points="64,64 22.2,50.4 46.7,69.6" fill="url(#favGoldL)"/>
+    <polygon points="64,64 22.2,50.4 53.4,50.7" fill="url(#favGoldD)"/>
+
+    <circle cx="64" cy="64" r="3.5" fill="#FFF9D2"/>
+  </g>
 </svg>

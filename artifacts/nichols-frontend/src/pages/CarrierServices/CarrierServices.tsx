@@ -142,7 +142,7 @@ export function CarrierServices() {
               Comprehensive Carrier Services.
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 font-normal leading-relaxed">
-              From dedicated contract lanes and trailer rentals to TWIC credentials, cargo insurance, and DOT compliance, Transport Brokers Inc. equips carriers with the operational backbone needed to maximize earnings.
+              From dedicated contract lanes and trailer rentals to TWIC credentials, cargo insurance, and DOT compliance, Gold Star Transportation, Inc. equips carriers with the operational backbone needed to maximize earnings.
             </p>
           </div>
         </div>
@@ -206,9 +206,7 @@ export function CarrierServices() {
 
                     <div className="flex items-center space-x-1.5 text-xs font-mono text-gray-500 font-medium">
                       <span>Call:</span>
-                      <a href="tel:9176723364" className="hover:text-black transition-colors">917-672-3364</a>
-                      <span>/</span>
-                      <a href="tel:6802047669" className="hover:text-black transition-colors">(680)204-7669</a>
+                      <a href="tel:9176723364" className="hover:text-black transition-colors">+1 (917) 672-3364</a>
                     </div>
                   </div>
                 </div>
@@ -239,13 +237,7 @@ export function CarrierServices() {
               href="tel:9176723364"
               className="w-full sm:w-auto px-8 py-4 rounded-full bg-white hover:bg-gray-100 text-gray-900 font-bold text-sm uppercase tracking-wider transition-all border border-gray-300 shadow-sm inline-flex items-center justify-center"
             >
-              <span>Speak to Carrier Desk: 917-672-3364</span>
-            </a>
-            <a
-              href="tel:6802047669"
-              className="w-full sm:w-auto px-8 py-4 rounded-full bg-white hover:bg-gray-100 text-gray-900 font-bold text-sm uppercase tracking-wider transition-all border border-gray-300 shadow-sm inline-flex items-center justify-center"
-            >
-              <span>Dispatch Line: (680)204-7669</span>
+              <span>Speak to Carrier Desk: +1 (917) 672-3364</span>
             </a>
           </div>
         </div>

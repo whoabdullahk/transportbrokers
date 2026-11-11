@@ -116,7 +116,7 @@ export function ContactForm({
           Request A Consultation
         </h3>
         <p className="text-sm sm:text-base text-gray-400 mt-2 font-light leading-relaxed">
-          Connect directly with TBI logistics managers for dedicated freight rates, trailer leases, and carrier onboarding.
+          Connect directly with Gold Star logistics managers for dedicated freight rates, trailer leases, and carrier onboarding.
         </p>
       </div>
 

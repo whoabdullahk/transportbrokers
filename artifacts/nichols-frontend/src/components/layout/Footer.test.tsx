@@ -48,8 +48,7 @@ describe('Footer Component', () => {
   it('displays Contact Us section with email addresses', () => {
     render(<Footer />)
     expect(screen.getByRole('heading', { name: 'Contact Us' })).toBeInTheDocument()
-    expect(screen.getByText('ethoncollins@transportbrokersinc.com')).toBeInTheDocument()
-    expect(screen.getByText('billing@TBItransportation.com')).toBeInTheDocument()
+    expect(screen.getByText('brandontaylor@goldstartranposrtationinc.com')).toBeInTheDocument()
   })
 
   it('displays address information', () => {
@@ -60,19 +59,17 @@ describe('Footer Component', () => {
 
   it('displays phone numbers when provided', () => {
     render(<Footer />)
-    expect(screen.getByText('917-672-3364')).toBeInTheDocument()
-    expect(screen.getByText('(680)204-7669')).toBeInTheDocument()
+    expect(screen.getByText('+1 (917) 672-3364')).toBeInTheDocument()
   })
 
   it('email links have proper mailto href', () => {
     render(<Footer />)
-    const emailLink = screen.getByText('ethoncollins@transportbrokersinc.com')
-    expect(emailLink.closest('a')).toHaveAttribute('href', 'mailto:ethoncollins@transportbrokersinc.com')
+    const emailLink = screen.getByText('brandontaylor@goldstartranposrtationinc.com')
+    expect(emailLink.closest('a')).toHaveAttribute('href', 'mailto:brandontaylor@goldstartranposrtationinc.com')
   })
 
   it('displays social media icons', () => {
     render(<Footer />)
-    // Check for aria-labels on social links
     expect(screen.getByLabelText(/Visit our Facebook page/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/Visit our Twitter page/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/Visit our LinkedIn page/i)).toBeInTheDocument()
@@ -86,12 +83,10 @@ describe('Footer Component', () => {
     expect(facebookLink).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
-  it('displays large TBI branding text', () => {
+  it('displays large branding text', () => {
     render(<Footer />)
-    // Get all TBI text elements (there might be multiple)
-    const TBIElements = screen.getAllByText('TBI')
-    // Should have at least one (the large branding at bottom)
-    expect(TBIElements.length).toBeGreaterThan(0)
+    const brandingElements = screen.getAllByText('GOLD STAR')
+    expect(brandingElements.length).toBeGreaterThan(0)
   })
 
   it('displays copyright text with current year', () => {
@@ -103,7 +98,7 @@ describe('Footer Component', () => {
   it('has dark background color', () => {
     const { container } = render(<Footer />)
     const footer = container.querySelector('footer')
-    expect(footer).toHaveClass('bg-black', 'text-white')
+    expect(footer).toHaveClass('bg-[#0a0a0a]')
   })
 
   it('renders custom sitemap links when provided', () => {

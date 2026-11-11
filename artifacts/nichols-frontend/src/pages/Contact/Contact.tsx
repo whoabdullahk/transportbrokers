@@ -85,13 +85,13 @@ export function Contact() {
       } else {
         setSubmissionStatus({
           type: 'error',
-          message: res.message || 'Submission failed. Please call our direct line at 917-672-3364 or (680)204-7669.',
+          message: res.message || 'Submission failed. Please call our direct line at +1 (917) 672-3364.',
         })
       }
     } catch {
       setSubmissionStatus({
         type: 'error',
-        message: 'Network issue. Please call our direct line at 917-672-3364 or (680)204-7669.',
+        message: 'Network issue. Please call our direct line at +1 (917) 672-3364.',
       })
     } finally {
       setIsSubmitting(false)
@@ -110,10 +110,10 @@ export function Contact() {
               <span>Direct Operations & Dispatch Desk</span>
             </div>
             <h1 className="text-4xl sm:text-6xl font-black text-gray-900 uppercase tracking-tight leading-tight">
-              Get Started with TBI.
+              Get Started with Gold Star.
             </h1>
             <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed">
-              Connect with our Alexandria operations center to request a freight quote, initiate carrier onboarding, or coordinate specialized equipment.
+              Connect with our operations center to request a freight quote, initiate carrier onboarding, or coordinate specialized equipment.
             </p>
           </div>
         </div>
@@ -123,7 +123,7 @@ export function Contact() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-            
+
             {/* Left Column: Direct Company Information, Verified Credentials & Real Facility Photo */}
             <div className="lg:col-span-5 space-y-8">
               <div className="space-y-3">
@@ -132,7 +132,7 @@ export function Contact() {
                   Headquarters & Verification
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-black text-gray-900 uppercase tracking-tight">
-                  Transport Brokers Inc.
+                  Gold Star Transportation, Inc.
                 </h2>
                 <p className="text-sm text-gray-600 font-normal leading-relaxed">
                   Direct dispatch lines, licensed motor brokerage authority, and verified freight coordination desk.
@@ -148,10 +148,7 @@ export function Contact() {
                   <div className="space-y-1.5">
                     <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Direct Phone Channels</div>
                     <a href="tel:9176723364" className="block text-base font-bold text-gray-900 hover:text-black transition-colors">
-                      917-672-3364 <span className="text-xs text-gray-500 font-normal font-mono">— Primary Operations</span>
-                    </a>
-                    <a href="tel:6802047669" className="block text-base font-bold text-gray-900 hover:text-black transition-colors">
-                      (680)204-7669 <span className="text-xs text-gray-500 font-normal font-mono">— Dispatch & Support</span>
+                      +1 (917) 672-3364 <span className="text-xs text-gray-500 font-normal font-mono">— Primary Operations & Dispatch</span>
                     </a>
                   </div>
                 </div>
@@ -162,8 +159,8 @@ export function Contact() {
                   </div>
                   <div className="space-y-1">
                     <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Email Inquiries</div>
-                    <a href="mailto:ethoncollins@transportbrokersinc.com" className="block text-sm font-bold text-gray-900 hover:text-black transition-colors">
-                      ethoncollins@transportbrokersinc.com
+                    <a href="mailto:brandontaylor@goldstartranposrtationinc.com" className="block text-sm font-bold text-gray-900 hover:text-black transition-colors">
+                      brandontaylor@goldstartranposrtationinc.com
                     </a>
                   </div>
                 </div>
@@ -184,12 +181,12 @@ export function Contact() {
                 </div>
               </div>
 
-              {/* Real Photography Card: Alexandria Terminal & Operations */}
+              {/* Real Photography Card: Terminal & Operations */}
               <div className="rounded-xl overflow-hidden border border-gray-200 bg-white shadow-sm">
                 <div className="relative h-44 w-full">
                   <img
                     src="/images/services/fleet-warehouse.jpg"
-                    alt="TBI Regional Operations & Logistics Dispatch Center"
+                    alt="Gold Star Regional Operations & Logistics Dispatch Center"
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
@@ -209,11 +206,11 @@ export function Contact() {
                 <div className="grid grid-cols-2 gap-4 text-xs font-mono pt-1">
                   <div>
                     <div className="text-gray-500 font-semibold">USDOT NUMBER</div>
-                    <div className="text-gray-900 font-bold text-base">2212598</div>
+                    <div className="text-gray-900 font-bold text-base">253494</div>
                   </div>
                   <div>
                     <div className="text-gray-500 font-semibold">MC NUMBER</div>
-                    <div className="text-gray-900 font-bold text-base">MC-172356</div>
+                    <div className="text-gray-900 font-bold text-base">MC-179608</div>
                   </div>
                 </div>
                 <div className="text-xs text-gray-600 pt-1 font-normal">
@@ -236,11 +233,10 @@ export function Contact() {
 
                 {submissionStatus && (
                   <div
-                    className={`p-4 rounded-lg flex items-start space-x-3 text-xs ${
-                      submissionStatus.type === 'success'
+                    className={`p-4 rounded-lg flex items-start space-x-3 text-xs ${submissionStatus.type === 'success'
                         ? 'bg-lime-50 border border-lime-300 text-gray-900'
                         : 'bg-red-50 border border-red-300 text-red-700'
-                    }`}
+                      }`}
                   >
                     {submissionStatus.type === 'success' ? (
                       <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5 text-lime-600" />

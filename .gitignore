@@ -53,3 +53,7 @@ Thumbs.db
 .env.local
 .env.*.local
 
+# Scratch and patches
+scratch/
+*.patch
+

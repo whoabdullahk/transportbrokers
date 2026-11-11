@@ -20,7 +20,7 @@ import { ContactForm } from '../contact/ContactForm'
 describe('Home Page Sections', () => {
   it('HeroSection renders title, description, and statistics', () => {
     render(<HeroSection />)
-    expect(screen.getByText('Transport Brokers Inc.')).toBeInTheDocument()
+    expect(screen.getByText('Gold Star Transportation, Inc.')).toBeInTheDocument()
     expect(screen.getAllByText(/500/)[0]).toBeInTheDocument()
     expect(screen.getAllByText(/97/)[0]).toBeInTheDocument()
     expect(screen.getAllByText(/24/)[0]).toBeInTheDocument()
@@ -36,7 +36,7 @@ describe('Home Page Sections', () => {
   it('OurSolutionSection renders oversized heading and features', () => {
     render(<OurSolutionSection />)
     expect(screen.getByText('Our Solution')).toBeInTheDocument()
-    expect(screen.getByText('The TBI Advantage')).toBeInTheDocument()
+    expect(screen.getByText('The Gold Star Advantage')).toBeInTheDocument()
   })
 
   it('ServicesGrid renders 8 service cards', () => {
@@ -81,7 +81,7 @@ describe('Home Page Sections', () => {
 
   it('FAQSection toggles accordion item on click', () => {
     render(<FAQSection />)
-    const questionButton = screen.getByText('How do I get onboarded with Transport Brokers Inc. as a carrier?')
+    const questionButton = screen.getByText('How do I get onboarded with Gold Star Transportation, Inc. as a carrier?')
     expect(questionButton).toBeInTheDocument()
 
     // Click to toggle

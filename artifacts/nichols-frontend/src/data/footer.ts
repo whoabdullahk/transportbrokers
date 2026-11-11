@@ -24,19 +24,19 @@ export const defaultTrackSupport: FooterLink[] = [
 ]
 
 export const defaultContactInfo: ContactInfo = {
-  emails: ['ethoncollins@transportbrokersinc.com'],
+  emails: ['brandontaylor@goldstartranposrtationinc.com'],
   address: {
     street: '9424 REEDS ROAD',
     city: 'OVERLAND PARK',
     state: 'KS',
     zip: '66207',
   },
-  phones: ['917-672-3364', '(680)204-7669'],
+  phones: ['+1 (917) 672-3364'],
 }
 
 export const defaultSocialLinks: SocialLink[] = [
-  { platform: 'Facebook', url: 'https://facebook.com/TBItransportation', icon: 'facebook' },
-  { platform: 'Twitter', url: 'https://twitter.com/TBItrans', icon: 'twitter' },
-  { platform: 'LinkedIn', url: 'https://linkedin.com/company/TBItransportation', icon: 'linkedin' },
-  { platform: 'Instagram', url: 'https://instagram.com/TBItransportation', icon: 'instagram' },
+  { platform: 'Facebook', url: 'https://facebook.com/goldstartransportation', icon: 'facebook' },
+  { platform: 'Twitter', url: 'https://twitter.com/goldstartrans', icon: 'twitter' },
+  { platform: 'LinkedIn', url: 'https://linkedin.com/company/goldstartransportation', icon: 'linkedin' },
+  { platform: 'Instagram', url: 'https://instagram.com/goldstartransportation', icon: 'instagram' },
 ]

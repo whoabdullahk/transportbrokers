@@ -97,19 +97,19 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
         </div>
         <div>
           <h2 className="text-lg font-bold text-white">Step 1: Company Information</h2>
-          <p className="text-xs text-[#94A3B8]">Agreement details between Brokerage Co. of American INC and Client</p>
+          <p className="text-xs text-[#94A3B8]">Agreement details between GOLD STAR TRANSPORTATION, INC. and Client</p>
         </div>
       </div>
 
       <div className="text-xs text-[#CBD5E1] leading-relaxed mb-5 border-b border-[#2a2a2a] pb-5">
         This Agreement is made and entered into on <strong className="text-white">{TODAY}</strong>, by and between:{" "}
-        <strong className="text-white">Brokerage Co. of American INC</strong> (Service Provider)
+        <strong className="text-white">GOLD STAR TRANSPORTATION, INC.</strong> (Service Provider)
         <br />
-        MC #: 1551407 | DOT #: 4079068
+        MC #: MC179608 | DOT #: 253494
         <br />
         Address: 9424 REEDS ROAD, OVERLAND PARK, KS 66207
         <br />
-        Email: fred@taralogisticsllc.com
+        Email: brandontaylor@goldstartranposrtationinc.com | Phone: +1 (917) 672-3364
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
@@ -317,7 +317,7 @@ function StepTerms({ data, setData }: { data: FormData; setData: (d: FormData) =
         <div>
           <h3 className="font-semibold text-white mb-1.5">Guarantee of Approval</h3>
           <p className="text-xs leading-relaxed">
-            Brokerage Co. of American INC guarantees liquor permit approval provided the client supplies complete, accurate, and truthful documentation. If denial occurs due to Company error, 100% refund will be issued. No refund if denial is due to false or misleading information provided by client.
+            GOLD STAR TRANSPORTATION, INC. guarantees liquor permit approval provided the client supplies complete, accurate, and truthful documentation. If denial occurs due to Company error, 100% refund will be issued. No refund if denial is due to false or misleading information provided by client.
           </p>
         </div>
 
@@ -431,7 +431,7 @@ function StepSignatures({ data, setData }: { data: FormData; setData: (d: FormDa
       </div>
 
       <div className="bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-md px-4 py-3 text-xs text-[#CBD5E1] leading-relaxed">
-        <span className="font-semibold text-[#D4AF37]">Provider Representative:</span> Brokerage Co. of American INC – Joseph (Authorized Signatory)
+        <span className="font-semibold text-[#D4AF37]">Provider Representative:</span> GOLD STAR TRANSPORTATION, INC. – Brandon Taylor (Authorized Signatory)
         <br />
         Effective Date: {TODAY}
         <br />
@@ -480,9 +480,9 @@ function StepCertificate({ data }: { data: FormData }) {
         {/* Certificate body */}
         <div className="px-6 py-5 text-center border-b border-gray-200">
           <div className="font-bold text-base mb-1 tracking-wide">CERTIFICATE</div>
-          <div className="text-sm font-semibold">MC-1551407</div>
-          <div className="text-xs text-gray-600">U.S. DOT No. 4079068</div>
-          <div className="text-sm font-semibold mt-1">Brokerage Co. of American INC</div>
+          <div className="text-sm font-semibold">MC-179608</div>
+          <div className="text-xs text-gray-600">U.S. DOT No. 253494</div>
+          <div className="text-sm font-semibold mt-1">GOLD STAR TRANSPORTATION, INC.</div>
           <div className="text-xs text-gray-600">9424 REEDS ROAD, OVERLAND PARK, KS 66207</div>
         </div>
 
@@ -510,7 +510,7 @@ function StepCertificate({ data }: { data: FormData }) {
         <div className="px-6 py-4 flex justify-between text-xs border-b border-gray-200">
           <div>
             <div className="text-gray-500 mb-0.5">Dispatch/Service Provider Representative</div>
-            <div className="font-bold">Brokerage Co. of American INC</div>
+            <div className="font-bold">GOLD STAR TRANSPORTATION, INC.</div>
           </div>
           <div className="text-right">
             <div className="text-gray-500 mb-0.5">Date</div>
@@ -620,7 +620,7 @@ export default function LiquorPermitServiceAgreement() {
           </div>
           <h2 className="text-xl font-bold text-white mb-2">Agreement Submitted!</h2>
           <p className="text-sm text-[#94A3B8] mb-6">
-            Thank you, <strong className="text-white">{data.clientFullName || "Client"}</strong>. Your Liquor Permit Service Agreement has been submitted. Brokerage Co. of American INC will process your application within 5 business days.
+            Thank you, <strong className="text-white">{data.clientFullName || "Client"}</strong>. Your Liquor Permit Service Agreement has been submitted. GOLD STAR TRANSPORTATION, INC. will process your application within 5 business days.
           </p>
           <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-md px-4 py-3 text-left text-xs text-[#94A3B8] space-y-1 mb-6">
             <div><span className="text-white">Email:</span> {data.email}</div>

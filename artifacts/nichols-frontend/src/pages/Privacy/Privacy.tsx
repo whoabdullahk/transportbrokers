@@ -17,7 +17,7 @@ export function Privacy() {
             Privacy Policy & Terms of Service
           </h1>
           <p className="text-sm text-gray-400 font-mono">
-            Transport Brokers Inc. • Effective Date: January 1, 2025
+            Gold Star Transportation, Inc. • Effective Date: January 1, 2025
           </p>
         </div>
       </section>
@@ -28,7 +28,7 @@ export function Privacy() {
             1. Information We Collect
           </h2>
           <p>
-            Transport Brokers Inc. collects information necessary to coordinate interstate freight transportation, carrier credential verification, load tracking, and accounting settlement. This includes carrier company information, DOT/MC numbers, certificates of insurance, driver contact phone numbers, and load reference documents.
+            Gold Star Transportation, Inc. collects information necessary to coordinate interstate freight transportation, carrier credential verification, load tracking, and accounting settlement. This includes carrier company information, DOT/MC numbers, certificates of insurance, driver contact phone numbers, and load reference documents.
           </p>
         </div>
 
@@ -55,14 +55,13 @@ export function Privacy() {
             4. Contact Our Compliance Office
           </h2>
           <p>
-            For inquiries regarding privacy, data retention, or carrier files, contact our Alexandria office:
+            For inquiries regarding privacy, data retention, or carrier files, contact our compliance office:
           </p>
           <div className="p-4 rounded-lg bg-brand-surface border border-white/10 text-xs font-mono space-y-1 text-gray-300">
-            <div>Transport Brokers Inc.</div>
+            <div>Gold Star Transportation, Inc.</div>
             <div>9424 REEDS ROAD, OVERLAND PARK, KS 66207</div>
-            <div>Email: billing@TBItransportation.com</div>
-            <div>Direct: 917-672-3364</div>
-            <div>Dispatch: (680)204-7669</div>
+            <div>Email: brandontaylor@goldstartranposrtationinc.com</div>
+            <div>Phone: +1 (917) 672-3364</div>
           </div>
         </div>
       </section>

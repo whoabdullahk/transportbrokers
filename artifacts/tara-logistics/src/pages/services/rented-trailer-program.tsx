@@ -14,7 +14,7 @@ export default function RentedTrailerProgram() {
           <div className="absolute inset-0 bg-background/90 mix-blend-multiply" />
           <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
         </div>
-        
+
         <div className="container mx-auto px-4 md:px-8 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-background/50 border border-border mb-6 backdrop-blur-sm">
             <span className="text-xs font-display uppercase tracking-widest text-primary font-semibold">Service Detail</span>
@@ -37,7 +37,7 @@ export default function RentedTrailerProgram() {
                 <div className="w-12 h-0.5 bg-primary mb-8" />
                 <div className="prose prose-invert max-w-none text-muted-foreground text-lg leading-relaxed space-y-6 font-light">
                   <p>
-                    For owner-operators and small fleets, trailer ownership is a significant barrier to entry for higher-paying, specialized freight. Brokerage Company of American INC's Rented Trailer Program is designed to remove that barrier, offering flexible access to well-maintained equipment.
+                    For owner-operators and small fleets, trailer ownership is a significant barrier to entry for higher-paying, specialized freight. Gold Star Transportation, Inc.'s Rented Trailer Program is designed to remove that barrier, offering flexible access to well-maintained equipment.
                   </p>
                   <p>
                     Whether you need a dry van for retail goods, a flatbed for construction materials, or a reefer for temperature-sensitive loads, our network provides the equipment you need, exactly when you need it.

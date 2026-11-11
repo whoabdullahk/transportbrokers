@@ -18,7 +18,7 @@ export interface StatsSectionProps {
 export function StatsSection({
   statValue = '10K+',
   statLabel = 'LOADS DISPATCHED',
-  description = 'Transport Brokers Inc. maintains an elite network spanning 48 continental states. Through precision lane engineering, high-volume shipper contracts, and non-stop operational dispatch, we power carrier profitability and on-time performance.',
+  description = 'Gold Star Transportation, Inc. maintains an elite network spanning 48 continental states. Through precision lane engineering, high-volume shipper contracts, and non-stop operational dispatch, we power carrier profitability and on-time performance.',
   truckImage = '/images/services/white-truck.jpg',
 }: StatsSectionProps) {
   const metrics: MetricItem[] = [
@@ -54,7 +54,7 @@ export function StatsSection({
 
 
   return (
-    <section 
+    <section
       id="stats"
       aria-label="Dispatched Loads Statistics Section"
       className="py-20 lg:py-28 bg-brand-charcoal text-white border-y border-white/10 relative overflow-hidden"
@@ -82,7 +82,7 @@ export function StatsSection({
         {/* Editorial Metrics Grid with Thin Dividers */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/10 pt-8">
           {metrics.map((metric, idx) => (
-            <div 
+            <div
               key={idx}
               className={`py-8 sm:py-6 ${idx === 0 ? 'sm:pr-8' : idx === 3 ? 'sm:pl-8' : 'sm:px-8'} group hover:bg-white/[0.02] transition-colors rounded-lg`}
             >
@@ -118,7 +118,7 @@ export function StatsSection({
           <div className="flex items-center space-x-4">
             <img
               src={truckImage}
-              alt="TBI freight transport fleet truck"
+              alt="Gold Star freight transport fleet truck"
               className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover border border-white/10"
               loading="lazy"
             />

@@ -8,7 +8,7 @@ export interface OurSolutionSectionProps {
 
 export function OurSolutionSection({
   heading = 'Our Solution',
-  description = 'Transport Brokers Inc. bridges the gap between high-demand freight corridors and dependable carrier networks. We eliminate empty deadhead miles, provide transparent load dispatching, and empower owner-operators with tailored back-office logistics, automated billing, and direct lane access.',
+  description = 'Gold Star Transportation, Inc. bridges the gap between high-demand freight corridors and dependable carrier networks. We eliminate empty deadhead miles, provide transparent load dispatching, and empower owner-operators with tailored back-office logistics, automated billing, and direct lane access.',
   features = [
     'Direct shipper contract matching with zero hidden broker markups',
     'Same-day factoring onboarding and expedited QuickPay settlements',
@@ -50,7 +50,7 @@ export function OurSolutionSection({
   ]
 
   return (
-    <section 
+    <section
       id="about"
       aria-label="Our Solution Section"
       className="py-24 lg:py-36 bg-brand-charcoal text-white border-b border-white/10 relative overflow-hidden"
@@ -59,12 +59,12 @@ export function OurSolutionSection({
       <div className="absolute inset-0 bg-grid-industrial opacity-20 pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Editorial Eyebrow & Giant Headline */}
         <div className="space-y-4 max-w-4xl mb-16">
           <div className="inline-flex items-center space-x-2 text-lime-400 font-mono font-bold uppercase text-xs tracking-widest">
             <span className="h-1.5 w-6 bg-lime-500 rounded-full" />
-            <span>Why Transport Brokers Inc. • Executive Overview</span>
+            <span>Why Gold Star Transportation, Inc. • Executive Overview</span>
           </div>
 
           <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white leading-none">
@@ -99,14 +99,14 @@ export function OurSolutionSection({
               <h3 className="text-xl font-bold text-white tracking-tight mt-6 group-hover:text-lime-400 transition-colors">
                 {pillar.title}
               </h3>
-              
+
               <p className="text-sm text-gray-400 mt-2 leading-relaxed font-light">
                 {pillar.desc}
               </p>
             </div>
           ))}
 
-          {/* The TBI Advantage Card */}
+          {/* The Gold Star Advantage Card */}
           <div className="p-8 rounded-2xl bg-gradient-to-br from-lime-500/10 via-brand-surface to-brand-black border border-lime-500/30 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between pb-4 border-b border-lime-500/20">
@@ -117,7 +117,7 @@ export function OurSolutionSection({
               </div>
 
               <h3 className="text-xl font-black uppercase tracking-tight text-white mt-6">
-                The TBI Advantage
+                The Gold Star Advantage
               </h3>
 
               <ul className="mt-4 space-y-2.5 text-xs sm:text-sm text-gray-300">

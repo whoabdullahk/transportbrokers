@@ -38,11 +38,11 @@ import { jsPDF } from "jspdf";
 
 const DEFAULT_SPECIAL_INSTRUCTIONS = `***Driver must accept MacroPoint and track for the duration of this load. Any failure to do so will result in a minimum of a $250 fine, deducted from the settlement of this load. Any delivery date and time, other than what is listed on the Rate Agreement, will result in a minimum of a $200 fine, deducted from the settlement of the load. Repair receipts must accompany any breakdowns in transit or carrier will be fined $200 if delivery date and time on this Rate Agreement is not met. That fine will be deducted from the settlement of this shipment ...
 
-***transportbrokersinc.com MUST BE NOTIFIED 3 HOURS PRIOR TO DELIVERY APPOINTMENT IF THE DRIVER WILL BE LATE. ANY LATE OR MISSED DELIVERIES MAY RESULT IN LONG DWELL TIMES AND/OR LAYOVER(S) UNTIL NEXT AVAILABLE APPOINTMENT IS SCHEDULED.`;
+***goldstartranposrtationinc.com MUST BE NOTIFIED 3 HOURS PRIOR TO DELIVERY APPOINTMENT IF THE DRIVER WILL BE LATE. ANY LATE OR MISSED DELIVERIES MAY RESULT IN LONG DWELL TIMES AND/OR LAYOVER(S) UNTIL NEXT AVAILABLE APPOINTMENT IS SCHEDULED.`;
 
 const DEFAULT_REMARKS = `Please submit ALL pages of the POD with a receiver signature within 72 hours of delivery. ***CARRIERS MUST REPORT DETENTION 1 HOUR PRIOR TO OCCURANCE AND MUST SUBMIT LUMPER RECEIPT WITHIN 24-48 HOURS OF DELIVERY IF THERE IS ONE. FAILURE TO DO SO WILL RESULT IN NON-PAYMENT OF CHARGES.***
 
-Failure to notify Transport Brokers Inc. within 1HR of occurrence results in time starting 1 HR from time of Email. Arrival and Departure times to be clearly written on BOL by shipper/receiver. Please Email to info@transportbrokersinc.com within 24HRS for payment.`;
+Failure to notify Gold Star Transportation, Inc. within 1HR of occurrence results in time starting 1 HR from time of Email. Arrival and Departure times to be clearly written on BOL by shipper/receiver. Please Email to brandontaylor@goldstartranposrtationinc.com within 24HRS for payment.`;
 
 const rcSchema = z.object({
   proNumber: z.string().optional(),
@@ -101,9 +101,9 @@ const EMPTY_FORM_VALUES: RcFormValues = {
   proNumber: "",
   daysDedicatedLane: "",
   rcDateTime: nowLocalDateTime(),
-  fromCompany: "TRANSPORT BROKERS INC.",
-  fromPhone: "",
-  fromEmail: "info@transportbrokersinc.com",
+  fromCompany: "GOLD STAR TRANSPORTATION, INC.",
+  fromPhone: "+1 (917) 672-3364",
+  fromEmail: "brandontaylor@goldstartranposrtationinc.com",
   carrierName: "",
   carrierPhone: "",
   carrierEmail: "",
@@ -297,14 +297,14 @@ function RateConfirmationFormFields({ form }: { form: UseFormReturn<RcFormValues
         <FormField control={form.control} name="fromPhone" render={({ field }) => (
           <FormItem>
             <FormLabel className={labelClass}>Phone</FormLabel>
-            <FormControl><Input {...field} placeholder="(254) 6765-654" /></FormControl>
+            <FormControl><Input {...field} placeholder="+1 (917) 672-3364" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="fromEmail" render={({ field }) => (
           <FormItem>
             <FormLabel className={labelClass}>Email</FormLabel>
-            <FormControl><Input {...field} placeholder="email@transportbrokersinc.com" /></FormControl>
+            <FormControl><Input {...field} placeholder="brandontaylor@goldstartranposrtationinc.com" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
@@ -617,12 +617,12 @@ function generateRcPDF(values: RcFormValues): string {
   const margin = 36;
   const PW = W - margin * 2;
 
-  const rcDate = values.rcDateTime 
+  const rcDate = values.rcDateTime
     ? new Date(values.rcDateTime).toLocaleDateString("en-US", { month: '2-digit', day: '2-digit', year: '2-digit' }) + " " + new Date(values.rcDateTime).toLocaleTimeString("en-US", { hour12: false }) + " (EST)"
     : new Date().toLocaleDateString("en-US", { month: '2-digit', day: '2-digit', year: '2-digit' }) + " 10:47:00 (EST)";
-  
-  const rcDateSimple = values.rcDateTime 
-    ? new Date(values.rcDateTime).toISOString().split("T")[0] 
+
+  const rcDateSimple = values.rcDateTime
+    ? new Date(values.rcDateTime).toISOString().split("T")[0]
     : new Date().toISOString().split("T")[0];
 
   const docId = "2026" + String(Math.floor(10000000 + Math.random() * 90000000));
@@ -636,7 +636,7 @@ function generateRcPDF(values: RcFormValues): string {
     doc.setTextColor(0);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8.5);
-    doc.text("Transport Brokers Inc. - Rate Confirmation", margin, 28);
+    doc.text("Gold Star Transportation, Inc. - Rate Confirmation", margin, 28);
     doc.text(`PRO #: ${values.proNumber || "—"}`, W - margin, 28, { align: "right" });
   };
 
@@ -650,7 +650,7 @@ function generateRcPDF(values: RcFormValues): string {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8);
     doc.text(`Confirmation Date: ${rcDate}`, margin, H - 24);
-    doc.text("Transport Brokers Inc.", W - margin, H - 24, { align: "right" });
+    doc.text("Gold Star Transportation, Inc.", W - margin, H - 24, { align: "right" });
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8);
@@ -685,21 +685,34 @@ function generateRcPDF(values: RcFormValues): string {
   // ==========================================
   drawHeader(1);
 
-  // Logo Truck
-  doc.setDrawColor(0);
-  doc.setFillColor(0);
-  doc.setLineWidth(2);
-  doc.roundedRect(margin + 10, 64, 20, 14, 2, 2, "S"); // trailer
-  doc.roundedRect(margin + 32, 70, 8, 8, 1, 1, "S"); // cab
-  doc.line(margin + 30, 78, margin + 32, 78);
-  doc.circle(margin + 16, 80, 2.5, "F"); // back wheel
-  doc.circle(margin + 24, 80, 2.5, "F"); // middle wheel
-  doc.circle(margin + 36, 80, 2.5, "F"); // front wheel
+  // Logo: 3D Faceted Gold Star Brand Mark
+  const starCx = margin + 24;
+  const starCy = 78;
+  const starR = 14;
+  const starInnerR = starR * 0.42;
+  for (let i = 0; i < 5; i++) {
+    const aOuter = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
+    const aInnerLeft = -Math.PI / 2 + ((i - 0.5) * 2 * Math.PI) / 5;
+    const aInnerRight = -Math.PI / 2 + ((i + 0.5) * 2 * Math.PI) / 5;
+    const ox = starCx + starR * Math.cos(aOuter);
+    const oy = starCy + starR * Math.sin(aOuter);
+    const ilx = starCx + starInnerR * Math.cos(aInnerLeft);
+    const ily = starCy + starInnerR * Math.sin(aInnerLeft);
+    const irx = starCx + starInnerR * Math.cos(aInnerRight);
+    const iry = starCy + starInnerR * Math.sin(aInnerRight);
+
+    doc.setFillColor(255, 222, 115);
+    doc.triangle(starCx, starCy, ox, oy, ilx, ily, "F");
+    doc.setFillColor(184, 134, 11);
+    doc.triangle(starCx, starCy, ox, oy, irx, iry, "F");
+  }
+  doc.setFillColor(255, 248, 208);
+  doc.circle(starCx, starCy, starR * 0.12, "F");
 
   // Company Name Centered
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
-  doc.text("Transport Brokers Inc.", W / 2, 70, { align: "center" });
+  doc.text("Gold Star Transportation, Inc.", W / 2, 70, { align: "center" });
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8.5);
   doc.setTextColor(80);
@@ -724,7 +737,7 @@ function generateRcPDF(values: RcFormValues): string {
   y += 24;
   const boxW = (PW - 12) / 2;
   const boxH = 70;
-  
+
   // Left Box
   doc.setDrawColor(220);
   doc.setLineWidth(1);
@@ -733,11 +746,11 @@ function generateRcPDF(values: RcFormValues): string {
   doc.setFontSize(8);
   doc.setTextColor(0);
   doc.text("FROM", margin + 8, y + 12);
-  doc.text("Transport Brokers Inc.", margin + 8, y + 23);
+  doc.text("Gold Star Transportation, Inc.", margin + 8, y + 23);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.setTextColor(80);
-  doc.text("9424 REEDS ROAD\nOVERLAND PARK, KS 66207\ninfo@transportbrokersinc.com", margin + 8, y + 34);
+  doc.text("9424 REEDS ROAD\nOVERLAND PARK, KS 66207\nbrandontaylor@goldstartranposrtationinc.com", margin + 8, y + 34);
 
   // Right Box
   doc.rect(margin + boxW + 12, y, boxW, boxH);
@@ -762,7 +775,7 @@ function generateRcPDF(values: RcFormValues): string {
     doc.setDrawColor(220);
     doc.rect(margin, y, PW, 16);
     const colW = PW / 4;
-    
+
     // Label 1 background
     doc.setFillColor(248, 248, 248);
     doc.rect(margin, y, colW, 16, "F");
@@ -770,7 +783,7 @@ function generateRcPDF(values: RcFormValues): string {
     doc.setFontSize(8);
     doc.setTextColor(80);
     doc.text(label1, margin + 8, y + 11);
-    
+
     // Value 1
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8);
@@ -803,7 +816,7 @@ function generateRcPDF(values: RcFormValues): string {
   y = drawSectionBar("LOAD DETAILS", y);
   drawRow("Miles", values.miles ? String(values.miles) : "", "Size & Type", values.sizeType);
   drawRow("Pieces", values.pieces ? String(values.pieces) : "", "Weight", values.weightLbs ? `${values.weightLbs} lbs` : "");
-  
+
   // Description full width row
   doc.rect(margin, y, PW, 16);
   doc.setFillColor(248, 248, 248);
@@ -878,7 +891,7 @@ function generateRcPDF(values: RcFormValues): string {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.text(values.dispatchNotes || "—", margin + 8, y + 14);
-  
+
   drawFooter(1);
 
   // ==========================================
@@ -890,7 +903,7 @@ function generateRcPDF(values: RcFormValues): string {
 
   doc.setFillColor(243, 244, 246);
   doc.roundedRect(margin, y, PW, 16, 4, 4, "F");
-  
+
   y += 24;
   y = drawSectionBar("SPECIAL INSTRUCTIONS", y);
 
@@ -915,8 +928,8 @@ function generateRcPDF(values: RcFormValues): string {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8.5);
   doc.text("Carrier Signature", margin + 110, y + 52, { align: "center" });
-  doc.text("Transport Brokers Inc. Representative", W - margin - 110, y + 52, { align: "center" });
-  
+  doc.text("Gold Star Transportation, Inc. Representative", W - margin - 110, y + 52, { align: "center" });
+
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.text(`Date: ${rcDateSimple}`, margin + 110, y + 64, { align: "center" });
@@ -947,7 +960,7 @@ function generateRcPDF(values: RcFormValues): string {
   // Company Name Centered
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
-  doc.text("Transport Brokers Inc.", W / 2, y + 15, { align: "center" });
+  doc.text("Gold Star Transportation, Inc.", W / 2, y + 15, { align: "center" });
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8.5);
   doc.setTextColor(80);
@@ -968,10 +981,10 @@ function generateRcPDF(values: RcFormValues): string {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
   doc.text("FROM", margin + 8, y + 12);
-  doc.text("Transport Brokers Inc.", margin + 8, y + 23);
+  doc.text("Gold Star Transportation, Inc.", margin + 8, y + 23);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
-  doc.text("9424 REEDS ROAD\nOVERLAND PARK, KS 66207\ninfo@transportbrokersinc.com", margin + 8, y + 34);
+  doc.text("9424 REEDS ROAD\nOVERLAND PARK, KS 66207\nbrandontaylor@goldstartranposrtationinc.com", margin + 8, y + 34);
 
   doc.rect(margin + boxW + 12, y, boxW, boxH);
   doc.setFont("helvetica", "bold");
@@ -1000,7 +1013,7 @@ function generateRcPDF(values: RcFormValues): string {
   // PAYMENT OPTIONS Section
   y = drawSectionBar("PAYMENT OPTIONS", y);
   const paymentText = `Invoicing, document collection, and payment for all completed loads will be processed by our team.
-Please email your invoice and all supporting documents (legible POD/BOL, lumper receipts, etc.) to: info@transportbrokersinc.com. All payments will be made in U.S. Dollars unless approved in writing by Transport Brokers Inc. in advance of the shipment.
+Please email your invoice and all supporting documents (legible POD/BOL, lumper receipts, etc.) to: brandontaylor@goldstartranposrtationinc.com. All payments will be made in U.S. Dollars unless approved in writing by Gold Star Transportation, Inc. in advance of the shipment.
 Payment Methods & Timing:
 ACH Direct Deposit: Payment will be deposited directly into the carrier's bank account within 12-24 hours after receipt and approval of all required and legible paperwork.
 Check Payment: Payment will be issued by check after receipt and approval of all required paperwork and mailed to the carrier's registered address.
@@ -1033,11 +1046,11 @@ Standard Contractual Pay: Payment will be made in accordance with contractual pa
   doc.setFont("helvetica", "bold");
   doc.text("Please email all supporting documents to:", margin, y + 55);
   doc.setTextColor(120, 90, 0);
-  doc.text("info@transportbrokersinc.com", margin, y + 68);
+  doc.text("brandontaylor@goldstartranposrtationinc.com", margin, y + 68);
 
   y += 85;
-  y = drawSectionBar("Transport Brokers Inc. MASTER MOTOR CARRIER AGREEMENT SUPPLEMENT", y);
-  
+  y = drawSectionBar("Gold Star Transportation, Inc. MASTER MOTOR CARRIER AGREEMENT SUPPLEMENT", y);
+
   const supplementText = `THIS LOAD CONFIRMATION IS SUBJECT TO THE CONDITIONS OF THE MASTER MOTOR CARRIER AGREEMENT PREVIOUSLY EXECUTED BETWEEN OUR COMPANIES AND THIS ESTABLISHES A SUPPLEMENT TO THE TERMS OF THAT AGREEMENT. WE AGREE TO PAY THE RATES AND CHARGES SHOWN AND NO DIFFERENT TARIFF, RATE, OR SCHEDULE OF RATES APPLIES. THIS LOAD CONFIRMATION IS INCLUSIVE OF ALL CHARGES UNLESS ORAL AND WRITTEN FAX/EMAIL OBJECTIONS ARE MADE TO ITS TERMS, WITHIN TWENTY FOUR (24) HOURS OF RECEIPT OR PRIOR TO WORK BEING INITIATED, WHICHEVER IS EARLIER.
 
 Additional Terms:
@@ -1058,7 +1071,7 @@ Additional Terms:
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
   doc.setTextColor(120, 90, 0);
-  doc.text("Transport Brokers Inc. MASTER MOTOR CARRIER AGREEMENT SUPPLEMENT AND CARRIER LOAD CONFIRMATION CONDITIONS", W / 2, y + 15, { align: "center" });
+  doc.text("Gold Star Transportation, Inc. MASTER MOTOR CARRIER AGREEMENT SUPPLEMENT AND CARRIER LOAD CONFIRMATION CONDITIONS", W / 2, y + 15, { align: "center" });
 
   drawParagraphs(supplementText, margin + 10, y + 30, PW - 20, 9.5, 6.8);
 
@@ -1071,7 +1084,7 @@ Additional Terms:
   drawHeader(5);
   y = 55;
 
-  const driverText = "If BOL is marked Driver Count/Pieces at shipper, driver must confirm the correct amount was loaded BEFORE signing/leaving\nfacility. Call a Representative of Transport Brokers Inc., Inc. if shipper will not recount or if there is an error. Customer will\nfile claim if driver signs for incorrect number of cases shipped.";
+  const driverText = "If BOL is marked Driver Count/Pieces at shipper, driver must confirm the correct amount was loaded BEFORE signing/leaving\nfacility. Call a Representative of Gold Star Transportation, Inc. if shipper will not recount or if there is an error. Customer will\nfile claim if driver signs for incorrect number of cases shipped.";
   const driverLines = doc.splitTextToSize(driverText, PW - 16);
   const driverBoxH = driverLines.length * 11 + 16;
 
@@ -1091,7 +1104,7 @@ Additional Terms:
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8.5);
   doc.text("Carrier Signature", margin + 110, y + 12, { align: "center" });
-  doc.text("Transport Brokers Inc.", W - margin - 110, y + 12, { align: "center" });
+  doc.text("Gold Star Transportation, Inc.", W - margin - 110, y + 12, { align: "center" });
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
@@ -1105,7 +1118,7 @@ Additional Terms:
   doc.roundedRect(margin, y, PW, 40, 6, 6, "F");
   doc.setDrawColor(212, 175, 55);
   doc.roundedRect(margin, y, PW, 40, 6, 6, "D");
-  
+
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8.5);
   doc.setTextColor(120, 90, 0);
@@ -1195,7 +1208,7 @@ export default function AdminRateConfirmations() {
               <FileText className="w-5 h-5 text-[#D4AF37]" strokeWidth={2} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">Transport Brokers Inc.</h1>
+              <h1 className="text-2xl font-bold tracking-tight">Gold Star Transportation, Inc.</h1>
               <p className="text-xs text-muted-foreground uppercase tracking-widest">Rate Confirmation System</p>
             </div>
           </div>

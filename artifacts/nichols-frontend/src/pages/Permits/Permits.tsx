@@ -66,7 +66,7 @@ export function Permits() {
               Permits, Credentials & DOT Compliance.
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 font-normal leading-relaxed">
-              Navigate interstate regulations with confidence. Transport Brokers Inc. coordinates heavy-haul permits, TWIC maritime credentials, and FMCSA safety audits to keep your fleet legal and rolling.
+              Navigate interstate regulations with confidence. Gold Star Transportation, Inc. coordinates heavy-haul permits, TWIC maritime credentials, and FMCSA safety audits to keep your fleet legal and rolling.
             </p>
           </div>
         </div>
@@ -203,13 +203,7 @@ export function Permits() {
               href="tel:9176723364"
               className="w-full sm:w-auto px-8 py-4 rounded-full bg-white hover:bg-gray-100 text-gray-900 font-bold text-sm uppercase tracking-wider transition-all border border-gray-300 shadow-sm inline-flex items-center justify-center"
             >
-              <span>Call Permit Desk: 917-672-3364</span>
-            </a>
-            <a
-              href="tel:6802047669"
-              className="w-full sm:w-auto px-8 py-4 rounded-full bg-white hover:bg-gray-100 text-gray-900 font-bold text-sm uppercase tracking-wider transition-all border border-gray-300 shadow-sm inline-flex items-center justify-center"
-            >
-              <span>Dispatch Line: (680)204-7669</span>
+              <span>Call Permit Desk: +1 (917) 672-3364</span>
             </a>
           </div>
         </div>

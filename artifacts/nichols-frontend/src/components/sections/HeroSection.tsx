@@ -25,18 +25,18 @@ const defaultStats: Statistic[] = [
 export function HeroSection({
   eyebrow = 'SMART LOGISTICS SOLUTIONS',
   headline = 'Logistics that move with precision.',
-  description = 'Transport Brokers Inc. is a professional freight brokerage and transportation support company committed to connecting carriers with dependable freight opportunities while helping them operate more efficiently and profitably.',
+  description = 'Gold Star Transportation, Inc. is a professional freight brokerage and transportation support company committed to connecting carriers with dependable freight opportunities while helping them operate more efficiently and profitably.',
   backgroundImage = '/images/hero/desert-highway-truck.jpg',
   consultationLink = '/contact',
   statistics = defaultStats,
 }: HeroSectionProps) {
   return (
-    <section 
+    <section
       aria-label="Hero Section"
       className="relative min-h-screen flex items-center justify-between bg-black text-white overflow-hidden pb-8"
     >
       {/* 1. Full-Width Background Photo of Semi-Truck on Desert Highway */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
@@ -46,13 +46,13 @@ export function HeroSection({
 
       {/* 2. Content Container matching screenshot positioning */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full min-h-[calc(100vh-7rem)] flex flex-col justify-between">
-        
+
         {/* Main Hero Block (Eyebrow, Headline, Button, Description) */}
         <div className="pt-8 sm:pt-12 max-w-4xl space-y-5 sm:space-y-6">
-          
+
           {/* Small uppercase eyebrow label */}
           <div className="space-y-0.5">
-            <span className="sr-only">Transport Brokers Inc.</span>
+            <span className="sr-only">Gold Star Transportation, Inc.</span>
             <div className="text-xs sm:text-sm font-mono uppercase tracking-[0.25em] text-white/80 leading-tight">
               {eyebrow.includes(' ') ? (
                 <>

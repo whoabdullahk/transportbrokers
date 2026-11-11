@@ -90,7 +90,7 @@ export function TrackingWidget() {
           </h2>
 
           <p className="text-base sm:text-lg text-gray-400 font-light leading-relaxed">
-            Instant operational visibility across every dispatch mile. Enter your TBI bill of lading or load reference below.
+            Instant operational visibility across every dispatch mile. Enter your Gold Star bill of lading or load reference below.
           </p>
         </div>
 
@@ -227,7 +227,7 @@ export function TrackingWidget() {
               </div>
               <div>
                 <span className="text-gray-400 block mb-1">DISPATCH DESK</span>
-                <span className="text-white font-bold">TBI Logistics Control</span>
+                <span className="text-white font-bold">Gold Star Logistics Control</span>
               </div>
               <div>
                 <span className="text-gray-400 block mb-1">INSURANCE VERIFIED</span>

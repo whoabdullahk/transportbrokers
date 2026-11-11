@@ -48,7 +48,7 @@ router.post("/carrier-agreement", async (req, res) => {
 
     try {
       const result = await sendEmail({
-        from: `"TRANSPORT BROKERS INC." <${process.env.SMTP_USER}>`,
+        from: `"GOLD STAR TRANSPORTATION, INC." <${process.env.SMTP_USER}>`,
         to: recipients.length > 0 ? recipients : (process.env.SMTP_TO ?? process.env.SMTP_USER ?? ""),
         subject: "New Carrier Agreement Submitted",
         html: `
@@ -58,7 +58,7 @@ router.post("/carrier-agreement", async (req, res) => {
   <div style="max-width:620px;margin:30px auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.12);">
     <div style="background:#0d0d0d;padding:24px 32px;display:flex;align-items:center;gap:16px;">
       <div>
-        <div style="color:#ffffff;font-size:16px;font-weight:700;letter-spacing:.5px;">TRANSPORT BROKERS INC.</div>
+        <div style="color:#ffffff;font-size:16px;font-weight:700;letter-spacing:.5px;">GOLD STAR TRANSPORTATION, INC.</div>
       </div>
     </div>
     <div style="padding:28px 32px;">
@@ -113,7 +113,7 @@ router.post("/carrier-agreement", async (req, res) => {
       <p style="margin:24px 0 0;font-size:12px;color:#888;">The signed Carrier Setup Agreement PDF is attached to this email.</p>
     </div>
     <div style="background:#f9f9f9;padding:16px 32px;text-align:center;border-top:1px solid #eee;">
-      <p style="margin:0;font-size:11px;color:#aaa;">TRANSPORT BROKERS INC. · 9424 REEDS ROAD, OVERLAND PARK, KS 66207</p>
+      <p style="margin:0;font-size:11px;color:#aaa;">GOLD STAR TRANSPORTATION, INC. · 9424 REEDS ROAD, OVERLAND PARK, KS 66207</p>
     </div>
   </div>
 </body>
@@ -121,12 +121,12 @@ router.post("/carrier-agreement", async (req, res) => {
         `,
         attachments: pdfBase64
           ? [
-              {
-                filename: `Carrier_Agreement_${safeName}_${today}.pdf`,
-                content: pdfBase64,
-                contentType: "application/pdf",
-              },
-            ]
+            {
+              filename: `Carrier_Agreement_${safeName}_${today}.pdf`,
+              content: pdfBase64,
+              contentType: "application/pdf",
+            },
+          ]
           : [],
       });
       if (result.success) {

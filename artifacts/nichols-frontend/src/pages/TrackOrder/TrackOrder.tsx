@@ -41,8 +41,8 @@ interface TrackOrderRecord {
 const defaultRecord: TrackOrderRecord = {
   trackingId: 'NTS-78432',
   status: 'ACTIVE CONTRACT • DISPATCHED',
-  carrier: 'Transport Brokers Inc. Freight Fleet',
-  dotNumber: '2212598',
+  carrier: 'Gold Star Transportation, Inc. Freight Fleet',
+  dotNumber: '253494',
   truckNumber: 'TRK-9428',
   scheduleWindows: 'Mon–Fri: 06:00 AM – 06:00 PM CST',
   tripsPerWeek: '5 Trips / Week',
@@ -82,10 +82,10 @@ async function fetchShipmentData(rawId: string): Promise<TrackOrderRecord | null
     const res = await fetch(`${baseUrl}/api/shipments/${encodeURIComponent(cleanId)}`)
     if (res.ok) {
       const data = await res.json()
-      
+
       const originStr = data.pickupAddress || 'Alexandria, LA'
       const destStr = data.deliveryAddress || 'Dallas, TX'
-      
+
       let originCoords: [number, number] = [31.3113, -92.4451]
       let destCoords: [number, number] = [32.7767, -96.7970]
 
@@ -129,8 +129,8 @@ async function fetchShipmentData(rawId: string): Promise<TrackOrderRecord | null
           : defaultRecord.startDate,
         contractNumber: `DFA-${cleanId.replace(/\D/g, '').slice(0, 4) || '2026'}-88`,
         appliesToContract: data.appliesTowardContract !== null && data.appliesTowardContract !== undefined
-            ? (data.appliesTowardContract ? 'YES' : 'NO') 
-            : `DFA-${cleanId.replace(/\D/g, '').slice(0, 4) || '2026'}-88`,
+          ? (data.appliesTowardContract ? 'YES' : 'NO')
+          : `DFA-${cleanId.replace(/\D/g, '').slice(0, 4) || '2026'}-88`,
         contractType: data.contractType || defaultRecord.contractNumber, // Map contractType or fallback
         purpose: data.purpose || defaultRecord.purpose,
         refundable: data.refundableStatus || defaultRecord.refundable,
@@ -308,7 +308,7 @@ export function TrackOrder() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
             {/* 2A. QUICK STATS: 2 Columns */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              
+
               {/* Load Overview */}
               <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm flex flex-col justify-between relative overflow-hidden group">
                 <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
@@ -438,7 +438,7 @@ export function TrackOrder() {
 
             {/* 2C. ROUTING & MAP */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              
+
               {/* Route Details */}
               <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
                 <h3 className="text-sm font-black uppercase tracking-widest text-black mb-2">
@@ -504,7 +504,7 @@ export function TrackOrder() {
                   </div>
                   <span className="text-[10px] text-gray-400 font-mono">Leaflet • OpenStreetMap</span>
                 </div>
-                <div 
+                <div
                   ref={mapContainerRef}
                   className="flex-1 w-full bg-gray-100 rounded-lg overflow-hidden relative z-0 border border-gray-200"
                   style={{ minHeight: '350px' }}
@@ -515,7 +515,7 @@ export function TrackOrder() {
 
             {/* 2D. BOTTOM SECTION: Slot Fee & Image */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-8">
-              
+
               <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm flex flex-col justify-between">
                 <div>
                   <h3 className="text-sm font-black uppercase tracking-widest text-black mb-1">
@@ -556,8 +556,8 @@ export function TrackOrder() {
               {/* Lifestyle / Branding Image */}
               <div className="relative rounded-xl overflow-hidden shadow-sm border border-gray-200 min-h-[300px] group">
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors z-10"></div>
-                <img 
-                  src="/images/services/intermodal.jpg" 
+                <img
+                  src="/images/services/intermodal.jpg"
                   alt="Freight terminal operations"
                   className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -587,21 +587,14 @@ export function TrackOrder() {
                 Our Alexandria dispatch team is actively monitoring this lane and can confirm gate entry, scale weights, and appointment schedules.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a 
+                <a
                   href="tel:9176723364"
                   className="px-6 py-3 rounded-full bg-black text-white font-bold text-sm uppercase tracking-wider inline-flex items-center gap-2 hover:bg-neutral-800 transition-colors"
                 >
                   <Phone className="w-4 h-4 text-lime-400" />
-                  Call 917-672-3364
+                  Call +1 (917) 672-3364
                 </a>
-                <a 
-                  href="tel:6802047669"
-                  className="px-6 py-3 rounded-full bg-black text-white font-bold text-sm uppercase tracking-wider inline-flex items-center gap-2 hover:bg-neutral-800 transition-colors"
-                >
-                  <Phone className="w-4 h-4 text-lime-400" />
-                  Call (680)204-7669
-                </a>
-                <Link href="/contact-us">
+                <Link href="/contact">
                   <button className="px-6 py-3 rounded-full bg-white text-black font-bold text-sm uppercase tracking-wider inline-flex items-center border border-gray-300 hover:border-black transition-colors">
                     Submit Inquiry
                   </button>
@@ -618,7 +611,7 @@ export function TrackOrder() {
               Ready to haul more freight with a broker that has your back?
             </h2>
             <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-              Join the carriers who trust Nichols Transportation Services for consistent lanes and real support.
+              Join the carriers who trust Gold Star Transportation, Inc. for consistent lanes and real support.
             </p>
             <Link href="/carrier-services">
               <button className="px-8 py-4 rounded-full bg-white text-black font-bold text-sm uppercase tracking-wider inline-flex items-center gap-3 hover:bg-lime-400 transition-colors">

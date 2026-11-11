@@ -9,18 +9,18 @@ export interface CTASectionProps {
 
 export function CTASection({
   heading = 'Ready To Haul More Freight?',
-  subheading = 'Join carriers who trust Transport Brokers Inc. for consistent lanes and real support. Access guaranteed QuickPay, dedicated freight corridors, and 24/7 dedicated dispatch.',
+  subheading = 'Join carriers who trust Gold Star Transportation, Inc. for consistent lanes and real support. Access guaranteed QuickPay, dedicated freight corridors, and 24/7 dedicated dispatch.',
   ctaText = 'Get Started Today',
   ctaLink = '#contact',
 }: CTASectionProps) {
   return (
-    <section 
+    <section
       id="cta"
       aria-label="Bottom Call To Action Section"
       className="py-28 lg:py-40 bg-brand-black text-white relative overflow-hidden border-t border-white/10"
     >
       {/* Background freight imagery with heavy cinematic gradient */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25 scale-105 pointer-events-none"
         style={{ backgroundImage: `url('/images/hero/desert-highway-truck.jpg')` }}
       >
@@ -31,7 +31,7 @@ export function CTASection({
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-lime-500/10 blur-[150px] rounded-full pointer-events-none" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
-        
+
         {/* Eyebrow badge */}
         <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-lime-500/15 border border-lime-500/30 text-lime-400 text-xs font-mono font-bold tracking-widest uppercase backdrop-blur-md">
           <ShieldCheck className="h-4 w-4 text-lime-400 mr-1" />
@@ -63,15 +63,7 @@ export function CTASection({
             className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/20 text-white font-semibold text-base transition-all backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-white"
           >
             <PhoneCall className="mr-2.5 h-5 w-5 text-lime-400" />
-            <span className="font-mono">917-672-3364</span>
-          </a>
-
-          <a
-            href="tel:6802047669"
-            className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/20 text-white font-semibold text-base transition-all backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-white"
-          >
-            <PhoneCall className="mr-2.5 h-5 w-5 text-lime-400" />
-            <span className="font-mono">(680)204-7669</span>
+            <span className="font-mono">+1 (917) 672-3364</span>
           </a>
         </div>
 

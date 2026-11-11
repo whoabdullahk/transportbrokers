@@ -19,7 +19,7 @@ export function App() {
         {/* / - Homepage */}
         <Route path="/" component={Home} />
 
-        {/* /about - About TBI */}
+        {/* /about - About Gold Star Transportation, Inc. */}
         <Route path="/about" component={About} />
 
         {/* /carrier-services - Carrier Services */}
