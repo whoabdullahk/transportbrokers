@@ -12,6 +12,7 @@ export interface SendEmailAttachment {
 export interface SendEmailParams {
   from?: string; // e.g. '"Display Name" <email@domain.com>'
   to: string | string[];
+  cc?: string | string[];
   bcc?: string | string[];
   replyTo?: string;
   subject: string;
@@ -30,7 +31,7 @@ export interface SendEmailResult {
 // Track temporary outbound SMTP blocks (e.g. Render free tier blocking ports 25/465/587)
 // so subsequent sends fail over to HTTPS email APIs immediately without waiting for timeout.
 let smtpBlockedUntil = 0;
-const SMTP_BLOCK_TTL_MS = 5 * 60 * 1000;
+const SMTP_BLOCK_TTL_MS = 30 * 60 * 1000;
 
 export function isSmtpNetworkError(errOrMsg: unknown): boolean {
   const msg = typeof errOrMsg === "string"
@@ -80,7 +81,7 @@ function sanitizeFromField(rawFrom?: string): string {
   return rawFrom;
 }
 
-async function sendViaResend(params: SendEmailParams, toList: string[], bccList: string[]): Promise<SendEmailResult> {
+async function sendViaResend(params: SendEmailParams, toList: string[], ccList: string[], bccList: string[]): Promise<SendEmailResult> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     return { success: false, provider: "resend", error: "RESEND_API_KEY is missing" };
@@ -98,6 +99,7 @@ async function sendViaResend(params: SendEmailParams, toList: string[], bccList:
     const bodyPayload = {
       from: fromField,
       to: toList,
+      cc: ccList.length > 0 ? ccList : undefined,
       bcc: bccList.length > 0 ? bccList : undefined,
       reply_to: params.replyTo,
       subject: params.subject,
@@ -106,31 +108,43 @@ async function sendViaResend(params: SendEmailParams, toList: string[], bccList:
       attachments: mappedAttachments && mappedAttachments.length > 0 ? mappedAttachments : undefined,
     };
 
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bodyPayload),
-    });
+    const maxAttempts = 3;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bodyPayload),
+      });
 
-    const data = await response.json().catch(() => ({})) as any;
+      const data = await response.json().catch(() => ({})) as any;
 
-    if (!response.ok) {
-      logger.error({ responseData: data, status: response.status }, "Resend API returned error status");
-      return { success: false, provider: "resend", error: data.message || `HTTP ${response.status}` };
+      if (response.status === 429 && attempt < maxAttempts) {
+        const waitMs = 700 * attempt;
+        logger.warn({ attempt, waitMs }, "Resend API rate limited (429), retrying...");
+        await new Promise((r) => setTimeout(r, waitMs));
+        continue;
+      }
+
+      if (!response.ok) {
+        logger.error({ responseData: data, status: response.status }, "Resend API returned error status");
+        return { success: false, provider: "resend", error: data.message || `HTTP ${response.status}` };
+      }
+
+      logger.info({ messageId: data.id }, "Email sent successfully via Resend API");
+      return { success: true, provider: "resend", messageId: data.id };
     }
 
-    logger.info({ messageId: data.id }, "Email sent successfully via Resend API");
-    return { success: true, provider: "resend", messageId: data.id };
+    return { success: false, provider: "resend", error: "Resend API rate limit exceeded" };
   } catch (err: any) {
     logger.error({ err }, "Resend API request failed");
     return { success: false, provider: "resend", error: err.message || String(err) };
   }
 }
 
-async function sendViaSendGrid(params: SendEmailParams, toList: string[], bccList: string[]): Promise<SendEmailResult> {
+async function sendViaSendGrid(params: SendEmailParams, toList: string[], ccList: string[], bccList: string[]): Promise<SendEmailResult> {
   const apiKey = process.env.SENDGRID_API_KEY;
   if (!apiKey) {
     return { success: false, provider: "sendgrid", error: "SENDGRID_API_KEY is missing" };
@@ -158,6 +172,9 @@ async function sendViaSendGrid(params: SendEmailParams, toList: string[], bccLis
       to: toList.map((email) => ({ email })),
     };
 
+    if (ccList.length > 0) {
+      personalizations.cc = ccList.map((email) => ({ email }));
+    }
     if (bccList.length > 0) {
       personalizations.bcc = bccList.map((email) => ({ email }));
     }
@@ -202,7 +219,7 @@ async function sendViaSendGrid(params: SendEmailParams, toList: string[], bccLis
   }
 }
 
-async function sendViaMailgun(params: SendEmailParams, toList: string[], bccList: string[]): Promise<SendEmailResult> {
+async function sendViaMailgun(params: SendEmailParams, toList: string[], ccList: string[], bccList: string[]): Promise<SendEmailResult> {
   const apiKey = process.env.MAILGUN_API_KEY;
   const domain = process.env.MAILGUN_DOMAIN;
   if (!apiKey || !domain) {
@@ -219,6 +236,10 @@ async function sendViaMailgun(params: SendEmailParams, toList: string[], bccList
 
     toList.forEach((toEmail) => {
       formData.append("to", toEmail);
+    });
+
+    ccList.forEach((ccEmail) => {
+      formData.append("cc", ccEmail);
     });
 
     bccList.forEach((bccEmail) => {
@@ -279,7 +300,7 @@ async function sendViaMailgun(params: SendEmailParams, toList: string[], bccList
   }
 }
 
-async function sendViaSmtp(params: SendEmailParams, toList: string[], bccList: string[]): Promise<SendEmailResult> {
+async function sendViaSmtp(params: SendEmailParams, toList: string[], ccList: string[], bccList: string[]): Promise<SendEmailResult> {
   const host = process.env.SMTP_HOST ?? "smtp.hostinger.com";
   const port = Number(process.env.SMTP_PORT ?? 465);
   const user = process.env.SMTP_USER;
@@ -323,6 +344,7 @@ async function sendViaSmtp(params: SendEmailParams, toList: string[], bccList: s
     const info = await transporter.sendMail({
       from: finalizedFrom,
       to: toList,
+      cc: ccList.length > 0 ? ccList : undefined,
       bcc: bccList.length > 0 ? bccList : undefined,
       replyTo: params.replyTo,
       subject: params.subject,
@@ -365,9 +387,12 @@ export async function sendEmail(params: SendEmailParams): Promise<SendEmailResul
   const provider = (process.env.EMAIL_PROVIDER ?? "smtp").toLowerCase();
 
   const toList = (Array.isArray(params.to) ? params.to : [params.to]).filter(Boolean);
+  const rawCcList = params.cc ? (Array.isArray(params.cc) ? params.cc : [params.cc]) : [];
   const rawBccList = params.bcc ? (Array.isArray(params.bcc) ? params.bcc : [params.bcc]) : [];
   const toLowerSet = new Set(toList.map((e) => e.trim().toLowerCase()));
-  const bccList = rawBccList.filter((e) => e && !toLowerSet.has(e.trim().toLowerCase()));
+  const ccList = rawCcList.filter((e) => e && !toLowerSet.has(e.trim().toLowerCase()));
+  const ccLowerSet = new Set(ccList.map((e) => e.trim().toLowerCase()));
+  const bccList = rawBccList.filter((e) => e && !toLowerSet.has(e.trim().toLowerCase()) && !ccLowerSet.has(e.trim().toLowerCase()));
 
   logger.info({ provider, to: toList, subject: params.subject }, "Attempting to send email");
 
@@ -403,13 +428,13 @@ export async function sendEmail(params: SendEmailParams): Promise<SendEmailResul
   for (const currentProvider of attemptOrder) {
     let result: SendEmailResult;
     if (currentProvider === "resend") {
-      result = await sendViaResend(params, toList, bccList);
+      result = await sendViaResend(params, toList, ccList, bccList);
     } else if (currentProvider === "sendgrid") {
-      result = await sendViaSendGrid(params, toList, bccList);
+      result = await sendViaSendGrid(params, toList, ccList, bccList);
     } else if (currentProvider === "mailgun") {
-      result = await sendViaMailgun(params, toList, bccList);
+      result = await sendViaMailgun(params, toList, ccList, bccList);
     } else {
-      result = await sendViaSmtp(params, toList, bccList);
+      result = await sendViaSmtp(params, toList, ccList, bccList);
     }
 
     if (result.success) {

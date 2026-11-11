@@ -1172,7 +1172,11 @@ export default function AdminRateConfirmations() {
       });
 
       if (res.ok) {
-        toast({ title: "Email Sent!", description: `Rate confirmation sent to ${carrierEmail}` });
+        const data = await res.json().catch(() => ({}));
+        toast({
+          title: "Email Sent!",
+          description: data.message || `Rate confirmation sent to ${carrierEmail}`,
+        });
       } else {
         const err = await res.json().catch(() => ({}));
         toast({
@@ -1222,7 +1226,9 @@ export default function AdminRateConfirmations() {
         } else if (values.carrierEmail && created?.emailSent) {
           toast({
             title: "Rate confirmation created & emailed!",
-            description: `Sent to ${values.carrierEmail}`,
+            description: created?.emailWarning
+              ? created.emailWarning
+              : `Sent to ${values.carrierEmail} (copy sent to your inbox)`,
           });
         } else {
           toast({ title: "Rate confirmation created successfully" });

@@ -38,25 +38,17 @@ router.post("/carrier-agreement", async (req, res) => {
     const safeName = (formData.carrierFullName as string | undefined)
       ?.replace(/\s+/g, "_") ?? "submission";
 
-    const recipients = [
-      formData.email,
-      process.env.SMTP_TO ?? process.env.SMTP_USER
-    ].filter(Boolean) as string[];
-
-    let emailSent = false;
-    let emailError: string | undefined;
-
     const senderEmail =
       process.env.SMTP_FROM ||
       process.env.SMTP_USER ||
       "brandontaylor@goldstartranposrtationinc.com";
+    const adminInboxEmail = process.env.SMTP_TO || process.env.SMTP_USER || senderEmail;
+    const carrierEmail = typeof formData.email === "string" ? formData.email.trim() : "";
 
-    try {
-      const result = await sendEmail({
-        from: `"GOLD STAR TRANSPORTATION, INC." <${senderEmail}>`,
-        to: recipients.length > 0 ? recipients : (process.env.SMTP_TO ?? senderEmail),
-        subject: "New Carrier Agreement Submitted",
-        html: `
+    let emailSent = false;
+    let emailError: string | undefined;
+
+    const htmlBody = `
 <!DOCTYPE html>
 <html>
 <body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,sans-serif;">
@@ -123,22 +115,56 @@ router.post("/carrier-agreement", async (req, res) => {
   </div>
 </body>
 </html>
-        `,
-        attachments: pdfBase64
-          ? [
-            {
-              filename: `Carrier_Agreement_${safeName}_${today}.pdf`,
-              content: pdfBase64,
-              contentType: "application/pdf",
-            },
-          ]
-          : [],
+        `;
+
+    const attachments = pdfBase64
+      ? [
+          {
+            filename: `Carrier_Agreement_${safeName}_${today}.pdf`,
+            content: pdfBase64,
+            contentType: "application/pdf",
+          },
+        ]
+      : [];
+
+    try {
+      const fromHeader = `"GOLD STAR TRANSPORTATION, INC." <${senderEmail}>`;
+      const carrierLabel = formData.carrierFullName || formData.companyName || "Carrier";
+
+      // 1. Send directly to company inbox so submissions always land cleanly in Inbox
+      const adminResult = await sendEmail({
+        from: fromHeader,
+        to: adminInboxEmail,
+        replyTo: carrierEmail || adminInboxEmail,
+        subject: `New Carrier Agreement Submitted — ${carrierLabel}`,
+        html: htmlBody,
+        attachments,
       });
-      if (result.success) {
+
+      if (adminResult.success) {
         emailSent = true;
       } else {
-        emailError = result.error;
-        console.error("sendEmail error:", emailError);
+        emailError = adminResult.error;
+        console.error("sendEmail admin error:", emailError);
+      }
+
+      // 2. Send separate confirmation copy directly to carrier if different from adminInboxEmail
+      if (carrierEmail && carrierEmail.toLowerCase() !== adminInboxEmail.toLowerCase()) {
+        await new Promise((r) => setTimeout(r, 550));
+        const carrierResult = await sendEmail({
+          from: fromHeader,
+          to: carrierEmail,
+          replyTo: adminInboxEmail,
+          subject: "New Carrier Agreement Submitted — Gold Star Transportation, Inc.",
+          html: htmlBody,
+          attachments,
+        });
+        if (carrierResult.success) {
+          emailSent = true;
+        } else if (!emailError) {
+          emailError = carrierResult.error;
+          console.error("sendEmail carrier error:", emailError);
+        }
       }
     } catch (err: unknown) {
       emailError = err instanceof Error ? err.message : String(err);
