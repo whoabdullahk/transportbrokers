@@ -79,14 +79,22 @@ export async function sendEmail(params: SendEmailParams): Promise<SendEmailResul
 
       if (!response.ok) {
         logger.error({ responseData: data }, "Resend API returned error status");
-        return { success: false, error: data.message || `HTTP ${response.status}` };
+        if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+          logger.warn("Resend rejected delivery (domain unverified). Falling back to Hostinger SMTP...");
+        } else {
+          return { success: false, error: data.message || `HTTP ${response.status}` };
+        }
+      } else {
+        logger.info({ messageId: data.id }, "Email sent successfully via Resend API");
+        return { success: true, messageId: data.id };
       }
-
-      logger.info({ messageId: data.id }, "Email sent successfully via Resend API");
-      return { success: true, messageId: data.id };
     } catch (err: any) {
       logger.error({ err }, "Resend API request failed");
-      return { success: false, error: err.message || String(err) };
+      if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+        logger.warn("Resend request threw error. Falling back to Hostinger SMTP...");
+      } else {
+        return { success: false, error: err.message || String(err) };
+      }
     }
   }
 

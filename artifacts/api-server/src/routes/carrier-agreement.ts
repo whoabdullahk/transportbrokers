@@ -5,8 +5,8 @@ const router = Router();
 
 router.post("/carrier-agreement", async (req, res) => {
   try {
-    const { formData, pdfBase64 } = req.body as {
-      formData: Record<string, any>;
+    const { formData = {}, pdfBase64 } = req.body as {
+      formData?: Record<string, any>;
       pdfBase64?: string;
     };
 
