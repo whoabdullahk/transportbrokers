@@ -46,10 +46,15 @@ router.post("/carrier-agreement", async (req, res) => {
     let emailSent = false;
     let emailError: string | undefined;
 
+    const senderEmail =
+      process.env.SMTP_FROM ||
+      process.env.SMTP_USER ||
+      "brandontaylor@goldstartranposrtationinc.com";
+
     try {
       const result = await sendEmail({
-        from: `"GOLD STAR TRANSPORTATION, INC." <${process.env.SMTP_USER}>`,
-        to: recipients.length > 0 ? recipients : (process.env.SMTP_TO ?? process.env.SMTP_USER ?? ""),
+        from: `"GOLD STAR TRANSPORTATION, INC." <${senderEmail}>`,
+        to: recipients.length > 0 ? recipients : (process.env.SMTP_TO ?? senderEmail),
         subject: "New Carrier Agreement Submitted",
         html: `
 <!DOCTYPE html>

@@ -89,12 +89,20 @@ router.post(
       parsed.data.carrierEmail ||
       (req.body as any).carrierEmail;
 
+    const senderEmail =
+      process.env.SMTP_FROM ||
+      process.env.SMTP_USER ||
+      "brandontaylor@goldstartranposrtationinc.com";
+
     const isMailConfigured =
       process.env.EMAIL_PROVIDER ||
       process.env.SMTP_USER ||
       process.env.RESEND_API_KEY ||
       process.env.SENDGRID_API_KEY ||
       process.env.MAILGUN_API_KEY;
+
+    let emailSent = false;
+    let emailWarning: string | undefined;
 
     if (carrierEmail && isMailConfigured) {
       try {
@@ -104,9 +112,9 @@ router.post(
         const rcDate = rc.rcDateTime ? new Date(rc.rcDateTime).toLocaleDateString("en-US") : "N/A";
 
         const emailResult = await sendEmail({
-          from: `"GOLD STAR TRANSPORTATION, INC." <${process.env.SMTP_USER}>`,
+          from: `"GOLD STAR TRANSPORTATION, INC." <${senderEmail}>`,
           to: carrierEmail,
-          bcc: process.env.SMTP_USER,
+          bcc: process.env.SMTP_TO || process.env.SMTP_USER || undefined,
           subject: `Rate Confirmation — PRO #${proNum}`,
           html: `<!DOCTYPE html>
 <html>
@@ -213,18 +221,27 @@ router.post(
             : [],
         });
         if (emailResult.success) {
+          emailSent = true;
           console.log(`[rate-confirmation] Email sent to carrier: ${carrierEmail}`);
         } else {
-          console.error("[rate-confirmation] Failed to send carrier email:", emailResult.error);
+          emailWarning = emailResult.error || "Unknown email error";
+          console.error("[rate-confirmation] Failed to send carrier email:", emailWarning);
         }
       } catch (emailErr) {
-        // Email failure is non-fatal — log it but don't block the response
+        // Email failure is non-fatal — log it and return warning to UI
+        emailWarning = emailErr instanceof Error ? emailErr.message : String(emailErr);
         console.error("[rate-confirmation] Failed to send carrier email:", emailErr);
       }
+    } else if (carrierEmail && !isMailConfigured) {
+      emailWarning = "No email provider configured on server";
     }
     // ──────────────────────────────────────────────────────────────────────────
 
-    res.status(201).json(AdminCreateRateConfirmationResponse.parse(rateConfirmation));
+    res.status(201).json({
+      ...AdminCreateRateConfirmationResponse.parse(rateConfirmation),
+      emailSent,
+      ...(emailWarning ? { emailWarning } : {}),
+    });
   },
 );
 
@@ -338,11 +355,15 @@ router.post(
     const proNum = rc.proNumber || "N/A";
     const totalRate = rc.totalRateUsd ? `$${Number(rc.totalRateUsd).toFixed(2)}` : "N/A";
     const rcDate = rc.rcDateTime ? new Date(rc.rcDateTime).toLocaleDateString("en-US") : "N/A";
+    const senderEmail =
+      process.env.SMTP_FROM ||
+      process.env.SMTP_USER ||
+      "brandontaylor@goldstartranposrtationinc.com";
 
     const emailResult = await sendEmail({
-      from: `"GOLD STAR TRANSPORTATION, INC." <${process.env.SMTP_USER}>`,
+      from: `"GOLD STAR TRANSPORTATION, INC." <${senderEmail}>`,
       to: carrierEmail,
-      bcc: process.env.SMTP_USER,
+      bcc: process.env.SMTP_TO || process.env.SMTP_USER || undefined,
       subject: `Rate Confirmation — PRO #${proNum}`,
       html: `<!DOCTYPE html>
 <html>

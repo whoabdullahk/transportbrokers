@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import dns from "dns";
+import net from "net";
 import { logger } from "./logger.js";
 
 export interface SendEmailAttachment {
@@ -22,298 +23,300 @@ export interface SendEmailParams {
 export interface SendEmailResult {
   success: boolean;
   messageId?: string;
+  provider?: string;
   error?: string;
 }
 
+// Track temporary outbound SMTP blocks (e.g. Render free tier blocking ports 25/465/587)
+// so subsequent sends fail over to HTTPS email APIs immediately without waiting for timeout.
+let smtpBlockedUntil = 0;
+const SMTP_BLOCK_TTL_MS = 5 * 60 * 1000;
+
+export function isSmtpNetworkError(errOrMsg: unknown): boolean {
+  const msg = typeof errOrMsg === "string"
+    ? errOrMsg
+    : errOrMsg instanceof Error
+      ? `${(errOrMsg as any).code || ""} ${errOrMsg.message}`
+      : String(errOrMsg || "");
+  return /ETIMEDOUT|ENETUNREACH|ECONNREFUSED|EHOSTUNREACH|ESOCKET|Connection timeout|Greeting never received/i.test(msg);
+}
+
 /**
- * Sends an email using the configured provider (SMTP, Resend, or SendGrid).
+ * Resolves a hostname strictly to an IPv4 address using system getaddrinfo (dns.lookup).
+ * Passing a literal IPv4 host + tls.servername bypasses Nodemailer 9's internal
+ * dns.Resolver (which resolves AAAA records and ignores custom lookup options).
  */
-export async function sendEmail(params: SendEmailParams): Promise<SendEmailResult> {
-  const provider = (process.env.EMAIL_PROVIDER ?? "smtp").toLowerCase();
-  
-  const toList = Array.isArray(params.to) ? params.to : [params.to];
-  const bccList = params.bcc ? (Array.isArray(params.bcc) ? params.bcc : [params.bcc]) : [];
-
-  logger.info({ provider, to: toList, subject: params.subject }, "Attempting to send email");
-
-  if (provider === "resend") {
-    const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
-      logger.error("RESEND_API_KEY is not configured");
-      return { success: false, error: "RESEND_API_KEY is missing" };
-    }
-
-    try {
-      const mappedAttachments = params.attachments?.map((att) => ({
-        filename: att.filename,
-        content: Buffer.isBuffer(att.content) ? att.content.toString("base64") : att.content,
-        contentType: att.contentType,
-      }));
-
-      // Extract raw email if in format "Name <email@domain.com>" or fallback to SMTP_FROM / SMTP_USER
-      const fromField = params.from || process.env.SMTP_FROM || process.env.SMTP_USER;
-      if (!fromField) {
-        throw new Error("Sender email (from) is not configured");
-      }
-
-      const bodyPayload = {
-        from: fromField,
-        to: toList,
-        bcc: bccList.length > 0 ? bccList : undefined,
-        reply_to: params.replyTo,
-        subject: params.subject,
-        html: params.html,
-        text: params.text,
-        attachments: mappedAttachments,
-      };
-
-      const response = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bodyPayload),
-      });
-
-      const data = await response.json() as any;
-
-      if (!response.ok) {
-        logger.error({ responseData: data }, "Resend API returned error status");
-        if (process.env.SMTP_USER && process.env.SMTP_PASS) {
-          logger.warn("Resend rejected delivery (domain unverified). Falling back to Hostinger SMTP...");
-        } else {
-          return { success: false, error: data.message || `HTTP ${response.status}` };
-        }
+export async function resolveIpv4Host(hostname: string): Promise<string> {
+  if (!hostname || net.isIP(hostname) !== 0) {
+    return hostname;
+  }
+  return new Promise((resolve) => {
+    dns.lookup(hostname, { family: 4 }, (err, address) => {
+      if (!err && address) {
+        resolve(address);
       } else {
-        logger.info({ messageId: data.id }, "Email sent successfully via Resend API");
-        return { success: true, messageId: data.id };
+        resolve(hostname);
       }
-    } catch (err: any) {
-      logger.error({ err }, "Resend API request failed");
-      if (process.env.SMTP_USER && process.env.SMTP_PASS) {
-        logger.warn("Resend request threw error. Falling back to Hostinger SMTP...");
-      } else {
-        return { success: false, error: err.message || String(err) };
-      }
-    }
+    });
+  });
+}
+
+function normalizeBase64(content: string | Buffer): string {
+  if (Buffer.isBuffer(content)) {
+    return content.toString("base64");
+  }
+  const commaIdx = content.indexOf(",");
+  if (content.startsWith("data:") && commaIdx !== -1) {
+    return content.slice(commaIdx + 1);
+  }
+  return content;
+}
+
+function sanitizeFromField(rawFrom?: string): string {
+  const fallback = process.env.SMTP_FROM || process.env.SMTP_USER || "brandontaylor@goldstartranposrtationinc.com";
+  if (!rawFrom || /<undefined>|<null>/i.test(rawFrom)) {
+    return fallback;
+  }
+  return rawFrom;
+}
+
+async function sendViaResend(params: SendEmailParams, toList: string[], bccList: string[]): Promise<SendEmailResult> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    return { success: false, provider: "resend", error: "RESEND_API_KEY is missing" };
   }
 
-  if (provider === "sendgrid") {
-    const apiKey = process.env.SENDGRID_API_KEY;
-    if (!apiKey) {
-      logger.error("SENDGRID_API_KEY is not configured");
-      return { success: false, error: "SENDGRID_API_KEY is missing" };
+  try {
+    const mappedAttachments = params.attachments?.map((att) => ({
+      filename: att.filename,
+      content: normalizeBase64(att.content),
+      contentType: att.contentType,
+    }));
+
+    const fromField = sanitizeFromField(params.from);
+
+    const bodyPayload = {
+      from: fromField,
+      to: toList,
+      bcc: bccList.length > 0 ? bccList : undefined,
+      reply_to: params.replyTo,
+      subject: params.subject,
+      html: params.html,
+      text: params.text,
+      attachments: mappedAttachments && mappedAttachments.length > 0 ? mappedAttachments : undefined,
+    };
+
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bodyPayload),
+    });
+
+    const data = await response.json().catch(() => ({})) as any;
+
+    if (!response.ok) {
+      logger.error({ responseData: data, status: response.status }, "Resend API returned error status");
+      return { success: false, provider: "resend", error: data.message || `HTTP ${response.status}` };
     }
 
-    try {
-      const fromField = params.from || process.env.SMTP_FROM || process.env.SMTP_USER;
-      if (!fromField) {
-        throw new Error("Sender email (from) is not configured");
-      }
+    logger.info({ messageId: data.id }, "Email sent successfully via Resend API");
+    return { success: true, provider: "resend", messageId: data.id };
+  } catch (err: any) {
+    logger.error({ err }, "Resend API request failed");
+    return { success: false, provider: "resend", error: err.message || String(err) };
+  }
+}
 
-      // Parse displays name and email
-      // e.g. "Name <email@domain.com>" or "email@domain.com"
-      let fromEmail = fromField;
-      let fromName: string | undefined;
-      const match = fromField.match(/^(?:"?([^"]*)"?\s)?(?:<(.+?)>)$/);
-      if (match) {
-        fromName = match[1] || undefined;
-        fromEmail = match[2];
-      }
-
-      const mappedAttachments = params.attachments?.map((att) => ({
-        content: Buffer.isBuffer(att.content) ? att.content.toString("base64") : att.content,
-        filename: att.filename,
-        type: att.contentType || "application/octet-stream",
-        disposition: "attachment",
-      }));
-
-      const personalizations: any = {
-        to: toList.map((email) => ({ email })),
-      };
-
-      if (bccList.length > 0) {
-        personalizations.bcc = bccList.map((email) => ({ email }));
-      }
-
-      const bodyPayload = {
-        personalizations: [personalizations],
-        from: { email: fromEmail, name: fromName },
-        reply_to: params.replyTo ? { email: params.replyTo } : undefined,
-        subject: params.subject,
-        content: [
-          ...(params.text ? [{ type: "text/plain", value: params.text }] : []),
-          ...(params.html ? [{ type: "text/html", value: params.html }] : []),
-        ],
-        attachments: mappedAttachments,
-      };
-
-      const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bodyPayload),
-      });
-
-      if (!response.ok) {
-        let errorMsg = `HTTP ${response.status}`;
-        try {
-          const data = await response.json() as any;
-          errorMsg = JSON.stringify(data.errors || data);
-        } catch {}
-        logger.error({ errorResponse: errorMsg }, "SendGrid API returned error status");
-        return { success: false, error: errorMsg };
-      }
-
-      const messageId = response.headers.get("x-message-id") || "sendgrid-success";
-      logger.info({ messageId }, "Email sent successfully via SendGrid API");
-      return { success: true, messageId };
-    } catch (err: any) {
-      logger.error({ err }, "SendGrid API request failed");
-      return { success: false, error: err.message || String(err) };
-    }
+async function sendViaSendGrid(params: SendEmailParams, toList: string[], bccList: string[]): Promise<SendEmailResult> {
+  const apiKey = process.env.SENDGRID_API_KEY;
+  if (!apiKey) {
+    return { success: false, provider: "sendgrid", error: "SENDGRID_API_KEY is missing" };
   }
 
-  if (provider === "mailgun") {
-    const apiKey = process.env.MAILGUN_API_KEY;
-    const domain = process.env.MAILGUN_DOMAIN;
-    if (!apiKey || !domain) {
-      logger.error(
-        {
-          apiKey: apiKey ? "Set" : "Missing",
-          domain: domain ? "Set" : "Missing",
-        },
-        "Mailgun credentials (MAILGUN_API_KEY or MAILGUN_DOMAIN) not configured"
-      );
-      return { success: false, error: "Mailgun credentials not configured" };
+  try {
+    const fromField = sanitizeFromField(params.from);
+
+    let fromEmail = fromField;
+    let fromName: string | undefined;
+    const match = fromField.match(/^(?:"?([^"]*)"?\s)?(?:<(.+?)>)$/);
+    if (match) {
+      fromName = match[1] || undefined;
+      fromEmail = match[2];
     }
 
-    try {
-      const fromField = params.from || process.env.SMTP_FROM || process.env.SMTP_USER;
-      if (!fromField) {
-        throw new Error("Sender email (from) is not configured");
-      }
+    const mappedAttachments = params.attachments?.map((att) => ({
+      content: normalizeBase64(att.content),
+      filename: att.filename,
+      type: att.contentType || "application/octet-stream",
+      disposition: "attachment",
+    }));
 
-      const apiUrl = (process.env.MAILGUN_API_URL ?? "https://api.mailgun.net/v3").replace(/\/$/, "");
-      const requestUrl = `${apiUrl}/${domain}/messages`;
+    const personalizations: any = {
+      to: toList.map((email) => ({ email })),
+    };
 
-      const formData = new FormData();
-      formData.append("from", fromField);
+    if (bccList.length > 0) {
+      personalizations.bcc = bccList.map((email) => ({ email }));
+    }
 
-      toList.forEach((toEmail) => {
-        formData.append("to", toEmail);
-      });
+    const bodyPayload = {
+      personalizations: [personalizations],
+      from: { email: fromEmail, name: fromName },
+      reply_to: params.replyTo ? { email: params.replyTo } : undefined,
+      subject: params.subject,
+      content: [
+        ...(params.text ? [{ type: "text/plain", value: params.text }] : []),
+        ...(params.html ? [{ type: "text/html", value: params.html }] : []),
+      ],
+      attachments: mappedAttachments && mappedAttachments.length > 0 ? mappedAttachments : undefined,
+    };
 
-      bccList.forEach((bccEmail) => {
-        formData.append("bcc", bccEmail);
-      });
+    const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bodyPayload),
+    });
 
-      if (params.replyTo) {
-        formData.append("h:Reply-To", params.replyTo);
-      }
-
-      formData.append("subject", params.subject);
-
-      if (params.text) {
-        formData.append("text", params.text);
-      }
-      if (params.html) {
-        formData.append("html", params.html);
-      }
-
-      if (params.attachments && params.attachments.length > 0) {
-        for (const att of params.attachments) {
-          const contentBuffer = Buffer.isBuffer(att.content)
-            ? att.content
-            : Buffer.from(att.content, "base64");
-          const blob = new Blob([new Uint8Array(contentBuffer)], { type: att.contentType || "application/octet-stream" });
-          formData.append("attachment", blob, att.filename);
-        }
-      }
-
-      const authHeader = "Basic " + Buffer.from(`api:${apiKey}`).toString("base64");
-
-      const response = await fetch(requestUrl, {
-        method: "POST",
-        headers: {
-          "Authorization": authHeader,
-        },
-        body: formData,
-      });
-
-      const responseText = await response.text();
-      let responseData: any = {};
+    if (!response.ok) {
+      let errorMsg = `HTTP ${response.status}`;
       try {
-        responseData = JSON.parse(responseText);
-      } catch {
-        responseData = { rawResponse: responseText };
-      }
-
-      if (!response.ok) {
-        logger.error({ responseData, statusCode: response.status }, "Mailgun API returned error status");
-        return { success: false, error: responseData.message || responseText || `HTTP ${response.status}` };
-      }
-
-      logger.info({ messageId: responseData.id }, "Email sent successfully via Mailgun API");
-      return { success: true, messageId: responseData.id };
-    } catch (err: any) {
-      logger.error({ err }, "Mailgun API request failed");
-      return { success: false, error: err.message || String(err) };
+        const data = await response.json() as any;
+        errorMsg = JSON.stringify(data.errors || data);
+      } catch {}
+      logger.error({ errorResponse: errorMsg }, "SendGrid API returned error status");
+      return { success: false, provider: "sendgrid", error: errorMsg };
     }
+
+    const messageId = response.headers.get("x-message-id") || "sendgrid-success";
+    logger.info({ messageId }, "Email sent successfully via SendGrid API");
+    return { success: true, provider: "sendgrid", messageId };
+  } catch (err: any) {
+    logger.error({ err }, "SendGrid API request failed");
+    return { success: false, provider: "sendgrid", error: err.message || String(err) };
+  }
+}
+
+async function sendViaMailgun(params: SendEmailParams, toList: string[], bccList: string[]): Promise<SendEmailResult> {
+  const apiKey = process.env.MAILGUN_API_KEY;
+  const domain = process.env.MAILGUN_DOMAIN;
+  if (!apiKey || !domain) {
+    return { success: false, provider: "mailgun", error: "Mailgun credentials not configured" };
   }
 
-  // DEFAULT / FALLBACK: SMTP (nodemailer)
+  try {
+    const fromField = sanitizeFromField(params.from);
+    const apiUrl = (process.env.MAILGUN_API_URL ?? "https://api.mailgun.net/v3").replace(/\/$/, "");
+    const requestUrl = `${apiUrl}/${domain}/messages`;
+
+    const formData = new FormData();
+    formData.append("from", fromField);
+
+    toList.forEach((toEmail) => {
+      formData.append("to", toEmail);
+    });
+
+    bccList.forEach((bccEmail) => {
+      formData.append("bcc", bccEmail);
+    });
+
+    if (params.replyTo) {
+      formData.append("h:Reply-To", params.replyTo);
+    }
+
+    formData.append("subject", params.subject);
+
+    if (params.text) {
+      formData.append("text", params.text);
+    }
+    if (params.html) {
+      formData.append("html", params.html);
+    }
+
+    if (params.attachments && params.attachments.length > 0) {
+      for (const att of params.attachments) {
+        const contentBuffer = Buffer.isBuffer(att.content)
+          ? att.content
+          : Buffer.from(normalizeBase64(att.content), "base64");
+        const blob = new Blob([new Uint8Array(contentBuffer)], { type: att.contentType || "application/octet-stream" });
+        formData.append("attachment", blob, att.filename);
+      }
+    }
+
+    const authHeader = "Basic " + Buffer.from(`api:${apiKey}`).toString("base64");
+
+    const response = await fetch(requestUrl, {
+      method: "POST",
+      headers: {
+        "Authorization": authHeader,
+      },
+      body: formData,
+    });
+
+    const responseText = await response.text();
+    let responseData: any = {};
+    try {
+      responseData = JSON.parse(responseText);
+    } catch {
+      responseData = { rawResponse: responseText };
+    }
+
+    if (!response.ok) {
+      logger.error({ responseData, statusCode: response.status }, "Mailgun API returned error status");
+      return { success: false, provider: "mailgun", error: responseData.message || responseText || `HTTP ${response.status}` };
+    }
+
+    logger.info({ messageId: responseData.id }, "Email sent successfully via Mailgun API");
+    return { success: true, provider: "mailgun", messageId: responseData.id };
+  } catch (err: any) {
+    logger.error({ err }, "Mailgun API request failed");
+    return { success: false, provider: "mailgun", error: err.message || String(err) };
+  }
+}
+
+async function sendViaSmtp(params: SendEmailParams, toList: string[], bccList: string[]): Promise<SendEmailResult> {
   const host = process.env.SMTP_HOST ?? "smtp.hostinger.com";
   const port = Number(process.env.SMTP_PORT ?? 465);
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
 
   if (!user || !pass) {
-    logger.error("SMTP credentials (SMTP_USER/SMTP_PASS) not configured");
-    return { success: false, error: "SMTP credentials not configured" };
+    return { success: false, provider: "smtp", error: "SMTP credentials not configured" };
   }
 
   try {
+    const resolvedHost = await resolveIpv4Host(host);
+
     const transporter = nodemailer.createTransport({
-      host,
+      host: resolvedHost,
       port,
       secure: port === 465,
       auth: { user, pass },
       tls: { rejectUnauthorized: false, servername: host },
-      family: 4,
-      lookup: (hostname: string, _options: any, callback: any) => {
-        dns.lookup(hostname, { family: 4 }, callback);
-      },
-      connectionTimeout: 15000,
-      greetingTimeout: 15000,
-      socketTimeout: 20000,
+      connectionTimeout: 8000,
+      greetingTimeout: 8000,
+      socketTimeout: 15000,
     } as any);
 
-    // Hostinger SPF Rule: Enforce that the actual email address in the 'From' header 
+    // Hostinger SPF Rule: Enforce that the actual email address in the 'From' header
     // is EXACTLY the authenticated SMTP_USER.
-    // If input is e.g. `"Company Name" <other@domain.com>`, rewrite it to `"Company Name" <SMTP_USER>`.
-    let finalizedFrom = params.from || process.env.SMTP_FROM || user;
+    let finalizedFrom = sanitizeFromField(params.from);
     const nameMatch = finalizedFrom.match(/^(?:"?([^"]*)"?\s)?(?:<(.+?)>)$/);
     if (nameMatch) {
       const displayName = nameMatch[1];
-      if (displayName) {
-        finalizedFrom = `"${displayName}" <${user}>`;
-      } else {
-        finalizedFrom = user;
-      }
-    } else {
-      // If it doesn't match the display name format, force the whole string to be the SMTP user
-      if (finalizedFrom !== user) {
-        finalizedFrom = `"${finalizedFrom}" <${user}>`;
-      }
+      finalizedFrom = displayName ? `"${displayName}" <${user}>` : user;
+    } else if (finalizedFrom !== user) {
+      finalizedFrom = `"${finalizedFrom}" <${user}>`;
     }
 
     const mappedAttachments = params.attachments?.map((att) => ({
       filename: att.filename,
-      content: Buffer.isBuffer(att.content) ? att.content : Buffer.from(att.content, "base64"),
+      content: Buffer.isBuffer(att.content) ? att.content : Buffer.from(normalizeBase64(att.content), "base64"),
       contentType: att.contentType,
     }));
 
@@ -328,9 +331,13 @@ export async function sendEmail(params: SendEmailParams): Promise<SendEmailResul
       attachments: mappedAttachments,
     });
 
-    logger.info({ messageId: info.messageId }, "Email sent successfully via SMTP");
-    return { success: true, messageId: info.messageId };
+    smtpBlockedUntil = 0;
+    logger.info({ messageId: info.messageId, resolvedHost, port }, "Email sent successfully via SMTP");
+    return { success: true, provider: "smtp", messageId: info.messageId };
   } catch (err: any) {
+    if (isSmtpNetworkError(err)) {
+      smtpBlockedUntil = Date.now() + SMTP_BLOCK_TTL_MS;
+    }
     logger.error(
       {
         host,
@@ -341,13 +348,84 @@ export async function sendEmail(params: SendEmailParams): Promise<SendEmailResul
           code: err.code,
           command: err.command,
           syscall: err.syscall,
-          stack: err.stack,
         },
       },
       "SMTP sendMail failed"
     );
-    return { success: false, error: err.message || String(err) };
+    return { success: false, provider: "smtp", error: err.message || String(err) };
   }
+}
+
+/**
+ * Sends an email using the configured provider (SMTP, Resend, SendGrid, or Mailgun)
+ * with automatic fallback across other configured providers (e.g. SMTP -> Resend HTTPS
+ * when outbound SMTP ports 465/587 are blocked on free hosting tiers like Render).
+ */
+export async function sendEmail(params: SendEmailParams): Promise<SendEmailResult> {
+  const provider = (process.env.EMAIL_PROVIDER ?? "smtp").toLowerCase();
+
+  const toList = (Array.isArray(params.to) ? params.to : [params.to]).filter(Boolean);
+  const rawBccList = params.bcc ? (Array.isArray(params.bcc) ? params.bcc : [params.bcc]) : [];
+  const toLowerSet = new Set(toList.map((e) => e.trim().toLowerCase()));
+  const bccList = rawBccList.filter((e) => e && !toLowerSet.has(e.trim().toLowerCase()));
+
+  logger.info({ provider, to: toList, subject: params.subject }, "Attempting to send email");
+
+  const hasResend = Boolean(process.env.RESEND_API_KEY);
+  const hasSendGrid = Boolean(process.env.SENDGRID_API_KEY);
+  const hasMailgun = Boolean(process.env.MAILGUN_API_KEY && process.env.MAILGUN_DOMAIN);
+  const hasSmtp = Boolean(process.env.SMTP_USER && process.env.SMTP_PASS);
+  const hasHttpFallback = hasResend || hasSendGrid || hasMailgun;
+
+  const attemptOrder: string[] = [];
+  const pushUnique = (name: string, enabled: boolean) => {
+    if (enabled && !attemptOrder.includes(name)) {
+      attemptOrder.push(name);
+    }
+  };
+
+  if (provider === "smtp" && smtpBlockedUntil > Date.now() && hasHttpFallback) {
+    // Outbound SMTP was recently detected as blocked/timed out; try HTTPS APIs first for fast delivery.
+    pushUnique("resend", hasResend);
+    pushUnique("sendgrid", hasSendGrid);
+    pushUnique("mailgun", hasMailgun);
+    pushUnique("smtp", hasSmtp);
+  } else {
+    pushUnique(provider, true);
+    pushUnique("resend", hasResend);
+    pushUnique("sendgrid", hasSendGrid);
+    pushUnique("mailgun", hasMailgun);
+    pushUnique("smtp", hasSmtp);
+  }
+
+  const errors: string[] = [];
+
+  for (const currentProvider of attemptOrder) {
+    let result: SendEmailResult;
+    if (currentProvider === "resend") {
+      result = await sendViaResend(params, toList, bccList);
+    } else if (currentProvider === "sendgrid") {
+      result = await sendViaSendGrid(params, toList, bccList);
+    } else if (currentProvider === "mailgun") {
+      result = await sendViaMailgun(params, toList, bccList);
+    } else {
+      result = await sendViaSmtp(params, toList, bccList);
+    }
+
+    if (result.success) {
+      return result;
+    }
+
+    errors.push(`${currentProvider}: ${result.error || "Unknown error"}`);
+    if (attemptOrder.length > 1) {
+      logger.warn({ failedProvider: currentProvider, error: result.error }, "Email provider failed, trying next fallback...");
+    }
+  }
+
+  return {
+    success: false,
+    error: errors.join(" | ") || "No email provider configured",
+  };
 }
 
 /**
@@ -373,26 +451,25 @@ export async function verifySmtpConnection(): Promise<void> {
 
   logger.info({ host, port, user }, "SMTP startup check: testing connection...");
   try {
+    const resolvedHost = await resolveIpv4Host(host);
     const transporter = nodemailer.createTransport({
-      host,
+      host: resolvedHost,
       port,
       secure: port === 465,
       auth: { user, pass },
       tls: { rejectUnauthorized: false, servername: host },
-      family: 4,
-      lookup: (hostname: string, _options: any, callback: any) => {
-        dns.lookup(hostname, { family: 4 }, callback);
-      },
-      connectionTimeout: 15000,
-      greetingTimeout: 15000,
-      socketTimeout: 20000,
+      connectionTimeout: 8000,
+      greetingTimeout: 8000,
+      socketTimeout: 15000,
     } as any);
 
     await transporter.verify();
-    console.log("SMTP startup check: SUCCESS – connection verified successfully!");
+    smtpBlockedUntil = 0;
+    console.log(`SMTP startup check: SUCCESS – connection verified (${resolvedHost}:${port})`);
   } catch (err: any) {
-    console.error("SMTP startup check: FAILED – could not connect to SMTP server.");
-    console.error(JSON.stringify(err, null, 2));
+    if (isSmtpNetworkError(err)) {
+      smtpBlockedUntil = Date.now() + SMTP_BLOCK_TTL_MS;
+    }
+    console.error("SMTP startup check: FAILED – could not connect to SMTP server:", err?.message || err);
   }
 }
-

@@ -1161,6 +1161,7 @@ export default function AdminRateConfirmations() {
       const baseUrl = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
       const res = await fetch(`${baseUrl}/api/admin/rate-confirmations/${rc.id}/send-email`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           ...(localStorage.getItem("admin_token")
@@ -1208,11 +1209,24 @@ export default function AdminRateConfirmations() {
   const onCreateSubmit = (values: RcFormValues) => {
     const pdfBase64 = generateRcPDF(values);
     createMutation.mutate({ data: { ...toPayload(values), pdfBase64 } as any }, {
-      onSuccess: () => {
+      onSuccess: (created: any) => {
         queryClient.invalidateQueries({ queryKey: getAdminListRateConfirmationsQueryKey() });
         setIsCreateOpen(false);
         createForm.reset({ ...EMPTY_FORM_VALUES, rcDateTime: nowLocalDateTime() });
-        toast({ title: "Rate confirmation created successfully" });
+        if (values.carrierEmail && created?.emailSent === false) {
+          toast({
+            title: "Rate confirmation saved, but email failed",
+            description: created?.emailWarning || "Could not send email to carrier. You can retry with the mail button.",
+            variant: "destructive",
+          });
+        } else if (values.carrierEmail && created?.emailSent) {
+          toast({
+            title: "Rate confirmation created & emailed!",
+            description: `Sent to ${values.carrierEmail}`,
+          });
+        } else {
+          toast({ title: "Rate confirmation created successfully" });
+        }
       },
       onError: () => toast({ title: "Failed to create rate confirmation", variant: "destructive" }),
     });

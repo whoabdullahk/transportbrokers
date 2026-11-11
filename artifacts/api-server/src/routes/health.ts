@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import { HealthCheckResponse } from "@workspace/api-zod";
 import nodemailer from "nodemailer";
-import { sendEmail } from "../lib/mailer.js";
+import { resolveIpv4Host, sendEmail } from "../lib/mailer.js";
 
 const router: IRouter = Router();
 
@@ -27,16 +27,18 @@ router.get("/test-smtp", async (_req, res) => {
 
   // Test SMTP connection parameters if provider is SMTP or if SMTP user is configured
   if (user && pass) {
+    const resolvedHost = await resolveIpv4Host(host);
+    log.push(`Resolved SMTP Host IPv4: ${resolvedHost}`);
+
     // 1. Test Port 465 (SSL)
     log.push("--- Testing Port 465 (SSL) ---");
     try {
       const transporter465 = nodemailer.createTransport({
-        host,
+        host: resolvedHost,
         port: 465,
         secure: true,
         auth: { user, pass },
-        tls: { rejectUnauthorized: false },
-        family: 4,
+        tls: { rejectUnauthorized: false, servername: host },
         connectionTimeout: 6000,
         greetingTimeout: 6000,
         socketTimeout: 8000,
@@ -55,12 +57,11 @@ router.get("/test-smtp", async (_req, res) => {
     log.push("--- Testing Port 587 (STARTTLS) ---");
     try {
       const transporter587 = nodemailer.createTransport({
-        host,
+        host: resolvedHost,
         port: 587,
         secure: false,
         auth: { user, pass },
-        tls: { rejectUnauthorized: false },
-        family: 4,
+        tls: { rejectUnauthorized: false, servername: host },
         connectionTimeout: 6000,
         greetingTimeout: 6000,
         socketTimeout: 8000,
@@ -92,7 +93,7 @@ router.get("/test-smtp", async (_req, res) => {
     });
 
     if (result.success) {
-      log.push(`SUCCESS: Test email sent! Message ID: ${result.messageId}`);
+      log.push(`SUCCESS (${result.provider || provider}): Test email sent! Message ID: ${result.messageId}`);
     } else {
       log.push(`FAILED: ${result.error}`);
     }

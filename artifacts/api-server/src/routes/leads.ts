@@ -36,10 +36,14 @@ router.post("/leads", async (req, res): Promise<void> => {
     process.env.MAILGUN_API_KEY;
 
   if (isMailConfigured) {
+    const senderEmail =
+      process.env.SMTP_FROM ||
+      process.env.SMTP_USER ||
+      "brandontaylor@goldstartranposrtationinc.com";
     try {
       const result = await sendEmail({
-        from: `"Gold Star Transportation, Inc. Website" <${process.env.SMTP_USER}>`,
-        to: process.env.SMTP_TO ?? process.env.SMTP_USER ?? "",
+        from: `"Gold Star Transportation, Inc. Website" <${senderEmail}>`,
+        to: process.env.SMTP_TO ?? senderEmail,
         replyTo: parsed.data.email,
         subject: `New Contact Form: ${parsed.data.serviceInterested || "General Inquiry"} — ${parsed.data.fullName}`,
         html: `
