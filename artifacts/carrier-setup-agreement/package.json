@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --config vite.config.ts --host 0.0.0.0",
-    "build": "vite build --config vite.config.ts",
+    "build": "vite build --config vite.config.ts && node -e \"const fs=require('fs'); if(fs.existsSync('dist')&&!fs.existsSync('dist/public')){fs.mkdirSync('dist/public',{recursive:true});for(const f of fs.readdirSync('dist')){if(f!=='public')fs.cpSync('dist/'+f,'dist/public/'+f,{recursive:true});}}\"",
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
