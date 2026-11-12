@@ -85,6 +85,7 @@ router.post("/carrier-agreement", async (req, res) => {
           <td style="padding:8px 0;color:#555;"><strong>License Number:</strong></td>
           <td style="padding:8px 0;color:#1a1a1a;">${formData.drivingLicense || "—"}</td>
         </tr>
+        ${formData.truckNumber ? `<tr style="border-bottom:1px solid #eee;"><td style="padding:8px 0;color:#555;"><strong>Truck / Unit #:</strong></td><td style="padding:8px 0;color:#1a1a1a;">${formData.truckNumber}</td></tr>` : ""}
         <tr style="border-bottom:1px solid #eee;">
           <td style="padding:8px 0;color:#555;"><strong>Phone:</strong></td>
           <td style="padding:8px 0;color:#1a1a1a;">${formData.phone || "—"}</td>
@@ -93,18 +94,16 @@ router.post("/carrier-agreement", async (req, res) => {
           <td style="padding:8px 0;color:#555;"><strong>Email:</strong></td>
           <td style="padding:8px 0;color:#1a1a1a;">${formData.email || "—"}</td>
         </tr>
-        <tr style="border-bottom:1px solid #eee;">
-          <td style="padding:8px 0;color:#555;"><strong>Lane Setup:</strong></td>
-          <td style="padding:8px 0;color:#1a1a1a;">${formData.laneSetupOption || "—"}</td>
-        </tr>
+        ${formData.laneSetupOption ? `<tr style="border-bottom:1px solid #eee;"><td style="padding:8px 0;color:#555;"><strong>Lane Setup:</strong></td><td style="padding:8px 0;color:#1a1a1a;">${formData.laneSetupOption}</td></tr>` : ""}
         ${services.length ? `<tr style="border-bottom:1px solid #eee;"><td style="padding:8px 0;color:#555;"><strong>Other Services:</strong></td><td style="padding:8px 0;color:#1a1a1a;">${services.join(", ")}</td></tr>` : ""}
         <tr style="border-bottom:1px solid #eee;">
           <td style="padding:8px 0;color:#555;"><strong>Payment Method:</strong></td>
           <td style="padding:8px 0;color:#1a1a1a;">${formData.paymentMethod || "—"}</td>
         </tr>
+        ${formData.printName ? `<tr style="border-bottom:1px solid #eee;"><td style="padding:8px 0;color:#555;"><strong>Signed By:</strong></td><td style="padding:8px 0;color:#1a1a1a;">${formData.printName}${formData.docId ? ` (${formData.docId})` : ""}</td></tr>` : ""}
         <tr>
           <td style="padding:8px 0;color:#555;"><strong>Date:</strong></td>
-          <td style="padding:8px 0;color:#1a1a1a;">${today}</td>
+          <td style="padding:8px 0;color:#1a1a1a;">${formData.date || today}</td>
         </tr>
       </table>
       <p style="margin:24px 0 0;font-size:12px;color:#888;">The signed Carrier Setup Agreement PDF is attached to this email.</p>
