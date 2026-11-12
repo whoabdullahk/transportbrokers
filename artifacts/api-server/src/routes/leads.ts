@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import { db, leadsTable } from "@workspace/db";
 import { CreateLeadBody, CreateLeadResponse } from "@workspace/api-zod";
-import { sendEmail } from "../lib/mailer.js";
+import { getInboxEmail, getSenderEmail, sendEmail } from "../lib/mailer.js";
 
 const router: IRouter = Router();
 
@@ -36,14 +36,12 @@ router.post("/leads", async (req, res): Promise<void> => {
     process.env.MAILGUN_API_KEY;
 
   if (isMailConfigured) {
-    const senderEmail =
-      process.env.SMTP_FROM ||
-      process.env.SMTP_USER ||
-      "brandontaylor@goldstartranposrtationinc.com";
+    const senderEmail = getSenderEmail();
+    const inboxEmail = getInboxEmail();
     try {
       const result = await sendEmail({
         from: `"Gold Star Transportation, Inc. Website" <${senderEmail}>`,
-        to: process.env.SMTP_TO ?? senderEmail,
+        to: inboxEmail,
         replyTo: parsed.data.email,
         subject: `New Contact Form: ${parsed.data.serviceInterested || "General Inquiry"} — ${parsed.data.fullName}`,
         html: `

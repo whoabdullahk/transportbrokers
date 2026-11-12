@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import { desc, eq } from "drizzle-orm";
 import { db, rateConfirmationsTable, auditLogsTable } from "@workspace/db";
-import { sendEmail, type SendEmailAttachment } from "../../lib/mailer.js";
+import { getInboxEmail, getSenderEmail, sendEmail, type SendEmailAttachment } from "../../lib/mailer.js";
 import {
   AdminCreateRateConfirmationBody,
   AdminCreateRateConfirmationResponse,
@@ -143,11 +143,8 @@ async function sendRateConfirmationEmails(
   pdfBase64?: string,
 ): Promise<{ success: boolean; error?: string; selfCopyError?: string }> {
   const proNum = rc.proNumber || "N/A";
-  const senderEmail =
-    process.env.SMTP_FROM ||
-    process.env.SMTP_USER ||
-    "brandontaylor@goldstartranposrtationinc.com";
-  const selfCopyEmail = process.env.SMTP_TO || process.env.SMTP_USER || senderEmail;
+  const senderEmail = getSenderEmail();
+  const selfCopyEmail = getInboxEmail();
   const fromHeader = `"GOLD STAR TRANSPORTATION, INC." <${senderEmail}>`;
 
   const attachments: SendEmailAttachment[] = pdfBase64

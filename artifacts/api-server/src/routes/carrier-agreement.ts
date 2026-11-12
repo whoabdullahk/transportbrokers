@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { sendEmail } from "../lib/mailer.js";
+import { getInboxEmail, getSenderEmail, sendEmail } from "../lib/mailer.js";
 
 const router = Router();
 
@@ -38,11 +38,8 @@ router.post("/carrier-agreement", async (req, res) => {
     const safeName = (formData.carrierFullName as string | undefined)
       ?.replace(/\s+/g, "_") ?? "submission";
 
-    const senderEmail =
-      process.env.SMTP_FROM ||
-      process.env.SMTP_USER ||
-      "brandontaylor@goldstartranposrtationinc.com";
-    const adminInboxEmail = process.env.SMTP_TO || process.env.SMTP_USER || senderEmail;
+    const senderEmail = getSenderEmail();
+    const adminInboxEmail = getInboxEmail();
     const carrierEmail = typeof formData.email === "string" ? formData.email.trim() : "";
 
     let emailSent = false;

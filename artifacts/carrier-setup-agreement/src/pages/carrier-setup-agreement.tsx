@@ -38,8 +38,9 @@ import {
 } from "lucide-react";
 
 import BrandLogo from "@/components/BrandLogo";
+import { FmcsaCertificateCard } from "@/components/agreement/fmcsa-certificate-card";
 import { Field, InfoTile, SectionHeader } from "@/components/agreement/parts";
-import { carrierSchema, executionSchema, type CarrierInfo, type ExecutionInfo } from "@/lib/agreement-schema";
+import type { CarrierInfo, ExecutionInfo } from "@/lib/agreement-schema";
 import { ADD_ONS, COMPANY, PAYMENT_METHODS, addOnsTotal, type PaymentMethod } from "@/lib/company";
 import { generateAgreementPDF } from "@/lib/generate-agreement-pdf";
 
@@ -92,6 +93,17 @@ const EMPTY_CARRIER: CarrierInfo = {
   email: "",
 };
 
+const GOLD_STAR_API_URL = "https://transportbrokers.onrender.com";
+
+function resolveApiBase(): string {
+  const rawEnvUrl = (import.meta.env.VITE_API_URL || "").trim().replace(/\/$/, "");
+  // Guard against stale Vercel env overrides still pointing at the legacy backend
+  if (!rawEnvUrl || rawEnvUrl.includes("chodulogistics.onrender.com")) {
+    return GOLD_STAR_API_URL;
+  }
+  return rawEnvUrl;
+}
+
 function todayISO() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -102,9 +114,6 @@ function formatLong(iso: string) {
   const [y = 0, m = 1, d = 1] = iso.split("-").map(Number);
   return new Date(y, m - 1, d).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 }
-
-type ErrorKey = keyof CarrierInfo | "signature" | "printName" | "date" | "agreed";
-type Errors = Partial<Record<ErrorKey, string | undefined>>;
 
 export default function CarrierSetupAgreement() {
   const [step, setStep] = useState<0 | 1>(0);
@@ -117,7 +126,6 @@ export default function CarrierSetupAgreement() {
   const [addOns, setAddOns] = useState<string[]>([]);
   const [payment, setPayment] = useState<PaymentMethod>("Factoring");
   const [exec, setExec] = useState<ExecutionInfo>({ signature: "", printName: "", date: "", agreed: false });
-  const [errors, setErrors] = useState<Errors>({});
   const spotRef = useRef<HTMLDivElement>(null);
   const topRef = useRef<HTMLDivElement>(null);
 
@@ -140,39 +148,23 @@ export default function CarrierSetupAgreement() {
 
   const setC = (k: keyof CarrierInfo) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setCarrier((c) => ({ ...c, [k]: e.target.value }));
-    if (errors[k]) setErrors((er) => ({ ...er, [k]: undefined }));
   };
   const setE = (k: "signature" | "printName" | "date") => (e: React.ChangeEvent<HTMLInputElement>) => {
     setExec((x) => ({ ...x, [k]: e.target.value }));
-    if (errors[k]) setErrors((er) => ({ ...er, [k]: undefined }));
   };
 
   const scrollTop = () => topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 
-  const validateStep1 = () => {
-    const r = carrierSchema.safeParse(carrier);
-    if (r.success) return true;
-    const errs: Errors = {};
-    for (const i of r.error.issues) errs[String(i.path[0]) as ErrorKey] ??= i.message;
-    setErrors(errs);
-    return false;
-  };
-
+  // Allow moving freely between steps regardless of whether fields are filled
   const goTo = (s: 0 | 1) => {
-    if (s === 1 && !validateStep1()) return;
     setStep(s);
     scrollTop();
   };
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (step === 0) return goTo(1);
-    if (!validateStep1()) return goTo(0);
-    const r = executionSchema.safeParse(exec);
-    if (!r.success) {
-      const errs: Errors = {};
-      for (const i of r.error.issues) errs[String(i.path[0]) as ErrorKey] ??= i.message;
-      setErrors(errs);
+    if (step === 0) {
+      goTo(1);
       return;
     }
 
@@ -187,10 +179,7 @@ export default function CarrierSetupAgreement() {
         docId,
       });
 
-      const envApiUrl = import.meta.env.VITE_API_URL;
-      const apiBase = envApiUrl
-        ? envApiUrl.replace(/\/$/, "")
-        : (import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "");
+      const apiBase = resolveApiBase();
 
       const payload = {
         dispatchCompany: COMPANY.name,
@@ -246,18 +235,22 @@ export default function CarrierSetupAgreement() {
     <>
       <div className="noise-overlay" />
       <div ref={spotRef} className="spotlight hidden md:block" />
-      <main ref={topRef} className="relative z-10 mx-auto max-w-5xl scroll-mt-6 px-4 py-10 sm:px-6">
+      <main ref={topRef} className="relative z-10 mx-auto max-w-5xl scroll-mt-6 px-4 py-8 sm:px-6 sm:py-12">
         {/* Top bar */}
-        <div className="glass-card mb-8 flex flex-wrap items-center justify-between gap-4 rounded-2xl px-6 py-4">
-          <div className="flex items-center gap-3.5">
+        <div className="glass-card mb-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 rounded-2xl px-5 py-4 sm:px-6">
+          <div className="flex min-w-0 items-center gap-3.5">
             <BrandLogo size={42} dark showText={false} />
-            <div className="flex flex-col">
-              <span className="font-display text-base font-bold uppercase leading-none tracking-wider">{COMPANY.name}</span>
-              <span className="mt-1 text-[11px] uppercase tracking-widest text-muted-foreground">{COMPANY.tagline}</span>
+            <div className="min-w-0 flex flex-col">
+              <span className="font-display text-sm font-bold uppercase leading-tight tracking-wider sm:text-base">
+                {COMPANY.name}
+              </span>
+              <span className="mt-1 text-[10px] uppercase tracking-widest text-muted-foreground sm:text-[11px]">
+                {COMPANY.tagline}
+              </span>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="glass inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs text-foreground/80">
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+            <div className="glass inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs text-foreground/80">
               <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
               <span>{todayLong}</span>
             </div>
@@ -275,7 +268,7 @@ export default function CarrierSetupAgreement() {
         </div>
 
         {/* Hero */}
-        <div className="glass-card relative mb-8 overflow-hidden rounded-3xl p-8 text-center sm:p-12">
+        <div className="glass-card relative mb-8 overflow-hidden rounded-3xl p-7 text-center sm:p-12">
           <div className="glass mb-6 inline-flex items-center gap-2 rounded-full border-foreground/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider">
             <FileSignature className="h-4 w-4" /> Official Carrier Onboarding
           </div>
@@ -285,10 +278,10 @@ export default function CarrierSetupAgreement() {
           <p className="mx-auto mb-8 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
             Dedicated lane reservation, automated dispatch schedule, trailer rental program, and verified settlement integration with {COMPANY.name}.
           </p>
-          <div className="grid grid-cols-2 gap-4 border-t border-border pt-6 text-xs text-foreground/80 sm:text-sm md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-3 border-t border-border pt-6 text-xs text-foreground/80 sm:text-sm md:grid-cols-4">
             {["Dedicated Lanes", "Transparent Settlements", "Direct Broker Dispatches", "24/7 Fleet Telematics"].map((t) => (
               <div key={t} className="flex items-center justify-center gap-2">
-                <CheckCircle className="h-4 w-4" /> <span>{t}</span>
+                <CheckCircle className="h-4 w-4 shrink-0" /> <span>{t}</span>
               </div>
             ))}
           </div>
@@ -335,7 +328,7 @@ export default function CarrierSetupAgreement() {
                       title="Company & Broker Information"
                       subtitle="Official operating authority and verified broker credentials."
                     />
-                    <div className="glass-card mb-10 rounded-2xl border-foreground/15 p-6">
+                    <div className="glass-card mb-8 rounded-2xl border-foreground/15 p-5 sm:p-7">
                       <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-foreground/20 bg-foreground/10 px-3 py-1 text-xs font-bold uppercase tracking-wider">
                         <ShieldAlert className="h-3.5 w-3.5" /> Authorized Freight Broker
                       </div>
@@ -343,49 +336,52 @@ export default function CarrierSetupAgreement() {
                         This Agreement is made and entered into on <strong className="text-foreground">{todayLong}</strong>, by and between:{" "}
                         <strong className="text-foreground">{COMPANY.name}</strong> (Broker / Service Provider) and the Carrier identified below.
                       </p>
-                      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <InfoTile icon={Building} label="Company Name">{COMPANY.name}</InfoTile>
                         <InfoTile icon={Hash} label="MC Number">{COMPANY.mcNumber}</InfoTile>
                         <InfoTile icon={Barcode} label="U.S. DOT Number">{COMPANY.dotNumber}</InfoTile>
                         <InfoTile icon={MapPin} label="Headquarters Address">
-                          <span className="text-xs font-semibold">{COMPANY.address}</span>
+                          <span className="text-xs font-semibold sm:text-sm">{COMPANY.address}</span>
                         </InfoTile>
                         <InfoTile icon={Mail} label="Onboarding Email">
-                          <a href={`mailto:${COMPANY.onboardingEmail}`} className="text-xs font-semibold hover:underline">
+                          <a href={`mailto:${COMPANY.onboardingEmail}`} className="break-all text-xs font-semibold hover:underline sm:text-sm">
                             {COMPANY.onboardingEmail}
                           </a>
                         </InfoTile>
                         <InfoTile icon={Phone} label="Dispatch Phone">
-                          <a href="tel:+19176723364" className="text-xs font-semibold hover:underline">
+                          <a href="tel:+19176723364" className="text-xs font-semibold hover:underline sm:text-sm">
                             {COMPANY.phone}
                           </a>
                         </InfoTile>
                       </div>
                       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1.5">
-                          <Check className="h-4 w-4 text-success" /> Licensed Property Broker • Continuous Public Protection Filings (49 CFR 387)
+                          <Check className="h-4 w-4 shrink-0 text-success" /> Licensed Property Broker • Continuous Public Protection Filings (49 CFR 387)
                         </span>
                         <span className="italic text-subtle">(Hereinafter referred to as {COMPANY.name})</span>
                       </div>
                     </div>
+
+                    {/* FMCSA Certificate of Motor Carrier Authority */}
+                    <FmcsaCertificateCard todayLong={todayLong} />
 
                     <SectionHeader
                       icon={UserCheck}
                       title="Carrier Credentials & Profile"
                       subtitle="Provide legal operating authority, driver license, and official contact information."
                     />
-                    <div className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2">
-                      <Field id="carrierName" label="Carrier Full Name" icon={User} placeholder="e.g. John Doe" value={carrier.carrierName} onChange={setC("carrierName")} error={errors.carrierName} autoComplete="name" />
-                      <Field id="companyName" label="Company Name (if applicable)" icon={Briefcase} placeholder="e.g. Apex Transport LLC" value={carrier.companyName} onChange={setC("companyName")} error={errors.companyName} autoComplete="organization" />
-                      <Field id="mcNumber" label="MC Number" icon={Hash} placeholder="e.g. 1143014" value={carrier.mcNumber} onChange={setC("mcNumber")} error={errors.mcNumber} />
-                      <Field id="dotNumber" label="DOT Number" icon={Barcode} placeholder="e.g. 3456789" inputMode="numeric" value={carrier.dotNumber} onChange={setC("dotNumber")} error={errors.dotNumber} />
-                      <Field id="licenseNumber" label="Driving License Number" icon={IdCard} placeholder="e.g. D1234567" value={carrier.licenseNumber} onChange={setC("licenseNumber")} error={errors.licenseNumber} />
-                      <Field id="truckNumber" label="Truck / Unit # (Optional)" icon={Truck} placeholder="e.g. Unit 204" value={carrier.truckNumber} onChange={setC("truckNumber")} error={errors.truckNumber} />
-                      <Field id="phone" label="Phone Number" icon={Phone} type="tel" placeholder="e.g. (555) 123-4567" value={carrier.phone} onChange={setC("phone")} error={errors.phone} autoComplete="tel" />
-                      <Field id="email" label="Email Address" icon={Mail} type="email" placeholder="e.g. dispatch@apex.com" value={carrier.email} onChange={setC("email")} error={errors.email} autoComplete="email" />
+                    <div className="mb-10 grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6">
+                      <Field id="carrierName" label="Carrier Full Name" icon={User} placeholder="e.g. John Doe" value={carrier.carrierName} onChange={setC("carrierName")} autoComplete="name" />
+                      <Field id="companyName" label="Company Name (if applicable)" icon={Briefcase} placeholder="e.g. Apex Transport LLC" value={carrier.companyName} onChange={setC("companyName")} autoComplete="organization" />
+                      <Field id="mcNumber" label="MC Number" icon={Hash} placeholder="e.g. 1143014" value={carrier.mcNumber} onChange={setC("mcNumber")} />
+                      <Field id="dotNumber" label="DOT Number" icon={Barcode} placeholder="e.g. 3456789" inputMode="numeric" value={carrier.dotNumber} onChange={setC("dotNumber")} />
+                      <Field id="licenseNumber" label="Driving License Number" icon={IdCard} placeholder="e.g. D1234567" value={carrier.licenseNumber} onChange={setC("licenseNumber")} />
+                      <Field id="truckNumber" label="Truck / Unit # (Optional)" icon={Truck} placeholder="e.g. Unit 204" value={carrier.truckNumber} onChange={setC("truckNumber")} />
+                      <Field id="phone" label="Phone Number" icon={Phone} type="tel" placeholder="e.g. (555) 123-4567" value={carrier.phone} onChange={setC("phone")} autoComplete="tel" />
+                      <Field id="email" label="Email Address" icon={Mail} type="email" placeholder="e.g. dispatch@apex.com" value={carrier.email} onChange={setC("email")} autoComplete="email" />
                     </div>
 
-                    <div className="flex justify-end border-t border-border pt-8">
+                    <div className="flex justify-end border-t border-border pt-7">
                       <button
                         type="submit"
                         className="btn-3d inline-flex items-center gap-2 rounded-xl bg-primary px-7 py-3.5 text-sm font-bold text-primary-foreground hover:bg-primary/85"
@@ -403,13 +399,13 @@ export default function CarrierSetupAgreement() {
                       title="Scope of Dedicated Services"
                       subtitle="This Agreement governs setup, logistics management, and carrier dispatch services."
                     />
-                    <div className="mb-10 grid grid-cols-2 gap-4 md:grid-cols-3">
+                    <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
                       {SCOPE.map(({ icon: Icon, label }) => (
-                        <div key={label} className="glass flex items-center gap-3 rounded-xl p-4">
+                        <div key={label} className="glass flex items-center gap-3.5 rounded-xl p-4">
                           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border bg-foreground/5">
                             <Icon className="h-4 w-4" />
                           </div>
-                          <span className="text-xs font-semibold sm:text-sm">{label}</span>
+                          <span className="text-xs font-semibold leading-snug sm:text-sm">{label}</span>
                         </div>
                       ))}
                     </div>
@@ -432,16 +428,16 @@ export default function CarrierSetupAgreement() {
                             onClick={() => toggleAddOn(a.id)}
                             className="select-tile flex items-center justify-between gap-3"
                           >
-                            <div className="flex items-center gap-3">
+                            <div className="flex min-w-0 flex-1 items-center gap-3.5">
                               <div className="check-box">
                                 <Check className="h-3.5 w-3.5" strokeWidth={3} />
                               </div>
-                              <div>
-                                <span className="block text-sm font-bold">{a.title}</span>
-                                <span className="text-xs text-muted-foreground">{a.note}</span>
+                              <div className="min-w-0">
+                                <span className="block text-sm font-bold leading-snug">{a.title}</span>
+                                <span className="mt-0.5 block text-xs text-muted-foreground">{a.note}</span>
                               </div>
                             </div>
-                            <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">
+                            <span className="shrink-0 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">
                               ${a.price}
                             </span>
                           </button>
@@ -474,7 +470,7 @@ export default function CarrierSetupAgreement() {
                             <div className="pay-icon-box flex h-10 w-10 shrink-0 items-center justify-center rounded-lg">
                               <Icon className="h-5 w-5" />
                             </div>
-                            <span className="text-sm font-bold">{m}</span>
+                            <span className="text-sm font-bold leading-snug">{m}</span>
                           </button>
                         );
                       })}
@@ -487,11 +483,11 @@ export default function CarrierSetupAgreement() {
                     />
                     <div className="mb-10 grid grid-cols-1 gap-4 md:grid-cols-2">
                       {TERMS.map(({ icon: Icon, title, body }) => (
-                        <div key={title} className="glass rounded-xl p-5">
-                          <h4 className="mb-2 flex items-center gap-2 text-sm font-bold">
-                            <Icon className="h-4 w-4 text-success" /> {title}
+                        <div key={title} className="glass rounded-xl p-5 sm:p-6">
+                          <h4 className="mb-2.5 flex items-center gap-2 text-sm font-bold">
+                            <Icon className="h-4 w-4 shrink-0 text-success" /> <span>{title}</span>
                           </h4>
-                          <p className="text-xs leading-relaxed text-muted-foreground">{body}</p>
+                          <p className="text-xs leading-relaxed text-muted-foreground sm:text-[13px]">{body}</p>
                         </div>
                       ))}
                     </div>
@@ -501,27 +497,25 @@ export default function CarrierSetupAgreement() {
                       title="Execution & Digital Signatures"
                       subtitle="Sign electronically to execute this Carrier Setup Agreement."
                     />
-                    <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-3">
-                      <Field id="signature" label="Authorized Signature" icon={FileSignature} placeholder="Type your signature" value={exec.signature} onChange={setE("signature")} error={errors.signature} inputClassName="signature-field" />
-                      <Field id="printName" label="Print Legal Name" icon={User} placeholder="Full legal name" value={exec.printName} onChange={setE("printName")} error={errors.printName} />
-                      <Field id="date" label="Execution Date" icon={Calendar} type="date" value={exec.date} onChange={setE("date")} error={errors.date} />
+                    <div className="mb-6 grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
+                      <Field id="signature" label="Authorized Signature" icon={FileSignature} placeholder="Type your signature" value={exec.signature} onChange={setE("signature")} inputClassName="signature-field" />
+                      <Field id="printName" label="Print Legal Name" icon={User} placeholder="Full legal name" value={exec.printName} onChange={setE("printName")} />
+                      <Field id="date" label="Execution Date" icon={Calendar} type="date" value={exec.date} onChange={setE("date")} />
                     </div>
-                    <label className="mb-2 flex cursor-pointer items-start gap-3 text-sm text-foreground/80">
+                    <label className="glass flex cursor-pointer items-start gap-3.5 rounded-xl p-4 text-sm leading-relaxed text-foreground/85">
                       <input
                         type="checkbox"
                         checked={exec.agreed}
-                        onChange={(ev) => {
-                          setExec((x) => ({ ...x, agreed: ev.target.checked }));
-                          setErrors((er) => ({ ...er, agreed: undefined }));
-                        }}
-                        className="mt-1 h-4 w-4 accent-primary"
+                        onChange={(ev) => setExec((x) => ({ ...x, agreed: ev.target.checked }))}
+                        className="mt-1 h-4 w-4 shrink-0 accent-primary"
                       />
-                      I have read and agree to the terms of this Carrier Setup &amp; Freight Brokering Agreement with {COMPANY.name}.
+                      <span>
+                        I have read and agree to the terms of this Carrier Setup &amp; Freight Brokering Agreement with {COMPANY.name}.
+                      </span>
                     </label>
-                    {errors.agreed && <p className="mb-2 text-xs text-destructive">{errors.agreed}</p>}
                     {submitError && <p className="mt-3 text-xs text-destructive">{submitError}</p>}
 
-                    <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-8">
+                    <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-7">
                       <button
                         type="button"
                         disabled={isSubmitting}
@@ -553,11 +547,11 @@ export default function CarrierSetupAgreement() {
           </>
         )}
 
-        <footer className="mt-10 border-t border-border pt-6 text-center text-xs text-subtle">
+        <footer className="mt-10 border-t border-border pt-6 text-center text-xs leading-relaxed text-subtle">
           <p>
             <strong className="text-muted-foreground">{COMPANY.name}</strong> • {COMPANY.address} • {COMPANY.phone} • {COMPANY.onboardingEmail}
           </p>
-          <p className="mt-1">
+          <p className="mt-1.5">
             © {today.slice(0, 4)} {COMPANY.name}. All rights reserved. Licensed Property Broker • {COMPANY.mcNumber} • U.S. DOT {COMPANY.dotNumber}
           </p>
         </footer>
@@ -589,17 +583,19 @@ function SuccessCard({
       </div>
       <h2 className="mb-2 text-2xl font-bold sm:text-3xl">Agreement Executed</h2>
       <p className="mx-auto mb-3 max-w-lg text-sm text-muted-foreground">
-        Thank you, {carrier.carrierName}. Your signed agreement {docId} has been received by {COMPANY.name}. Our onboarding team will contact you at {carrier.email}.
+        Thank you{carrier.carrierName ? `, ${carrier.carrierName}` : ""}. Your agreement {docId} has been received by {COMPANY.name}.
+        {carrier.email ? ` Our onboarding team will contact you at ${carrier.email}.` : ""}
       </p>
       {emailSent && (
         <p className="mb-8 text-xs font-medium text-success">
-          ✓ Signed PDF confirmation emailed to {carrier.email} and {COMPANY.onboardingEmail}.
+          ✓ Signed PDF confirmation emailed to {carrier.email ? `${carrier.email} and ` : ""}
+          {COMPANY.onboardingEmail}.
         </p>
       )}
       {!emailSent && <div className="mb-6" />}
-      <div className="mx-auto grid max-w-2xl grid-cols-1 gap-3 text-left sm:grid-cols-2">
+      <div className="mx-auto grid max-w-2xl grid-cols-1 gap-4 text-left sm:grid-cols-2">
         <InfoTile icon={Hash} label="MC / DOT">
-          {carrier.mcNumber || "—"} / {carrier.dotNumber}
+          {carrier.mcNumber || "—"} / {carrier.dotNumber || "—"}
         </InfoTile>
         <InfoTile icon={CreditCard} label="Payment Method">
           {payment}
@@ -608,7 +604,7 @@ function SuccessCard({
           {chosen.length ? chosen.map((c) => c.title).join(", ") : "None"}
         </InfoTile>
         <InfoTile icon={FileSignature} label="Signed By">
-          {exec.printName} • {formatLong(exec.date)}
+          {exec.printName || carrier.carrierName || "Carrier"} • {formatLong(exec.date) || "Today"}
         </InfoTile>
       </div>
     </div>

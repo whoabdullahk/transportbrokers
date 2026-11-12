@@ -199,9 +199,11 @@
 
   .dark-field-input {
     width: 100%;
-    padding: 14px 18px;
+    min-height: 50px;
+    padding: 13px 16px;
     font-size: 0.95rem;
     font-weight: 500;
+    line-height: 1.4;
     color: var(--foreground);
     background: var(--field);
     border: 1px solid oklch(1 0 0 / 14%);
@@ -267,8 +269,9 @@
   }
   .signature-field {
     font-family: var(--font-signature);
-    font-size: 1.35rem;
-    letter-spacing: 1px;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
     font-style: italic;
   }
 }

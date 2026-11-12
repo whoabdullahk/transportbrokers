@@ -73,8 +73,29 @@ function normalizeBase64(content: string | Buffer): string {
   return content;
 }
 
+/** Extracts a bare email address from `"Display Name" <email>` or plain `email` strings. */
+export function extractEmailAddress(value?: string): string {
+  const raw = (value || "").trim();
+  const match = raw.match(/<([^<>]+)>/);
+  return (match ? match[1] : raw).trim();
+}
+
+/** Returns the configured sender email address (always bare email, free of display-name wrappers). */
+export function getSenderEmail(): string {
+  return (
+    extractEmailAddress(process.env.SMTP_FROM) ||
+    extractEmailAddress(process.env.SMTP_USER) ||
+    "brandontaylor@goldstartranposrtationinc.com"
+  );
+}
+
+/** Returns the configured company inbox email address. */
+export function getInboxEmail(): string {
+  return extractEmailAddress(process.env.SMTP_TO) || extractEmailAddress(process.env.SMTP_USER) || getSenderEmail();
+}
+
 function sanitizeFromField(rawFrom?: string): string {
-  const fallback = process.env.SMTP_FROM || process.env.SMTP_USER || "brandontaylor@goldstartranposrtationinc.com";
+  const fallback = getSenderEmail();
   if (!rawFrom || /<undefined>|<null>/i.test(rawFrom)) {
     return fallback;
   }

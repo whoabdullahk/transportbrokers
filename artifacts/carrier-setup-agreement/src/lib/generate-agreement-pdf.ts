@@ -121,11 +121,16 @@ export async function generateAgreementPDF({
   y += 22;
 
   const divider = () => {
-    y += 10;
+    // Ensure enough room remains for the next section title too; otherwise break cleanly first.
+    if (y + 68 > doc.internal.pageSize.getHeight() - margin) {
+      addPage();
+      return;
+    }
+    y += 8;
     doc.setDrawColor(229, 231, 235);
     doc.setLineWidth(1);
     doc.line(margin, y, W - margin, y);
-    y += 22;
+    y += 18;
   };
 
   const sectionTitle = (title: string) => {
@@ -283,3 +288,4 @@ export async function generateAgreementPDF({
     return doc.output("datauristring").split(",")[1];
   }
 }
+
