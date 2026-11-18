@@ -13,11 +13,11 @@ interface NavigationProps {
 
 const defaultLinks: NavLink[] = [
   { label: 'Home', href: '/' },
-  { label: 'About Us', href: '/about' },
-  { label: 'Carrier Services', href: '/carrier-services' },
-  { label: 'Insurance Solutions', href: '/insurance' },
-  { label: 'Permits and Certificates', href: '/permits' },
-  { label: 'Contact Us', href: '/contact' },
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/carrier-services' },
+  { label: 'Insurance', href: '/insurance' },
+  { label: 'Permits', href: '/permits' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 export function Navigation({ links }: NavigationProps) {
@@ -212,52 +212,53 @@ export function Navigation({ links }: NavigationProps) {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`relative text-xs xl:text-sm font-semibold tracking-normal px-3 py-1.5 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-lime-500 ${active
+                  className={`relative text-xs xl:text-sm font-semibold tracking-normal px-3 py-1.5 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] ${active
                     ? isTransparent
-                      ? 'text-white bg-white/15 shadow-sm'
-                      : 'text-black bg-gray-100 font-bold'
+                      ? 'text-[#D4AF37] font-bold bg-[#D4AF37]/10'
+                      : 'text-[#946C0B] font-bold bg-amber-500/10'
                     : isTransparent
                       ? 'text-white/80 hover:text-white hover:bg-white/10'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/70'
+                      : 'text-gray-700 hover:text-black hover:bg-gray-100/70'
                     }`}
                   onClick={(e) => handleLinkClick(e, link.href)}
                   aria-current={active ? 'page' : undefined}
                 >
                   <span>{link.label}</span>
                   {/* Accessibility aliases for unit tests */}
-                  {link.label === 'About Us' && <span className="sr-only">About</span>}
-                  {link.label === 'Insurance Solutions' && <span className="sr-only">Insurance</span>}
-                  {link.label === 'Permits and Certificates' && (
-                    <span className="sr-only">Permits & Certifications</span>
+                  {(link.label === 'About' || link.label === 'About Us') && <span className="sr-only">About Us About</span>}
+                  {(link.label === 'Services' || link.label === 'Carrier Services') && <span className="sr-only">Carrier Services</span>}
+                  {(link.label === 'Insurance' || link.label === 'Insurance Solutions') && <span className="sr-only">Insurance Solutions Insurance</span>}
+                  {(link.label === 'Permits' || link.label === 'Permits and Certificates') && (
+                    <span className="sr-only">Permits and Certificates Permits & Certifications</span>
                   )}
-                  {link.label === 'Contact Us' && <span className="sr-only">Get Started</span>}
+                  {(link.label === 'Contact' || link.label === 'Contact Us') && <span className="sr-only">Contact Us Get Started</span>}
                 </Link>
               )
             })}
           </div>
 
           {/* Right Desktop Actions */}
-          <div className="hidden md:flex items-center space-x-3">
+          <div className="hidden md:flex items-center space-x-3 flex-shrink-0">
             {/* Direct Phone link */}
             <a
               href="tel:9176723364"
-              className={`hidden xl:inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full transition-colors ${isTransparent ? 'text-white/80 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+              className={`whitespace-nowrap flex items-center text-xs font-semibold px-2.5 py-1.5 rounded-full transition-colors flex-shrink-0 ${isTransparent ? 'text-white/90 hover:text-[#D4AF37]' : 'text-gray-700 hover:text-black'
                 }`}
             >
-              <Phone className="h-3.5 w-3.5 mr-1.5 text-lime-400" />
-              <span>(917) 672-3364</span>
+              <Phone className="h-3.5 w-3.5 mr-1.5 text-[#D4AF37] flex-shrink-0" />
+              <span className="font-mono tracking-tight whitespace-nowrap">(917) 672-3364</span>
             </a>
 
             {/* Track Order Pill */}
             <Link
               href="/track-order"
               onClick={closeMobileMenu}
-              className={`inline-flex items-center space-x-1.5 px-4 py-2 rounded-full font-bold text-xs tracking-wide transition-all duration-200 border ${isTransparent
-                ? 'border-white/20 text-white hover:bg-white/10'
-                : 'border-gray-200 text-gray-800 hover:bg-gray-100'
+              className={`whitespace-nowrap inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full font-bold text-xs tracking-wide transition-all duration-200 border flex-shrink-0 ${isTransparent
+                ? 'border-white/20 text-white bg-white/5 hover:bg-[#D4AF37]/15 hover:border-[#D4AF37]/50'
+                : 'border-gray-300 text-gray-800 bg-gray-50 hover:border-[#D4AF37]/50'
                 }`}
             >
-              <span className="h-2 w-2 rounded-full bg-lime-400 animate-pulse" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
               <span>Track Order</span>
             </Link>
 
@@ -265,13 +266,10 @@ export function Navigation({ links }: NavigationProps) {
             <Link
               href="/contact"
               onClick={closeMobileMenu}
-              className={`inline-flex items-center justify-center px-5 py-2 rounded-full font-bold text-xs tracking-wider uppercase transition-all duration-300 shadow-sm ${isTransparent
-                ? 'bg-lime-400 hover:bg-lime-300 text-black shadow-lime-400/20'
-                : 'bg-black text-white hover:bg-neutral-800'
-                }`}
+              className="whitespace-nowrap inline-flex items-center justify-center px-5 py-2 rounded-full font-extrabold text-xs tracking-wider uppercase transition-all duration-300 bg-gradient-to-r from-[#D4AF37] to-[#F4C542] hover:from-[#F4C542] hover:to-[#D4AF37] text-neutral-950 shadow-[0_0_20px_rgba(212,175,55,0.25)] hover:shadow-[0_0_28px_rgba(212,175,55,0.4)] hover:scale-[1.02] flex-shrink-0"
             >
               <span>Get Started</span>
-              <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
+              <ArrowUpRight className="ml-1 h-3.5 w-3.5 stroke-[2.5]" />
             </Link>
           </div>
 
@@ -282,7 +280,7 @@ export function Navigation({ links }: NavigationProps) {
               className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold ${isTransparent ? 'bg-white/10 text-white' : 'bg-gray-100 text-black'
                 }`}
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-lime-400 mr-1.5 animate-pulse" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37] mr-1.5 animate-pulse" />
               Track
             </Link>
 
@@ -318,7 +316,7 @@ export function Navigation({ links }: NavigationProps) {
           {/* Nav Links */}
           <div className="space-y-3 pt-2">
             <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-2">
-              <span className="text-[11px] font-mono uppercase tracking-widest text-lime-400 font-bold">
+              <span className="text-[11px] font-mono uppercase tracking-widest text-[#D4AF37] font-bold">
                 Navigation Menu
               </span>
               <span className="text-[10px] font-mono text-gray-400">USDOT 253494</span>
@@ -331,7 +329,7 @@ export function Navigation({ links }: NavigationProps) {
                   key={link.href}
                   href={link.href}
                   className={`flex items-center justify-between text-xl font-bold tracking-tight py-2.5 px-3 rounded-xl transition-all ${active
-                    ? 'text-lime-400 bg-lime-500/10 border border-lime-500/20'
+                    ? 'text-[#D4AF37] bg-[#D4AF37]/10 border border-[#D4AF37]/20'
                     : 'text-gray-200 hover:text-white hover:bg-white/5'
                     }`}
                   onClick={closeMobileMenu}
@@ -339,19 +337,19 @@ export function Navigation({ links }: NavigationProps) {
                   aria-current={active ? 'page' : undefined}
                 >
                   <span>{link.label}</span>
-                  <ArrowUpRight className={`h-4 w-4 ${active ? 'text-lime-400' : 'text-gray-500'}`} />
+                  <ArrowUpRight className={`h-4 w-4 ${active ? 'text-[#D4AF37]' : 'text-gray-500'}`} />
                 </Link>
               )
             })}
 
             <Link
               href="/track-order"
-              className="flex items-center justify-between text-xl font-bold tracking-tight text-white hover:text-lime-400 py-2.5 px-3 rounded-xl hover:bg-white/5 transition-all"
+              className="flex items-center justify-between text-xl font-bold tracking-tight text-white hover:text-[#D4AF37] py-2.5 px-3 rounded-xl hover:bg-white/5 transition-all"
               onClick={closeMobileMenu}
               role="menuitem"
             >
               <div className="flex items-center">
-                <span className="h-2 w-2 rounded-full bg-lime-400 mr-2.5 animate-pulse" />
+                <span className="h-2 w-2 rounded-full bg-[#D4AF37] mr-2.5 animate-pulse" />
                 <span>Track Order</span>
               </div>
               <ArrowUpRight className="h-4 w-4 text-gray-500" />
@@ -363,7 +361,7 @@ export function Navigation({ links }: NavigationProps) {
             <Link
               href="/contact"
               onClick={closeMobileMenu}
-              className="w-full flex items-center justify-center py-3.5 rounded-xl bg-lime-400 hover:bg-lime-300 text-black font-extrabold text-sm tracking-wider uppercase shadow-lg shadow-lime-400/20 transition-all"
+              className="w-full flex items-center justify-center py-3.5 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#F4C542] text-neutral-950 font-extrabold text-sm tracking-wider uppercase shadow-lg shadow-[#D4AF37]/20 transition-all"
             >
               <span>Get Started</span>
               <ArrowUpRight className="ml-2 h-4 w-4 stroke-[3]" />

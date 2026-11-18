@@ -152,7 +152,7 @@ export function Footer({
 
           {/* Sitemap Section */}
           <div className="space-y-4">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-lime-400">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-[#D4AF37]">
               Company Navigation
             </h3>
             <ul className="space-y-2.5">
@@ -163,7 +163,7 @@ export function Footer({
                     className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium flex items-center group w-fit"
                   >
                     <span>{link.label}</span>
-                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-lime-400" />
+                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-[#D4AF37]" />
                   </Link>
                 </li>
               ))}
@@ -172,7 +172,7 @@ export function Footer({
 
           {/* Quick Links Section */}
           <div className="space-y-4">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-lime-400">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-[#D4AF37]">
               Carrier Solutions
             </h3>
             <ul className="space-y-2.5">
@@ -183,7 +183,7 @@ export function Footer({
                     className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium flex items-center group w-fit"
                   >
                     <span>{link.label}</span>
-                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-lime-400" />
+                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-[#D4AF37]" />
                   </Link>
                 </li>
               ))}
@@ -192,7 +192,7 @@ export function Footer({
 
           {/* Track & Support Section */}
           <div className="space-y-4">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-lime-400">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-[#D4AF37]">
               Support & Tools
             </h3>
             <ul className="space-y-2.5">
@@ -203,7 +203,7 @@ export function Footer({
                     className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium flex items-center group w-fit"
                   >
                     <span>{link.label}</span>
-                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-lime-400" />
+                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-[#D4AF37]" />
                   </Link>
                 </li>
               ))}
@@ -212,7 +212,7 @@ export function Footer({
 
           {/* Contact Us Section */}
           <div className="space-y-4">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-lime-400">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-[#D4AF37]">
               Operations Center
             </h3>
             <div className="space-y-3.5 text-sm">

@@ -98,8 +98,29 @@
 
   /* Focus visible accessibility */
   *:focus-visible {
-    @apply outline outline-2 outline-lime-500 outline-offset-2;
+    @apply outline outline-2 outline-[#D4AF37] outline-offset-2;
   }
+}
+
+/* Infinite Marquee Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex !important;
+  width: max-content !important;
+  animation: marquee 30s linear infinite !important;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused !important;
 }
 
 /* Reduced Motion */

@@ -20,10 +20,10 @@ export function Home() {
     {
       title: 'Dedicated Freight Lanes',
       desc: 'Consistent freight opportunities with reliable lanes and competitive rates designed to maximize utilization and revenue.',
-      bg: 'bg-[#bef264]',
-      textColor: 'text-black',
-      descColor: 'text-black/85',
-      badgeBg: 'bg-black/10 text-black',
+      bg: 'bg-gradient-to-br from-[#D4AF37] to-[#F4C542]',
+      textColor: 'text-neutral-950 font-bold',
+      descColor: 'text-neutral-900',
+      badgeBg: 'bg-black/15 text-neutral-950 font-bold',
       tag: 'PREMIUM CONTRACTS',
       type: 'ellipses',
       href: '/carrier-services#dedicated-freight-lanes',
@@ -45,7 +45,7 @@ export function Home() {
       bg: 'bg-[#141518]',
       textColor: 'text-white',
       descColor: 'text-white/75',
-      badgeBg: 'bg-white/10 text-lime-400',
+      badgeBg: 'bg-white/10 text-[#D4AF37]',
       tag: 'MARITIME CLEARANCE',
       type: 'lines',
       href: '/carrier-services#twic-card-assistance',
@@ -67,7 +67,7 @@ export function Home() {
       bg: 'bg-[#141518]',
       textColor: 'text-white',
       descColor: 'text-white/75',
-      badgeBg: 'bg-white/10 text-lime-400',
+      badgeBg: 'bg-white/10 text-[#D4AF37]',
       tag: 'CASH FLOW',
       type: 'ellipses',
       href: '/carrier-services#factoring-registration',
@@ -75,10 +75,10 @@ export function Home() {
     {
       title: 'Specialized Permit Loads',
       desc: 'Access premium freight opportunities requiring specialized permits, including oversized and overweight transportation.',
-      bg: 'bg-[#bef264]',
-      textColor: 'text-black',
-      descColor: 'text-black/85',
-      badgeBg: 'bg-black/10 text-black',
+      bg: 'bg-gradient-to-br from-[#D4AF37] to-[#F4C542]',
+      textColor: 'text-neutral-950 font-bold',
+      descColor: 'text-neutral-900',
+      badgeBg: 'bg-black/15 text-neutral-950 font-bold',
       tag: 'HEAVY HAUL',
       type: 'cones',
       href: '/permits',
@@ -100,7 +100,7 @@ export function Home() {
       bg: 'bg-[#141518]',
       textColor: 'text-white',
       descColor: 'text-white/75',
-      badgeBg: 'bg-white/10 text-lime-400',
+      badgeBg: 'bg-white/10 text-[#D4AF37]',
       tag: 'SAFETY AUDITING',
       type: 'dots',
       href: '/carrier-services#dot-compliance-support',
@@ -131,7 +131,7 @@ export function Home() {
   ]
 
   return (
-    <div className="bg-white text-gray-900 selection:bg-[#bef264] selection:text-black">
+    <div className="bg-white text-gray-900 selection:bg-[#D4AF37] selection:text-black">
       {/* ========================================================================= */}
       {/* 1. HERO SECTION */}
       {/* ========================================================================= */}
@@ -154,7 +154,7 @@ export function Home() {
           <div className="max-w-4xl space-y-7">
             {/* Live Status Telemetry Pill */}
             <div className="inline-flex items-center space-x-2.5 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-mono uppercase tracking-[0.2em] text-white/90">
-              <span className="h-2 w-2 rounded-full bg-lime-400 animate-pulse" />
+              <span className="h-2 w-2 rounded-full bg-[#D4AF37] animate-pulse" />
               <span>Smart Logistics &amp; Nationwide Freight</span>
             </div>
 
@@ -162,7 +162,7 @@ export function Home() {
             <h1 className="text-5xl sm:text-7xl lg:text-8xl xl:text-[6.5rem] font-black uppercase tracking-tight text-white leading-[0.92] drop-shadow-2xl">
               LOGISTICS THAT<br />
               MOVE WITH<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-lime-200 to-lime-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFF0A8] via-[#F4C542] to-[#D4AF37] drop-shadow-md">
                 PRECISION.
               </span>
             </h1>
@@ -176,17 +176,17 @@ export function Home() {
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <Link
                 href="/contact"
-                className="inline-flex items-center pl-7 pr-3.5 py-3.5 rounded-full bg-white hover:bg-white/95 text-black font-extrabold text-sm sm:text-base transition-all transform hover:scale-[1.02] shadow-2xl group w-fit cursor-pointer"
+                className="inline-flex items-center pl-7 pr-3.5 py-3.5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F4C542] hover:from-[#F4C542] hover:to-[#D4AF37] text-neutral-950 font-extrabold text-sm sm:text-base transition-all transform hover:scale-[1.02] shadow-[0_0_25px_rgba(212,175,55,0.25)] hover:shadow-[0_0_35px_rgba(212,175,55,0.4)] group w-fit cursor-pointer"
               >
                 <span className="mr-3 tracking-normal">Request a Consultation</span>
-                <span className="w-8 h-8 rounded-full bg-[#bef264] text-black flex items-center justify-center font-black group-hover:translate-x-0.5 transition-transform">
+                <span className="w-8 h-8 rounded-full bg-neutral-950 text-[#D4AF37] flex items-center justify-center font-black group-hover:translate-x-0.5 transition-transform">
                   <ArrowRight className="h-4 w-4 stroke-[3]" />
                 </span>
               </Link>
 
               <Link
                 href="/carrier-services"
-                className="inline-flex items-center px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-sm sm:text-base border border-white/20 backdrop-blur-md transition-all cursor-pointer"
+                className="inline-flex items-center px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-sm sm:text-base border border-white/20 backdrop-blur-md transition-all cursor-pointer hover:border-[#D4AF37]/50"
               >
                 <span>Explore Solutions</span>
               </Link>
@@ -195,7 +195,7 @@ export function Home() {
             {/* Floating Trust Metrics */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-6 max-w-xl border-t border-white/15">
               <div className="space-y-0.5">
-                <div className="text-2xl font-black font-mono text-lime-400">500+</div>
+                <div className="text-2xl font-black font-mono text-[#D4AF37]">500+</div>
                 <div className="text-xs text-gray-300 font-medium">Vetted Carriers</div>
               </div>
               <div className="space-y-0.5">
@@ -248,7 +248,7 @@ export function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
                 <div className="absolute bottom-5 left-5 right-5 text-white">
-                  <span className="text-[11px] font-mono uppercase tracking-widest text-lime-400 font-bold">
+                  <span className="text-[11px] font-mono uppercase tracking-widest text-[#D4AF37] font-bold">
                     Terminal Logistics Network
                   </span>
                   <p className="text-sm font-semibold text-white/90 mt-0.5">
@@ -261,8 +261,8 @@ export function Home() {
             {/* Right: Editorial Narrative & 3 Stats with Dividers */}
             <div className="lg:col-span-6 space-y-8">
               <div className="space-y-3">
-                <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold uppercase tracking-widest text-[#65a30d]">
-                  <span className="h-2 w-2 rounded-full bg-[#bef264]" />
+                <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold uppercase tracking-widest text-[#D4AF37]">
+                  <span className="h-2 w-2 rounded-full bg-[#D4AF37]" />
                   <span>The Brokerage Standard</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-gray-900 leading-snug">
@@ -274,7 +274,7 @@ export function Home() {
               <div className="divide-y divide-gray-200 border-t border-b border-gray-200">
                 {/* Stat 1 */}
                 <div className="py-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 group">
-                  <div className="text-5xl sm:text-6xl font-black font-mono tracking-tight text-gray-900 min-w-[170px] group-hover:text-[#65a30d] transition-colors">
+                  <div className="text-5xl sm:text-6xl font-black font-mono tracking-tight text-gray-900 min-w-[170px] group-hover:text-[#D4AF37] transition-colors">
                     500+
                   </div>
                   <div className="text-sm sm:text-base text-gray-600 font-normal leading-relaxed flex-1">
@@ -284,7 +284,7 @@ export function Home() {
 
                 {/* Stat 2 */}
                 <div className="py-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 group">
-                  <div className="text-5xl sm:text-6xl font-black font-mono tracking-tight text-gray-900 min-w-[170px] group-hover:text-[#65a30d] transition-colors">
+                  <div className="text-5xl sm:text-6xl font-black font-mono tracking-tight text-gray-900 min-w-[170px] group-hover:text-[#D4AF37] transition-colors">
                     97%
                   </div>
                   <div className="text-sm sm:text-base text-gray-600 font-normal leading-relaxed flex-1">
@@ -294,7 +294,7 @@ export function Home() {
 
                 {/* Stat 3 */}
                 <div className="py-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 group">
-                  <div className="text-5xl sm:text-6xl font-black font-mono tracking-tight text-gray-900 min-w-[170px] group-hover:text-[#65a30d] transition-colors">
+                  <div className="text-5xl sm:text-6xl font-black font-mono tracking-tight text-gray-900 min-w-[170px] group-hover:text-[#D4AF37] transition-colors">
                     24/7
                   </div>
                   <div className="text-sm sm:text-base text-gray-600 font-normal leading-relaxed flex-1">
@@ -310,7 +310,7 @@ export function Home() {
                   className="inline-flex items-center px-8 py-3.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm tracking-normal transition-all shadow-md group cursor-pointer"
                 >
                   <span>Learn more about us</span>
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform text-[#bef264]" />
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform text-[#D4AF37]" />
                 </Link>
               </div>
             </div>
@@ -329,8 +329,8 @@ export function Home() {
 
             {/* Left Column: Heading & Button */}
             <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-8">
-              <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold uppercase tracking-widest text-[#65a30d]">
-                <span className="h-2 w-2 rounded-full bg-[#bef264]" />
+              <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold uppercase tracking-widest text-[#D4AF37]">
+                <span className="h-2 w-2 rounded-full bg-[#D4AF37]" />
                 <span>Our Core Services</span>
               </div>
 
@@ -348,7 +348,7 @@ export function Home() {
                   className="inline-flex items-center px-8 py-3.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm tracking-normal transition-all shadow-md group cursor-pointer"
                 >
                   <span>Learn more about our solutions</span>
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform text-[#bef264]" />
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform text-[#D4AF37]" />
                 </Link>
               </div>
             </div>
@@ -422,22 +422,40 @@ export function Home() {
 
         </div>
 
-        {/* Marquee Strip */}
-        <div className="mt-20 py-4 border-y border-gray-200 overflow-hidden bg-white select-none shadow-sm">
-          <div className="flex space-x-8 whitespace-nowrap text-xs font-mono font-bold tracking-widest uppercase text-gray-700 animate-marquee">
-            {[...Array(6)].map((_, i) => (
-              <span key={i} className="inline-flex items-center space-x-6">
-                <span>FREIGHT BUILT ON TRUST</span>
-                <span className="h-1.5 w-1.5 bg-black rounded-full" />
-                <span>TWIC ASSISTANCE</span>
-                <span className="h-1.5 w-1.5 bg-black rounded-full" />
-                <span>FACTORING SUPPORT</span>
-                <span className="h-1.5 w-1.5 bg-black rounded-full" />
-                <span>MOVING CARRIERS FORWARD</span>
-                <span className="h-1.5 w-1.5 bg-black rounded-full" />
-                <span>DEDICATED LANES</span>
-                <span className="h-1.5 w-1.5 bg-black rounded-full" />
-              </span>
+        {/* Marquee Strip - Infinite Moving Ribbon */}
+        <div className="mt-20 py-4 border-y border-gray-200 overflow-hidden bg-white select-none shadow-sm relative">
+          <div className="flex whitespace-nowrap text-xs font-mono font-bold tracking-widest uppercase text-gray-800 animate-marquee">
+            {[...Array(2)].map((_, trackIdx) => (
+              <div key={trackIdx} className="flex items-center space-x-8 pr-8 flex-shrink-0">
+                <span className="inline-flex items-center space-x-6">
+                  <span>FREIGHT BUILT ON TRUST</span>
+                  <span className="h-1.5 w-1.5 bg-[#D4AF37] rounded-full" />
+                  <span>TWIC ASSISTANCE</span>
+                  <span className="h-1.5 w-1.5 bg-[#D4AF37] rounded-full" />
+                  <span>FACTORING SUPPORT</span>
+                  <span className="h-1.5 w-1.5 bg-[#D4AF37] rounded-full" />
+                  <span>MOVING CARRIERS FORWARD</span>
+                  <span className="h-1.5 w-1.5 bg-[#D4AF37] rounded-full" />
+                  <span>DEDICATED LANES</span>
+                  <span className="h-1.5 w-1.5 bg-[#D4AF37] rounded-full" />
+                  <span>48-STATE CORRIDOR NETWORK</span>
+                  <span className="h-1.5 w-1.5 bg-[#D4AF37] rounded-full" />
+                </span>
+                <span className="inline-flex items-center space-x-6">
+                  <span>FREIGHT BUILT ON TRUST</span>
+                  <span className="h-1.5 w-1.5 bg-[#D4AF37] rounded-full" />
+                  <span>TWIC ASSISTANCE</span>
+                  <span className="h-1.5 w-1.5 bg-[#D4AF37] rounded-full" />
+                  <span>FACTORING SUPPORT</span>
+                  <span className="h-1.5 w-1.5 bg-[#D4AF37] rounded-full" />
+                  <span>MOVING CARRIERS FORWARD</span>
+                  <span className="h-1.5 w-1.5 bg-[#D4AF37] rounded-full" />
+                  <span>DEDICATED LANES</span>
+                  <span className="h-1.5 w-1.5 bg-[#D4AF37] rounded-full" />
+                  <span>48-STATE CORRIDOR NETWORK</span>
+                  <span className="h-1.5 w-1.5 bg-[#D4AF37] rounded-full" />
+                </span>
+              </div>
             ))}
           </div>
         </div>
@@ -454,8 +472,8 @@ export function Home() {
             {/* Left: 10K+ Metric & 4 Feature Rows */}
             <div className="lg:col-span-6 space-y-8">
               <div className="space-y-2">
-                <div className="inline-flex items-center space-x-2 text-xs font-mono uppercase tracking-[0.2em] text-gray-400 font-bold">
-                  <span className="h-1.5 w-1.5 rounded-full bg-lime-400" />
+                <div className="inline-flex items-center space-x-2 text-xs font-mono uppercase tracking-[0.2em] text-[#D4AF37] font-bold">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />
                   <span>PROVEN TRACK RECORD</span>
                 </div>
                 <p className="text-sm sm:text-base text-gray-300 font-light leading-relaxed max-w-xl">
@@ -463,15 +481,15 @@ export function Home() {
                 </p>
               </div>
 
-              {/* Dominant Lime Green 10K+ Number */}
-              <div className="text-7xl sm:text-8xl lg:text-9xl font-black font-mono tracking-tight text-[#bef264] leading-none">
+              {/* Dominant Gold 10K+ Number */}
+              <div className="text-7xl sm:text-8xl lg:text-9xl font-black font-mono tracking-tight text-[#D4AF37] leading-none drop-shadow-[0_0_35px_rgba(212,175,55,0.25)]">
                 10K+
               </div>
 
               {/* 4 Technical Feature Rows */}
               <div className="divide-y divide-white/10 border-t border-b border-white/10">
                 <div className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs hover:bg-white/[0.02] px-2 rounded transition-colors">
-                  <span className="font-mono text-gray-400 font-bold tracking-wider uppercase min-w-[160px]">
+                  <span className="font-mono text-[#D4AF37] font-bold tracking-wider uppercase min-w-[160px]">
                     CARRIER NETWORK
                   </span>
                   <span className="text-gray-200">
@@ -479,7 +497,7 @@ export function Home() {
                   </span>
                 </div>
                 <div className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs hover:bg-white/[0.02] px-2 rounded transition-colors">
-                  <span className="font-mono text-gray-400 font-bold tracking-wider uppercase min-w-[160px]">
+                  <span className="font-mono text-[#D4AF37] font-bold tracking-wider uppercase min-w-[160px]">
                     COMPLIANCE EXPERTS
                   </span>
                   <span className="text-gray-200">
@@ -487,7 +505,7 @@ export function Home() {
                   </span>
                 </div>
                 <div className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs hover:bg-white/[0.02] px-2 rounded transition-colors">
-                  <span className="font-mono text-gray-400 font-bold tracking-wider uppercase min-w-[160px]">
+                  <span className="font-mono text-[#D4AF37] font-bold tracking-wider uppercase min-w-[160px]">
                     QUICKPAY OPTIONS
                   </span>
                   <span className="text-gray-200">
@@ -495,7 +513,7 @@ export function Home() {
                   </span>
                 </div>
                 <div className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs hover:bg-white/[0.02] px-2 rounded transition-colors">
-                  <span className="font-mono text-gray-400 font-bold tracking-wider uppercase min-w-[160px]">
+                  <span className="font-mono text-[#D4AF37] font-bold tracking-wider uppercase min-w-[160px]">
                     DEDICATED SUPPORT
                   </span>
                   <span className="text-gray-200">
@@ -527,7 +545,7 @@ export function Home() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <div className="text-center space-y-3 mb-14">
-            <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#65a30d]">
+            <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#D4AF37]">
               Support Knowledge Base
             </span>
             <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-gray-900">
@@ -547,7 +565,7 @@ export function Home() {
                   >
                     <span className="group-hover:text-black transition-colors">{faq.q}</span>
                     <span className="ml-4 flex-shrink-0 text-gray-400 group-hover:text-black transition-colors">
-                      {isOpen ? <Minus className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
+                      {isOpen ? <Minus className="h-5 w-5 text-[#D4AF37]" /> : <Plus className="h-5 w-5" />}
                     </span>
                   </button>
 
@@ -576,7 +594,7 @@ export function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/80 pointer-events-none" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/10 text-xs font-mono uppercase tracking-widest text-lime-400 border border-white/10">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/10 text-xs font-mono uppercase tracking-widest text-[#D4AF37] border border-[#D4AF37]/30">
             <Award className="h-3.5 w-3.5" />
             <span>Partner With Gold Star</span>
           </div>
@@ -592,10 +610,10 @@ export function Home() {
           <div className="pt-4 flex flex-wrap justify-center gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center pl-8 pr-4 py-4 rounded-full bg-white hover:bg-white/95 text-black font-extrabold text-base transition-all transform hover:scale-[1.02] shadow-2xl group w-fit cursor-pointer"
+              className="inline-flex items-center pl-8 pr-4 py-4 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F4C542] hover:from-[#F4C542] hover:to-[#D4AF37] text-neutral-950 font-extrabold text-base transition-all transform hover:scale-[1.02] shadow-[0_0_25px_rgba(212,175,55,0.3)] group w-fit cursor-pointer"
             >
-              <span className="mr-3 text-black">Get Started Today</span>
-              <span className="w-8 h-8 rounded-full bg-[#bef264] text-black flex items-center justify-center font-black group-hover:translate-x-0.5 transition-transform">
+              <span className="mr-3 text-neutral-950">Get Started Today</span>
+              <span className="w-8 h-8 rounded-full bg-neutral-950 text-[#D4AF37] flex items-center justify-center font-black group-hover:translate-x-0.5 transition-transform">
                 <ArrowRight className="h-4 w-4 stroke-[3]" />
               </span>
             </Link>

@@ -23,11 +23,18 @@ export default {
         'brand-border': '#262626',
         'brand-card': '#141414',
         'brand-offwhite': '#F5F5F0',
+        gold: {
+          300: '#FFF0A8',
+          400: '#F5D061',
+          500: '#D4AF37', // Signature Metallic Gold
+          600: '#B8860B',
+          700: '#946C0B',
+        },
         lime: {
-          400: '#a3e635',
-          500: '#84cc16', // Primary brand electric lime
-          600: '#65a30d',
-          700: '#4d7c0f',
+          400: '#D4AF37',
+          500: '#D4AF37',
+          600: '#B8860B',
+          700: '#946C0B',
         },
         beige: '#f5f5dc',
       },
@@ -63,8 +70,17 @@ export default {
       boxShadow: {
         card: '0 4px 20px -2px rgba(0, 0, 0, 0.5)',
         'card-hover': '0 8px 30px -4px rgba(0, 0, 0, 0.7)',
-        glow: '0 0 40px -10px rgba(132, 204, 22, 0.15)',
-        'glow-strong': '0 0 60px -15px rgba(132, 204, 22, 0.3)',
+        glow: '0 0 40px -10px rgba(212, 175, 55, 0.25)',
+        'glow-strong': '0 0 60px -15px rgba(212, 175, 55, 0.4)',
+      },
+      animation: {
+        marquee: 'marquee 30s linear infinite',
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
       },
     },
   },

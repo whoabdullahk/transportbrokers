@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { Switch, Route } from 'wouter'
 import { Layout, ScrollToTop } from './components/layout'
+import { Preloader } from './components/common/Preloader'
 import { Home } from './pages/Home/Home'
 
 // Statically import Home so landing page renders instantly (0ms delay)
@@ -28,17 +29,19 @@ const Privacy = lazy(() =>
 function PageLoadingFallback() {
   return (
     <div className="min-h-[50vh] flex flex-col items-center justify-center gap-3 bg-brand-black" aria-busy="true">
-      <div className="h-8 w-8 animate-spin rounded-full border-2 border-lime-500/20 border-t-lime-500" />
-      <span className="text-xs font-mono uppercase tracking-widest text-neutral-400">Loading...</span>
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#D4AF37]/20 border-t-[#D4AF37]" />
+      <span className="text-xs font-mono uppercase tracking-widest text-[#D4AF37]">Loading...</span>
     </div>
   )
 }
 
 export function App() {
   return (
-    <Layout fullWidth backgroundColor="white">
-      <ScrollToTop />
-      <Suspense fallback={<PageLoadingFallback />}>
+    <>
+      <Preloader />
+      <Layout fullWidth backgroundColor="white">
+        <ScrollToTop />
+        <Suspense fallback={<PageLoadingFallback />}>
         <Switch>
           {/* / - Homepage (statically loaded for instant first paint) */}
           <Route path="/" component={Home} />
@@ -83,6 +86,7 @@ export function App() {
         </Switch>
       </Suspense>
     </Layout>
+    </>
   )
 }
 
