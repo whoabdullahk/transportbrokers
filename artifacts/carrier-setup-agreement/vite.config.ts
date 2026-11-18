@@ -57,27 +57,6 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, 'dist'),
     emptyOutDir: true,
-    chunkSizeWarningLimit: 600,
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('react/') || id.includes('react-dom/') || id.includes('react-dom')) {
-              return 'vendor-react';
-            }
-            if (id.includes('lucide-react')) {
-              return 'vendor-icons';
-            }
-            if (id.includes('@radix-ui')) {
-              return 'vendor-radix';
-            }
-            if (id.includes('jspdf')) {
-              return 'vendor-pdf';
-            }
-          }
-        },
-      },
-    },
   },
   server: {
     port,
