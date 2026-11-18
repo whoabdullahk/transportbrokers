@@ -72,7 +72,7 @@ export function Contact() {
       if (res.success) {
         setSubmissionStatus({
           type: 'success',
-          message: 'Thank you for reaching out. An Alexandria logistics manager will contact you shortly.',
+          message: 'Thank you for reaching out. An Overland Park logistics manager will contact you shortly.',
         })
         setFormData({
           fullName: '',
@@ -99,14 +99,14 @@ export function Contact() {
   }
 
   return (
-    <div className="bg-white text-gray-900 selection:bg-lime-500 selection:text-black">
+    <div className="bg-white text-gray-900 selection:bg-[#D4AF37] selection:text-black">
       {/* 1. HERO */}
       <section className="relative pt-32 pb-16 border-b border-gray-200 bg-gray-50 overflow-hidden">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl space-y-4">
             <div className="inline-flex items-center space-x-2 text-xs font-mono text-gray-800 uppercase tracking-widest px-3 py-1 rounded-full bg-white border border-gray-200 shadow-sm">
-              <span className="h-2 w-2 rounded-full bg-lime-500 animate-pulse" />
-              <ShieldCheck className="h-4 w-4 text-gray-700" />
+              <span className="h-2 w-2 rounded-full bg-[#D4AF37] animate-pulse" />
+              <ShieldCheck className="h-4 w-4 text-[#D4AF37]" />
               <span>Direct Operations & Dispatch Desk</span>
             </div>
             <h1 className="text-4xl sm:text-6xl font-black text-gray-900 uppercase tracking-tight leading-tight">
@@ -128,7 +128,7 @@ export function Contact() {
             <div className="lg:col-span-5 space-y-8">
               <div className="space-y-3">
                 <div className="text-xs font-mono uppercase text-gray-500 tracking-widest font-semibold flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-lime-500" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />
                   Headquarters & Verification
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-black text-gray-900 uppercase tracking-tight">
@@ -142,32 +142,32 @@ export function Contact() {
               {/* Verified Contact Cards */}
               <div className="space-y-4">
                 <div className="p-5 rounded-xl bg-gray-50 border border-gray-200 flex items-start space-x-4 shadow-sm">
-                  <div className="p-3 rounded-lg bg-lime-100 text-gray-900 border border-lime-300 shrink-0">
-                    <Phone className="h-5 w-5" />
+                  <div className="p-3 rounded-lg bg-amber-500/10 text-gray-900 border border-amber-500/20 shrink-0">
+                    <Phone className="h-5 w-5 text-[#D4AF37]" />
                   </div>
                   <div className="space-y-1.5">
                     <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Direct Phone Channels</div>
-                    <a href="tel:9176723364" className="block text-base font-bold text-gray-900 hover:text-black transition-colors">
+                    <a href="tel:9176723364" className="block text-base font-bold text-gray-900 hover:text-[#D4AF37] transition-colors">
                       +1 (917) 672-3364 <span className="text-xs text-gray-500 font-normal font-mono">— Primary Operations & Dispatch</span>
                     </a>
                   </div>
                 </div>
 
                 <div className="p-5 rounded-xl bg-gray-50 border border-gray-200 flex items-start space-x-4 shadow-sm">
-                  <div className="p-3 rounded-lg bg-lime-100 text-gray-900 border border-lime-300 shrink-0">
-                    <Mail className="h-5 w-5" />
+                  <div className="p-3 rounded-lg bg-amber-500/10 text-gray-900 border border-amber-500/20 shrink-0">
+                    <Mail className="h-5 w-5 text-[#D4AF37]" />
                   </div>
                   <div className="space-y-1">
                     <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Email Inquiries</div>
-                    <a href="mailto:brandontaylor@goldstartranposrtationinc.com" className="block text-sm font-bold text-gray-900 hover:text-black transition-colors">
+                    <a href="mailto:brandontaylor@goldstartranposrtationinc.com" className="block text-sm font-bold text-gray-900 hover:text-[#D4AF37] transition-colors">
                       brandontaylor@goldstartranposrtationinc.com
                     </a>
                   </div>
                 </div>
 
                 <div className="p-5 rounded-xl bg-gray-50 border border-gray-200 flex items-start space-x-4 shadow-sm">
-                  <div className="p-3 rounded-lg bg-lime-100 text-gray-900 border border-lime-300 shrink-0">
-                    <MapPin className="h-5 w-5" />
+                  <div className="p-3 rounded-lg bg-amber-500/10 text-gray-900 border border-amber-500/20 shrink-0">
+                    <MapPin className="h-5 w-5 text-[#D4AF37]" />
                   </div>
                   <div className="space-y-1">
                     <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Operating Terminal & Office</div>
@@ -191,8 +191,8 @@ export function Contact() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                   <div className="absolute bottom-3 left-3 right-3 text-white">
-                    <div className="text-xs font-mono uppercase text-lime-400 font-bold">Alexandria Logistics Center</div>
-                    <div className="text-xs text-gray-200">Active regional dispatch & carrier terminal operations</div>
+                    <div className="text-xs font-mono uppercase text-[#D4AF37] font-bold">Overland Park Operations Center</div>
+                    <div className="text-xs text-gray-200">Active national dispatch & carrier terminal operations</div>
                   </div>
                 </div>
               </div>
@@ -200,17 +200,17 @@ export function Contact() {
               {/* Regulatory Box */}
               <div className="p-6 rounded-xl bg-gray-50 border border-gray-200 space-y-3 shadow-sm">
                 <div className="flex items-center space-x-2 text-xs font-mono uppercase text-gray-800 font-bold">
-                  <ShieldCheck className="h-4 w-4 text-gray-900" />
+                  <ShieldCheck className="h-4 w-4 text-[#D4AF37]" />
                   <span>Federal Operating Authority</span>
                 </div>
                 <div className="grid grid-cols-2 gap-4 text-xs font-mono pt-1">
                   <div>
                     <div className="text-gray-500 font-semibold">USDOT NUMBER</div>
-                    <div className="text-gray-900 font-bold text-base">253494</div>
+                    <div className="text-gray-900 font-bold text-base font-mono">253494</div>
                   </div>
                   <div>
                     <div className="text-gray-500 font-semibold">MC NUMBER</div>
-                    <div className="text-gray-900 font-bold text-base">MC-179608</div>
+                    <div className="text-gray-900 font-bold text-base font-mono">MC-179608</div>
                   </div>
                 </div>
                 <div className="text-xs text-gray-600 pt-1 font-normal">
@@ -227,19 +227,19 @@ export function Contact() {
                     Send Us an Inquiry
                   </h3>
                   <p className="text-xs text-gray-500 mt-1">
-                    Complete the form below and an Alexandria logistics specialist will respond within 30 minutes.
+                    Complete the form below and an Overland Park logistics specialist will respond within 30 minutes.
                   </p>
                 </div>
 
                 {submissionStatus && (
                   <div
                     className={`p-4 rounded-lg flex items-start space-x-3 text-xs ${submissionStatus.type === 'success'
-                        ? 'bg-lime-50 border border-lime-300 text-gray-900'
+                        ? 'bg-amber-50 border border-amber-300 text-gray-900'
                         : 'bg-red-50 border border-red-300 text-red-700'
                       }`}
                   >
                     {submissionStatus.type === 'success' ? (
-                      <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5 text-lime-600" />
+                      <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5 text-[#D4AF37]" />
                     ) : (
                       <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-red-600" />
                     )}
@@ -358,17 +358,17 @@ export function Contact() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm uppercase tracking-wider transition-all inline-flex items-center justify-center shadow-md disabled:opacity-50"
+                    className="w-full py-4 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm uppercase tracking-wider transition-all inline-flex items-center justify-center shadow-md disabled:opacity-50 group"
                   >
                     {isSubmitting ? (
                       <>
-                        <Loader2 className="h-4 w-4 animate-spin mr-2 text-lime-400" />
+                        <Loader2 className="h-4 w-4 animate-spin mr-2 text-[#D4AF37]" />
                         <span>Transmitting Request...</span>
                       </>
                     ) : (
                       <>
                         <span>Submit Request</span>
-                        <Send className="ml-2 h-4 w-4 text-lime-400" />
+                        <Send className="ml-2 h-4 w-4 text-[#D4AF37] group-hover:translate-x-0.5 transition-transform" />
                       </>
                     )}
                   </button>

@@ -16,7 +16,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Plus, Pencil, Trash2, Loader2, FileText, Hash, Building2,
-  Route, Package, DollarSign, Save, MessageSquare, Printer, RotateCcw, AlertCircle, Mail
+  Route, Package, DollarSign, Save, MessageSquare, Printer, RotateCcw, AlertCircle, Mail,
+  Download, Search, TrendingUp, Truck, CheckCircle2, X
 } from "lucide-react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter
@@ -1265,19 +1266,63 @@ export default function AdminRateConfirmations() {
     });
   };
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const total = rateConfirmations?.length ?? 0;
+  const dispatched = rateConfirmations?.filter((rc) => Boolean(rc.proNumber || rc.driverName)).length ?? 0;
+  const totalRevenue = rateConfirmations?.reduce((acc, rc) => acc + (rc.totalRateUsd || 0), 0) ?? 0;
+  const avgRate = total > 0 ? totalRevenue / total : 0;
+
+  const filteredRateConfirmations = (rateConfirmations ?? []).filter((rc) => {
+    if (!searchTerm.trim()) return true;
+    const q = searchTerm.toLowerCase();
+    return (
+      (rc.proNumber && rc.proNumber.toLowerCase().includes(q)) ||
+      (rc.carrierName && rc.carrierName.toLowerCase().includes(q)) ||
+      (rc.driverName && rc.driverName.toLowerCase().includes(q)) ||
+      (rc.truckNumber && rc.truckNumber.toLowerCase().includes(q)) ||
+      (rc.carrierEmail && rc.carrierEmail.toLowerCase().includes(q)) ||
+      (rc.outboundDeliveryAddress && rc.outboundDeliveryAddress.toLowerCase().includes(q)) ||
+      (rc.outboundPickupAddress && rc.outboundPickupAddress.toLowerCase().includes(q))
+    );
+  });
+
+  const onDownloadPdf = (rc: RateConfirmation) => {
+    try {
+      const base64 = generateRcPDF(fromRateConfirmation(rc));
+      const byteCharacters = atob(base64);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Rate-Confirmation-${rc.proNumber || rc.id}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast({ title: "PDF Generated", description: `Downloaded Rate-Confirmation-${rc.proNumber || rc.id}.pdf` });
+    } catch (e: any) {
+      toast({ title: "Failed to generate PDF", description: e.message || "Unknown error", variant: "destructive" });
+    }
+  };
 
   return (
     <AdminLayout>
-      <div className="space-y-6">
+      <div className="space-y-8">
+        {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-[#D4AF37]/20 to-[#F4C542]/5 border border-[#D4AF37]/20 w-11 h-11 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.15)]">
-              <FileText className="w-5 h-5 text-[#D4AF37]" strokeWidth={2} />
+            <div className="bg-gradient-to-br from-[#D4AF37]/20 to-[#F4C542]/5 border border-[#D4AF37]/30 w-12 h-12 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+              <FileText className="w-6 h-6 text-[#D4AF37]" strokeWidth={2} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">Gold Star Transportation, Inc.</h1>
-              <p className="text-xs text-muted-foreground uppercase tracking-widest">Rate Confirmation System</p>
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">Rate Confirmations</h1>
+              <p className="text-xs text-muted-foreground uppercase tracking-widest mt-0.5">Carrier contracts, automated rate sheets & dispatch billing</p>
             </div>
           </div>
           <Dialog open={isCreateOpen} onOpenChange={(open) => {
@@ -1285,21 +1330,26 @@ export default function AdminRateConfirmations() {
             if (!open) createForm.reset({ ...EMPTY_FORM_VALUES, rcDateTime: nowLocalDateTime() });
           }}>
             <DialogTrigger asChild>
-              <Button className="bg-[#D4AF37] hover:bg-[#F4C542] text-[#0B1220] font-bold rounded-xl">
+              <Button className="bg-gradient-to-r from-[#D4AF37] to-[#F4C542] hover:opacity-95 text-[#0B1220] font-bold rounded-xl shadow-lg shadow-[#D4AF37]/15">
                 <Plus className="w-4 h-4 mr-2" />
                 New Rate Confirmation
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[960px] max-h-[85vh] overflow-y-auto bg-card border-border">
+            <DialogContent className="sm:max-w-[960px] max-h-[85vh] overflow-y-auto bg-[#12151c] border-white/10 text-white shadow-2xl">
               <DialogHeader>
-                <DialogTitle>New Rate Confirmation</DialogTitle>
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-2 h-2 rounded-full bg-[#D4AF37]" />
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#D4AF37]">Carrier Agreement Dispatch</span>
+                </div>
+                <DialogTitle className="text-xl font-bold text-white">Create New Rate Confirmation</DialogTitle>
               </DialogHeader>
-              <p className="text-sm text-muted-foreground">Complete all fields to generate a rate confirmation.</p>
+              <p className="text-sm text-gray-400">Complete all dispatch fields to generate a binding rate confirmation agreement.</p>
               <Form {...createForm}>
-                <form onSubmit={createForm.handleSubmit(onCreateSubmit)} className="space-y-4 py-2">
+                <form onSubmit={createForm.handleSubmit(onCreateSubmit)} className="space-y-6 py-2">
                   <RateConfirmationFormFields form={createForm} />
-                  <DialogFooter>
-                    <Button type="submit" className="bg-[#D4AF37] hover:bg-[#F4C542] text-black w-full sm:w-auto" disabled={createMutation.isPending}>
+                  <DialogFooter className="pt-4 border-t border-white/10">
+                    <Button type="button" variant="outline" className="border-white/10 hover:bg-white/5" onClick={() => setIsCreateOpen(false)}>Cancel</Button>
+                    <Button type="submit" className="bg-[#D4AF37] hover:bg-[#F4C542] text-[#0B1220] font-bold w-full sm:w-auto" disabled={createMutation.isPending}>
                       {createMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                       Save Rate Confirmation
                     </Button>
@@ -1310,121 +1360,254 @@ export default function AdminRateConfirmations() {
           </Dialog>
         </div>
 
-        <div className="rounded-xl border border-border bg-card p-6">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-lg bg-black/30 border border-border/50 flex items-center justify-center">
-              <FileText className="w-4 h-4 text-[#D4AF37]" />
+        {/* 4 Top KPI Metric Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="rounded-2xl border border-white/10 bg-[#0E131F]/80 p-5 backdrop-blur-xl relative overflow-hidden group hover:border-[#D4AF37]/40 transition-all">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Total Rate Cons</span>
+              <div className="w-8 h-8 rounded-lg bg-[#D4AF37]/10 flex items-center justify-center text-[#D4AF37]">
+                <FileText className="w-4 h-4" />
+              </div>
             </div>
-            <span className="text-xs uppercase tracking-widest text-muted-foreground">Total Rate Confirmations</span>
+            <div className="text-2xl sm:text-3xl font-black text-white font-mono">{total}</div>
+            <p className="text-[11px] text-muted-foreground mt-1">Lifetime generated agreements</p>
           </div>
-          <div className="text-4xl font-bold tracking-tight">{total}</div>
+
+          <div className="rounded-2xl border border-white/10 bg-[#0E131F]/80 p-5 backdrop-blur-xl relative overflow-hidden group hover:border-[#D4AF37]/40 transition-all">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Dispatched Units</span>
+              <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                <Truck className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-white font-mono">{dispatched}</div>
+            <p className="text-[11px] text-muted-foreground mt-1">Assigned power units & drivers</p>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-[#0E131F]/80 p-5 backdrop-blur-xl relative overflow-hidden group hover:border-[#D4AF37]/40 transition-all">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Gross Freight Booked</span>
+              <div className="w-8 h-8 rounded-lg bg-[#D4AF37]/10 flex items-center justify-center text-[#D4AF37]">
+                <DollarSign className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-[#D4AF37] font-mono">{formatCurrency(totalRevenue)}</div>
+            <p className="text-[11px] text-muted-foreground mt-1">Dispatched carrier revenue</p>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-[#0E131F]/80 p-5 backdrop-blur-xl relative overflow-hidden group hover:border-[#D4AF37]/40 transition-all">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Average Rate</span>
+              <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400">
+                <TrendingUp className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-white font-mono">{formatCurrency(avgRate)}</div>
+            <p className="text-[11px] text-muted-foreground mt-1">Average per contracted load</p>
+          </div>
         </div>
 
-        <div>
-          <h2 className="text-lg font-bold tracking-tight mb-3">All Rate Confirmations</h2>
-          <div className="rounded-xl border border-border bg-card overflow-hidden">
-            <Table>
-              <TableHeader className="bg-black/20">
-                <TableRow className="border-border/50 hover:bg-transparent">
-                  <TableHead className="font-mono text-xs uppercase">PRO #</TableHead>
-                  <TableHead className="font-mono text-xs uppercase">Carrier</TableHead>
-                  <TableHead className="font-mono text-xs uppercase">Driver</TableHead>
-                  <TableHead className="font-mono text-xs uppercase">Truck</TableHead>
-                  <TableHead className="font-mono text-xs uppercase">Total Rate</TableHead>
-                  <TableHead className="font-mono text-xs uppercase">Date</TableHead>
-                  <TableHead className="font-mono text-xs uppercase text-right">Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {isLoading ? (
-                  <TableRow>
-                    <TableCell colSpan={7} className="h-24 text-center">
-                      <Loader2 className="w-6 h-6 animate-spin mx-auto text-[#D4AF37]" />
-                    </TableCell>
-                  </TableRow>
-                ) : rateConfirmations?.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
-                      No rate confirmations found.
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  rateConfirmations?.map((rc) => (
-                    <TableRow key={rc.id} className="border-border/50 hover:bg-white/5 transition-colors group">
-                      <TableCell className="font-mono font-medium">{rc.proNumber || "--"}</TableCell>
-                      <TableCell className="text-sm">{rc.carrierName}</TableCell>
-                      <TableCell className="text-sm text-muted-foreground">{rc.driverName || "--"}</TableCell>
-                      <TableCell className="text-sm text-muted-foreground font-mono">{rc.truckNumber || "--"}</TableCell>
-                      <TableCell className="text-sm font-bold">{formatCurrency(rc.totalRateUsd)}</TableCell>
-                      <TableCell className="text-sm text-muted-foreground">{rc.rcDateTime.slice(0, 10)}</TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 text-muted-foreground hover:text-[#D4AF37]"
-                            title={rc.carrierEmail ? `Email to ${rc.carrierEmail}` : "No carrier email"}
-                            disabled={sendingEmailId === rc.id}
-                            onClick={() => onSendEmail(rc)}
-                          >
-                            {sendingEmailId === rc.id ? (
-                              <Loader2 className="w-4 h-4 animate-spin text-[#D4AF37]" />
-                            ) : (
-                              <Mail className="w-4 h-4" />
-                            )}
-                          </Button>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-[#D4AF37]" title="Print" onClick={() => setLocation(`/rate-confirmations/${rc.id}/print`)}>
-                            <Printer className="w-4 h-4" />
-                          </Button>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-[#D4AF37]" onClick={() => openEdit(rc)}>
-                            <Pencil className="w-4 h-4" />
-                          </Button>
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive">
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent className="bg-card border-border">
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>Delete Rate Confirmation</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  Are you sure you want to delete this rate confirmation? This action cannot be undone.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel className="bg-transparent border-border">Cancel</AlertDialogCancel>
-                                <AlertDialogAction
-                                  onClick={() => onDelete(rc.id)}
-                                  className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
-                                >
-                                  Delete
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
+        {/* Filter and Search Bar */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search by PRO #, Carrier, Driver, Truck, Route..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-10 bg-white/5 border-white/10 text-white rounded-xl focus:border-[#D4AF37]/50 focus:ring-[#D4AF37]/20 placeholder:text-muted-foreground"
+            />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm("")}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-white"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
+          <div className="text-xs text-muted-foreground font-mono self-center sm:self-auto">
+            Showing <span className="text-white font-bold">{filteredRateConfirmations.length}</span> of <span className="text-white font-bold">{total}</span> rate confirmations
+          </div>
+        </div>
+
+        {/* Table Container */}
+        <div className="rounded-2xl border border-white/10 bg-[#0E131F]/90 backdrop-blur-xl shadow-2xl overflow-hidden">
+          <Table>
+            <TableHeader className="bg-white/[0.02] border-b border-white/10">
+              <TableRow className="border-none hover:bg-transparent">
+                <TableHead className="font-mono text-xs uppercase tracking-wider text-muted-foreground">PRO #</TableHead>
+                <TableHead className="font-mono text-xs uppercase tracking-wider text-muted-foreground">Carrier & Contact</TableHead>
+                <TableHead className="font-mono text-xs uppercase tracking-wider text-muted-foreground">Driver & Unit</TableHead>
+                <TableHead className="font-mono text-xs uppercase tracking-wider text-muted-foreground">Equipment / Route</TableHead>
+                <TableHead className="font-mono text-xs uppercase tracking-wider text-muted-foreground">Total Rate</TableHead>
+                <TableHead className="font-mono text-xs uppercase tracking-wider text-muted-foreground">Date</TableHead>
+                <TableHead className="font-mono text-xs uppercase tracking-wider text-muted-foreground text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {isLoading ? (
+                <TableRow>
+                  <TableCell colSpan={7} className="h-32 text-center">
+                    <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#D4AF37]" />
+                    <p className="text-xs text-muted-foreground mt-2 font-mono">Loading rate confirmations...</p>
+                  </TableCell>
+                </TableRow>
+              ) : filteredRateConfirmations.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={7} className="h-32 text-center text-muted-foreground">
+                    <div className="flex flex-col items-center justify-center space-y-2">
+                      <FileText className="w-8 h-8 text-white/20" />
+                      <p className="text-sm font-medium">No rate confirmations found</p>
+                      <p className="text-xs text-white/40">Try adjusting your search criteria or create a new confirmation</p>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                filteredRateConfirmations.map((rc) => (
+                  <TableRow key={rc.id} className="border-white/5 hover:bg-white/[0.04] transition-colors group">
+                    <TableCell className="font-mono font-bold text-white">
+                      <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#D4AF37]/10 border border-[#D4AF37]/20 text-[#D4AF37]">
+                        {rc.proNumber || `RC-${rc.id}`}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="font-semibold text-white text-sm">{rc.carrierName}</div>
+                      <div className="text-xs text-muted-foreground flex items-center gap-2 mt-0.5">
+                        {rc.carrierEmail && <span>{rc.carrierEmail}</span>}
+                        {rc.carrierPhone && <span>• {rc.carrierPhone}</span>}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm text-gray-200">{rc.driverName || "—"}</div>
+                      <div className="text-xs text-muted-foreground font-mono mt-0.5">
+                        {rc.truckNumber ? `Truck: ${rc.truckNumber}` : ""} {rc.trailerNumber ? `| Trl: ${rc.trailerNumber}` : ""}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-xs font-mono text-gray-300">
+                        {rc.sizeType || "Dry Van"} {rc.miles ? `• ${rc.miles} mi` : ""}
+                      </div>
+                      <div className="text-xs text-muted-foreground truncate max-w-[200px] mt-0.5">
+                        {rc.outboundDeliveryAddress ? `To: ${rc.outboundDeliveryAddress}` : "Standard Corridor"}
+                      </div>
+                    </TableCell>
+                    <TableCell className="font-mono font-bold text-[#D4AF37] text-sm">
+                      {formatCurrency(rc.totalRateUsd)}
+                    </TableCell>
+                    <TableCell className="text-xs text-muted-foreground font-mono">
+                      {rc.rcDateTime.slice(0, 10)}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-1.5">
+                        {/* Direct PDF Download */}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-muted-foreground hover:text-[#D4AF37] hover:bg-white/5"
+                          title="Download PDF"
+                          onClick={() => onDownloadPdf(rc)}
+                        >
+                          <Download className="w-4 h-4" />
+                        </Button>
+
+                        {/* Email Carrier */}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-muted-foreground hover:text-[#D4AF37] hover:bg-white/5"
+                          title={rc.carrierEmail ? `Email to ${rc.carrierEmail}` : "No carrier email"}
+                          disabled={sendingEmailId === rc.id}
+                          onClick={() => onSendEmail(rc)}
+                        >
+                          {sendingEmailId === rc.id ? (
+                            <Loader2 className="w-4 h-4 animate-spin text-[#D4AF37]" />
+                          ) : (
+                            <Mail className="w-4 h-4" />
+                          )}
+                        </Button>
+
+                        {/* Print View */}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-muted-foreground hover:text-[#D4AF37] hover:bg-white/5"
+                          title="Print Rate Confirmation"
+                          onClick={() => setLocation(`/rate-confirmations/${rc.id}/print`)}
+                        >
+                          <Printer className="w-4 h-4" />
+                        </Button>
+
+                        {/* Edit */}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-muted-foreground hover:text-[#D4AF37] hover:bg-white/5"
+                          title="Edit"
+                          onClick={() => openEdit(rc)}
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+
+                        {/* Delete */}
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 text-muted-foreground hover:text-red-400 hover:bg-white/5"
+                              title="Delete"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent className="bg-[#12151c] border-white/10 text-white">
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Rate Confirmation</AlertDialogTitle>
+                              <AlertDialogDescription className="text-gray-400">
+                                Are you sure you want to permanently delete rate confirmation {rc.proNumber ? `#${rc.proNumber}` : `#${rc.id}`}? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel className="bg-transparent border-white/10 text-white hover:bg-white/5">Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => onDelete(rc.id)}
+                                className="bg-red-500 hover:bg-red-600 text-white font-bold"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
         </div>
       </div>
 
+      {/* Edit Dialog */}
       <Dialog open={!!editingRc} onOpenChange={(open) => !open && setEditingRc(null)}>
-        <DialogContent className="sm:max-w-[960px] max-h-[85vh] overflow-y-auto bg-card border-border">
+        <DialogContent className="sm:max-w-[960px] max-h-[85vh] overflow-y-auto bg-[#12151c] border-white/10 text-white shadow-2xl">
           <DialogHeader>
-            <DialogTitle>Edit Rate Confirmation {editingRc?.proNumber ? `#${editingRc.proNumber}` : ""}</DialogTitle>
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-2 h-2 rounded-full bg-[#D4AF37]" />
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[#D4AF37]">Modify Carrier Agreement</span>
+            </div>
+            <DialogTitle className="text-xl font-bold text-white">
+              Edit Rate Confirmation {editingRc?.proNumber ? `#${editingRc.proNumber}` : ""}
+            </DialogTitle>
           </DialogHeader>
           <Form {...editForm}>
-            <form onSubmit={editForm.handleSubmit(onEditSubmit)} className="space-y-4 py-2">
+            <form onSubmit={editForm.handleSubmit(onEditSubmit)} className="space-y-6 py-2">
               <RateConfirmationFormFields form={editForm} />
-              <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setEditingRc(null)}>Cancel</Button>
-                <Button type="submit" className="bg-[#D4AF37] hover:bg-[#F4C542] text-black w-full sm:w-auto" disabled={updateMutation.isPending}>
+              <DialogFooter className="pt-4 border-t border-white/10">
+                <Button type="button" variant="outline" className="border-white/10 hover:bg-white/5" onClick={() => setEditingRc(null)}>Cancel</Button>
+                <Button type="submit" className="bg-[#D4AF37] hover:bg-[#F4C542] text-[#0B1220] font-bold w-full sm:w-auto" disabled={updateMutation.isPending}>
                   {updateMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                   Save Changes
                 </Button>

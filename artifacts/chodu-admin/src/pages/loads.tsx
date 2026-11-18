@@ -17,7 +17,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Plus, Pencil, Trash2, Loader2, Truck, FileText, Hash, Building2,
-  Route, Package, DollarSign, Paperclip, Save, Upload, Check, ExternalLink
+  Route, Package, DollarSign, Paperclip, Save, Upload, Check, ExternalLink,
+  Search, Filter, CheckCircle2, AlertCircle, Compass
 } from "lucide-react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter
@@ -129,13 +130,13 @@ function toPayload(values: LoadFormValues, billOfLadingPath: string | null) {
 function statusBadgeClasses(status: string) {
   switch (status) {
     case "Delivered":
-      return "text-green-400 bg-green-400/10 border-green-400/20";
+      return "text-emerald-400 bg-emerald-400/10 border-emerald-400/20";
     case "In Transit":
-      return "text-blue-400 bg-blue-400/10 border-blue-400/20";
+      return "text-[#D4AF37] bg-[#D4AF37]/10 border-[#D4AF37]/25";
     case "Cancelled":
-      return "text-red-400 bg-red-400/10 border-red-400/20";
+      return "text-rose-400 bg-rose-400/10 border-rose-400/20";
     default:
-      return "text-[#D4AF37] bg-[#D4AF37]/10 border-[#D4AF37]/20";
+      return "text-cyan-400 bg-cyan-400/10 border-cyan-400/20";
   }
 }
 
@@ -148,7 +149,7 @@ function SectionHeader({ icon: Icon, children }: { icon: React.ComponentType<{ c
     <div className="flex items-center gap-2 pt-6 first:pt-0">
       <Icon className="w-3.5 h-3.5 text-[#D4AF37]" />
       <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37]">{children}</span>
-      <div className="flex-1 h-px bg-white/15" />
+      <div className="flex-1 h-px bg-white/10" />
     </div>
   );
 }
@@ -171,19 +172,19 @@ function BillOfLadingField({
 
   return (
     <div className="space-y-2">
-      <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+      <label className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">
         Upload Bill of Lading (optional)
       </label>
-      <label className="flex items-center gap-2 border border-dashed border-border rounded-lg px-4 py-3 text-sm text-muted-foreground cursor-pointer hover:border-[#D4AF37]/50 hover:text-foreground transition-colors bg-background/50">
+      <label className="flex items-center gap-2.5 border border-dashed border-white/15 rounded-xl px-4 py-3 text-xs text-neutral-400 cursor-pointer hover:border-[#D4AF37]/50 hover:text-white transition-colors bg-black/40">
         {isUploading ? (
           <Loader2 className="w-4 h-4 animate-spin text-[#D4AF37]" />
         ) : billOfLadingPath ? (
-          <Check className="w-4 h-4 text-green-400" />
+          <Check className="w-4 h-4 text-emerald-400" />
         ) : (
-          <Upload className="w-4 h-4" />
+          <Upload className="w-4 h-4 text-[#D4AF37]" />
         )}
         <span>
-          {isUploading ? "Uploading..." : billOfLadingPath ? "File uploaded — click to replace" : "Click to upload PDF, DOC, JPG, or PNG"}
+          {isUploading ? "Uploading file..." : billOfLadingPath ? "File attached — click to replace" : "Click or drag to attach PDF, DOC, JPG, or PNG"}
         </span>
         <input
           type="file"
@@ -202,9 +203,9 @@ function BillOfLadingField({
           href={`/api/storage${billOfLadingPath}`}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1 text-xs text-[#D4AF37] hover:underline"
+          className="inline-flex items-center gap-1.5 text-xs text-[#D4AF37] hover:underline font-mono"
         >
-          <ExternalLink className="w-3 h-3" /> View current attachment
+          <ExternalLink className="w-3.5 h-3.5" /> View current document
         </a>
       )}
     </div>
@@ -214,25 +215,25 @@ function BillOfLadingField({
 function LoadFormFields({ form }: { form: UseFormReturn<LoadFormValues> }) {
   return (
     <div className="space-y-6">
-      <SectionHeader icon={Hash}>Basic Info</SectionHeader>
-      <div className="grid grid-cols-2 gap-4">
+      <SectionHeader icon={Hash}>Identification &amp; Status</SectionHeader>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <FormField control={form.control} name="trackingId" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tracking ID</FormLabel>
-            <FormControl><Input {...field} className="font-mono" placeholder="Enter tracking ID" /></FormControl>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Tracking ID</FormLabel>
+            <FormControl><Input {...field} className="font-mono bg-black/40 border-white/10 rounded-xl" placeholder="E.g., GS-94281" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="status" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Load Status</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Load Status</FormLabel>
             <Select onValueChange={field.onChange} value={field.value}>
               <FormControl>
-                <SelectTrigger>
+                <SelectTrigger className="bg-black/40 border-white/10 rounded-xl">
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
               </FormControl>
-              <SelectContent>
+              <SelectContent className="bg-[#12151c] border-white/10 text-white">
                 {STATUS_OPTIONS.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
               </SelectContent>
             </Select>
@@ -241,173 +242,162 @@ function LoadFormFields({ form }: { form: UseFormReturn<LoadFormValues> }) {
         )} />
       </div>
 
-      <SectionHeader icon={Building2}>Carrier Details</SectionHeader>
-      <div className="grid grid-cols-3 gap-4">
+      <SectionHeader icon={Building2}>Carrier &amp; Equipment</SectionHeader>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <FormField control={form.control} name="carrierName" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Carrier</FormLabel>
-            <FormControl><Input {...field} placeholder="Carrier name" /></FormControl>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Carrier Name</FormLabel>
+            <FormControl><Input {...field} className="bg-black/40 border-white/10 rounded-xl" placeholder="Full carrier name" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="dot" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">DOT</FormLabel>
-            <FormControl><Input {...field} className="font-mono" placeholder="DOT number" /></FormControl>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">USDOT #</FormLabel>
+            <FormControl><Input {...field} className="font-mono bg-black/40 border-white/10 rounded-xl" placeholder="DOT number" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="truck" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Truck #</FormLabel>
-            <FormControl><Input {...field} className="font-mono" placeholder="Truck number" /></FormControl>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Truck / Unit #</FormLabel>
+            <FormControl><Input {...field} className="font-mono bg-black/40 border-white/10 rounded-xl" placeholder="TRK-9428" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
       </div>
-      <div className="grid grid-cols-3 gap-4">
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <FormField control={form.control} name="slotFeeStatus" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Slot Fee Status</FormLabel>
-            <FormControl><Input {...field} placeholder="Slot fee status" /></FormControl>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Slot Fee Status</FormLabel>
+            <FormControl><Input {...field} className="bg-black/40 border-white/10 rounded-xl" placeholder="Verified / Paid" /></FormControl>
+            <FormMessage />
+          </FormItem>
+        )} />
+        <FormField control={form.control} name="tripsPerWeek" render={({ field }) => (
+          <FormItem>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Trips Per Week</FormLabel>
+            <FormControl><Input type="number" {...field} className="bg-black/40 border-white/10 rounded-xl" placeholder="5" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
       </div>
-      <FormField control={form.control} name="tripsPerWeek" render={({ field }) => (
-        <FormItem>
-          <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Total Trips in a Week</FormLabel>
-          <FormControl><Input type="number" {...field} placeholder="Number of trips" /></FormControl>
-          <FormMessage />
-        </FormItem>
-      )} />
 
-      <SectionHeader icon={Route}>Route Information</SectionHeader>
-      <FormField control={form.control} name="outboundRoute" render={({ field }) => (
-        <FormItem>
-          <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Outbound Route</FormLabel>
-          <FormControl><Textarea {...field} className="resize-none" placeholder="Enter outbound route details" /></FormControl>
-          <FormMessage />
-        </FormItem>
-      )} />
-      <FormField control={form.control} name="returnRoute" render={({ field }) => (
-        <FormItem>
-          <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Return Route</FormLabel>
-          <FormControl><Textarea {...field} className="resize-none" placeholder="Enter return route details" /></FormControl>
-          <FormMessage />
-        </FormItem>
-      )} />
-      <FormField control={form.control} name="pickupAddress" render={({ field }) => (
-        <FormItem>
-          <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Pickup Address</FormLabel>
-          <FormControl><Textarea {...field} className="resize-none" placeholder="Enter pickup address" /></FormControl>
-          <FormMessage />
-        </FormItem>
-      )} />
-      <FormField control={form.control} name="deliveryAddress" render={({ field }) => (
-        <FormItem>
-          <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Delivery Address</FormLabel>
-          <FormControl><Textarea {...field} className="resize-none" placeholder="Enter delivery address" /></FormControl>
-          <FormMessage />
-        </FormItem>
-      )} />
-      <div className="grid grid-cols-2 gap-4">
+      <SectionHeader icon={Route}>Route &amp; Addresses</SectionHeader>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <FormField control={form.control} name="outboundRoute" render={({ field }) => (
+          <FormItem>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Outbound Route</FormLabel>
+            <FormControl><Textarea {...field} className="resize-none bg-black/40 border-white/10 rounded-xl text-xs" placeholder="Overland Park, KS → Dallas, TX" /></FormControl>
+            <FormMessage />
+          </FormItem>
+        )} />
+        <FormField control={form.control} name="returnRoute" render={({ field }) => (
+          <FormItem>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Return Route</FormLabel>
+            <FormControl><Textarea {...field} className="resize-none bg-black/40 border-white/10 rounded-xl text-xs" placeholder="Dallas, TX → Overland Park, KS" /></FormControl>
+            <FormMessage />
+          </FormItem>
+        )} />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <FormField control={form.control} name="pickupAddress" render={({ field }) => (
+          <FormItem>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Pickup Facility Address</FormLabel>
+            <FormControl><Textarea {...field} className="resize-none bg-black/40 border-white/10 rounded-xl text-xs" placeholder="Full origin facility address" /></FormControl>
+            <FormMessage />
+          </FormItem>
+        )} />
+        <FormField control={form.control} name="deliveryAddress" render={({ field }) => (
+          <FormItem>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Delivery Facility Address</FormLabel>
+            <FormControl><Textarea {...field} className="resize-none bg-black/40 border-white/10 rounded-xl text-xs" placeholder="Full destination facility address" /></FormControl>
+            <FormMessage />
+          </FormItem>
+        )} />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <FormField control={form.control} name="milesPerSide" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Each Side Miles</FormLabel>
-            <FormControl><Input type="number" {...field} placeholder="Miles per side" /></FormControl>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">One-Way Miles</FormLabel>
+            <FormControl><Input type="number" {...field} className="bg-black/40 border-white/10 rounded-xl" placeholder="312" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="totalRoundTripMiles" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Total Round Trip Miles</FormLabel>
-            <FormControl><Input type="number" {...field} placeholder="Total miles" /></FormControl>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Total Round Trip Miles</FormLabel>
+            <FormControl><Input type="number" {...field} className="bg-black/40 border-white/10 rounded-xl" placeholder="624" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
       </div>
 
-      <SectionHeader icon={Package}>Commodity & Weights</SectionHeader>
-      <div className="grid grid-cols-3 gap-4">
+      <SectionHeader icon={Package}>Commodity &amp; Weights</SectionHeader>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <FormField control={form.control} name="commodity" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Commodity</FormLabel>
-            <FormControl><Input {...field} placeholder="Type of commodity" /></FormControl>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Commodity Type</FormLabel>
+            <FormControl><Input {...field} className="bg-black/40 border-white/10 rounded-xl" placeholder="Dry Goods / Palletized" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="outboundWeightLbs" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Outbound Weight (lbs)</FormLabel>
-            <FormControl><Input type="number" {...field} placeholder="Weight in lbs" /></FormControl>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Outbound Weight (lbs)</FormLabel>
+            <FormControl><Input type="number" {...field} className="bg-black/40 border-white/10 rounded-xl" placeholder="42000" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="backhaulWeightLbs" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Backhaul Weight (lbs)</FormLabel>
-            <FormControl><Input type="number" {...field} placeholder="Weight in lbs" /></FormControl>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Backhaul Weight (lbs)</FormLabel>
+            <FormControl><Input type="number" {...field} className="bg-black/40 border-white/10 rounded-xl" placeholder="38000" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
       </div>
 
-      <SectionHeader icon={DollarSign}>Rate & Schedule</SectionHeader>
-      <div className="grid grid-cols-2 gap-4">
+      <SectionHeader icon={DollarSign}>Rates &amp; Terms</SectionHeader>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <FormField control={form.control} name="outboundRate" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Total Amount Paid Per Round Trip</FormLabel>
-            <FormControl><Input type="number" step="0.01" {...field} placeholder="Enter amount" /></FormControl>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Total Rate ($ per trip)</FormLabel>
+            <FormControl><Input type="number" {...field} className="bg-black/40 border-white/10 rounded-xl font-bold font-mono text-emerald-400" placeholder="2450" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="startDate" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Start Date</FormLabel>
-            <FormControl><Input type="date" {...field} /></FormControl>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Contract Start Date</FormLabel>
+            <FormControl><Input type="date" {...field} className="bg-black/40 border-white/10 rounded-xl text-white" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
       </div>
 
-      <SectionHeader icon={FileText}>Contract Details</SectionHeader>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <FormField control={form.control} name="contractType" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Contract Type</FormLabel>
-            <FormControl><Input {...field} placeholder="Contract type" /></FormControl>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Contract Type</FormLabel>
+            <FormControl><Input {...field} className="bg-black/40 border-white/10 rounded-xl" placeholder="60-Day Dedicated" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="purpose" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Purpose</FormLabel>
-            <FormControl><Input {...field} placeholder="Purpose" /></FormControl>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Reservation Purpose</FormLabel>
+            <FormControl><Input {...field} className="bg-black/40 border-white/10 rounded-xl" placeholder="Dedicated Lane" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="refundableStatus" render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Refundable Status</FormLabel>
-            <FormControl><Input {...field} placeholder="Refundable status" /></FormControl>
-            <FormMessage />
-          </FormItem>
-        )} />
-        <FormField control={form.control} name="appliesTowardContract" render={({ field }) => (
-          <FormItem>
-            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Applies Toward Contract</FormLabel>
-            <Select onValueChange={field.onChange} value={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Yes / No" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="yes">Yes</SelectItem>
-                <SelectItem value="no">No</SelectItem>
-              </SelectContent>
-            </Select>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-neutral-400 font-mono">Refundable Status</FormLabel>
+            <FormControl><Input {...field} className="bg-black/40 border-white/10 rounded-xl" placeholder="Yes / No" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
@@ -423,6 +413,8 @@ export default function AdminLoads() {
   const [editingLoad, setEditingLoad] = useState<Load | null>(null);
   const [createBolPath, setCreateBolPath] = useState<string | null>(null);
   const [editBolPath, setEditBolPath] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -511,21 +503,41 @@ export default function AdminLoads() {
     });
   };
 
+  const filteredLoads = loads?.filter((load) => {
+    const matchesSearch =
+      load.trackingId.toLowerCase().includes(search.toLowerCase()) ||
+      load.carrierName.toLowerCase().includes(search.toLowerCase()) ||
+      (load.dot && load.dot.toLowerCase().includes(search.toLowerCase())) ||
+      (load.truck && load.truck.toLowerCase().includes(search.toLowerCase())) ||
+      (load.outboundRoute && load.outboundRoute.toLowerCase().includes(search.toLowerCase()));
+
+    const matchesStatus =
+      statusFilter === "all" ||
+      load.status.toLowerCase() === statusFilter.toLowerCase();
+
+    return matchesSearch && matchesStatus;
+  });
+
   const totalLoads = loads?.length ?? 0;
+  const inTransitCount = loads?.filter((l) => l.status.toLowerCase().includes("transit")).length ?? 0;
+  const deliveredCount = loads?.filter((l) => l.status.toLowerCase().includes("delivered")).length ?? 0;
 
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-[#D4AF37]/20 to-[#F4C542]/5 border border-[#D4AF37]/20 w-11 h-11 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.15)]">
-              <Truck className="w-5 h-5 text-[#D4AF37]" strokeWidth={2} />
+        {/* Top Header Bar */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-white/5">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-mono text-[#D4AF37] uppercase tracking-wider mb-1">
+              <span className="h-2 w-2 rounded-full bg-[#D4AF37] animate-pulse" />
+              <span>Commercial Freight Operations</span>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight">Gold Star Transportation, Inc.</h1>
-              <p className="text-xs text-muted-foreground uppercase tracking-widest">Load Management Dashboard</p>
-            </div>
+            <h1 className="text-3xl font-black tracking-tight text-white">Active Loads Management</h1>
+            <p className="text-xs sm:text-sm text-neutral-400 mt-1">
+              Real-time load manifests, driver dispatch status, and client BOL attachments.
+            </p>
           </div>
+
           <div className="flex gap-2 w-full sm:w-auto">
             <Dialog open={isCreateOpen} onOpenChange={(open) => {
               setIsCreateOpen(open);
@@ -535,22 +547,22 @@ export default function AdminLoads() {
               }
             }}>
               <DialogTrigger asChild>
-                <Button className="bg-[#D4AF37] hover:bg-[#F4C542] text-[#0B1220] font-bold rounded-xl flex-1 sm:flex-none">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add New Load
+                <Button className="bg-[#D4AF37] hover:bg-[#F4C542] text-[#0B1220] font-bold rounded-xl text-xs shadow-md cursor-pointer flex-1 sm:flex-none">
+                  <Plus className="w-4 h-4 mr-1.5" />
+                  Create Load
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[960px] max-h-[85vh] overflow-y-auto bg-card border-border">
-                <DialogHeader>
-                  <DialogTitle>Add New Load</DialogTitle>
+              <DialogContent className="sm:max-w-[960px] max-h-[85vh] overflow-y-auto bg-[#12151c] border-white/10 text-white">
+                <DialogHeader className="border-b border-white/5 pb-4">
+                  <DialogTitle className="text-lg font-bold text-white">Create New Load Manifest</DialogTitle>
                 </DialogHeader>
                 <Form {...createForm}>
-                  <form onSubmit={createForm.handleSubmit(onCreateSubmit)} className="space-y-4 py-2">
+                  <form onSubmit={createForm.handleSubmit(onCreateSubmit)} className="space-y-4 py-3">
                     <LoadFormFields form={createForm} />
-                    <SectionHeader icon={Paperclip}>Attachment</SectionHeader>
+                    <SectionHeader icon={Paperclip}>Documents &amp; Proof of Delivery</SectionHeader>
                     <BillOfLadingField billOfLadingPath={createBolPath} onUploaded={setCreateBolPath} />
-                    <DialogFooter>
-                      <Button type="submit" className="bg-[#D4AF37] hover:bg-[#F4C542] text-black w-full sm:w-auto" disabled={createMutation.isPending}>
+                    <DialogFooter className="pt-4 border-t border-white/5">
+                      <Button type="submit" className="bg-[#D4AF37] hover:bg-[#F4C542] text-black font-bold w-full sm:w-auto rounded-xl" disabled={createMutation.isPending}>
                         {createMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                         Save Load
                       </Button>
@@ -559,127 +571,204 @@ export default function AdminLoads() {
                 </Form>
               </DialogContent>
             </Dialog>
+
             <Button
               variant="outline"
-              className="rounded-xl border-border flex-1 sm:flex-none"
+              className="rounded-xl border-white/10 hover:bg-white/5 text-white text-xs font-semibold flex-1 sm:flex-none cursor-pointer"
               onClick={() => setLocation("/rate-confirmations")}
             >
-              <FileText className="w-4 h-4 mr-2" />
-              Rate Confirmation
+              <FileText className="w-4 h-4 mr-1.5 text-[#D4AF37]" />
+              Rate Confirmations
             </Button>
           </div>
         </div>
 
-        <div className="rounded-xl border border-border bg-card p-6">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-lg bg-black/30 border border-border/50 flex items-center justify-center">
-              <Truck className="w-4 h-4 text-[#D4AF37]" />
+        {/* 3 Metric Summary Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="p-4 rounded-2xl bg-[#12151c] border border-white/10 flex items-center justify-between">
+            <div className="space-y-1">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-neutral-400">Total Active Manifests</span>
+              <div className="text-2xl font-bold font-mono text-white">{totalLoads}</div>
             </div>
-            <span className="text-xs uppercase tracking-widest text-muted-foreground">Total Loads</span>
+            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D4AF37]">
+              <Truck className="w-5 h-5" />
+            </div>
           </div>
-          <div className="text-4xl font-bold tracking-tight">{totalLoads}</div>
-          <div className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-            <Hash className="w-3 h-3" /> All time
+
+          <div className="p-4 rounded-2xl bg-[#12151c] border border-white/10 flex items-center justify-between">
+            <div className="space-y-1">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-neutral-400">Dispatched in Transit</span>
+              <div className="text-2xl font-bold font-mono text-[#D4AF37]">{inTransitCount}</div>
+            </div>
+            <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center text-[#D4AF37]">
+              <Compass className="w-5 h-5" />
+            </div>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-[#12151c] border border-white/10 flex items-center justify-between">
+            <div className="space-y-1">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-neutral-400">Successfully Delivered</span>
+              <div className="text-2xl font-bold font-mono text-emerald-400">{deliveredCount}</div>
+            </div>
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+              <CheckCircle2 className="w-5 h-5" />
+            </div>
           </div>
         </div>
 
-        <div>
-          <h2 className="text-lg font-bold tracking-tight mb-3">All Loads</h2>
-          <div className="rounded-xl border border-border bg-card overflow-hidden">
-            <Table>
-              <TableHeader className="bg-black/20">
-                <TableRow className="border-border/50 hover:bg-transparent">
-                  <TableHead className="font-mono text-xs uppercase">Tracking ID</TableHead>
-                  <TableHead className="font-mono text-xs uppercase">Status</TableHead>
-                  <TableHead className="font-mono text-xs uppercase">Carrier</TableHead>
-                  <TableHead className="font-mono text-xs uppercase">DOT</TableHead>
-                  <TableHead className="font-mono text-xs uppercase">Truck</TableHead>
-                  <TableHead className="font-mono text-xs uppercase">Outbound Rate</TableHead>
-                  <TableHead className="font-mono text-xs uppercase">Start Date</TableHead>
-                  <TableHead className="font-mono text-xs uppercase text-right">Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {isLoading ? (
-                  <TableRow>
-                    <TableCell colSpan={8} className="h-24 text-center">
-                      <Loader2 className="w-6 h-6 animate-spin mx-auto text-[#D4AF37]" />
-                    </TableCell>
-                  </TableRow>
-                ) : loads?.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={8} className="h-24 text-center text-muted-foreground">
-                      No loads found.
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  loads?.map((load) => (
-                    <TableRow key={load.id} className="border-border/50 hover:bg-white/5 transition-colors group">
-                      <TableCell className="font-mono font-medium">#{load.trackingId}</TableCell>
-                      <TableCell>
-                        <span className={`text-xs uppercase tracking-wider font-mono px-2 py-1 rounded border inline-flex items-center gap-1.5 ${statusBadgeClasses(load.status)}`}>
-                          <span className="w-1.5 h-1.5 rounded-full bg-current" />
-                          {load.status}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-sm">{load.carrierName}</TableCell>
-                      <TableCell className="text-sm text-muted-foreground font-mono">{load.dot || "--"}</TableCell>
-                      <TableCell className="text-sm text-muted-foreground font-mono">{load.truck || "--"}</TableCell>
-                      <TableCell className="text-sm font-bold">{formatCurrency(load.outboundRate)}</TableCell>
-                      <TableCell className="text-sm text-muted-foreground">{load.startDate.slice(0, 10)}</TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-[#D4AF37]" onClick={() => openEdit(load)}>
-                            <Pencil className="w-4 h-4" />
-                          </Button>
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive">
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent className="bg-card border-border">
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>Delete Load</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  Are you sure you want to delete load #{load.trackingId}? This action cannot be undone.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel className="bg-transparent border-border">Cancel</AlertDialogCancel>
-                                <AlertDialogAction
-                                  onClick={() => onDelete(load.id)}
-                                  className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
-                                >
-                                  Delete
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
+        {/* Search & Filter Controls */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+          <div className="flex items-center space-x-2 bg-[#12151c] border border-white/10 rounded-2xl px-3 py-1.5 w-full max-w-md shadow-sm">
+            <Search className="w-4 h-4 text-neutral-400 shrink-0 ml-1" />
+            <Input
+              placeholder="Search Tracking ID, Carrier, Route, Unit #..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 h-9 text-xs text-white placeholder:text-neutral-500 font-medium"
+            />
+            {search && (
+              <button
+                onClick={() => setSearch("")}
+                className="text-xs text-neutral-400 hover:text-white px-2 font-mono"
+              >
+                Clear
+              </button>
+            )}
           </div>
+
+          <div className="flex items-center space-x-3">
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-40 bg-[#12151c] border-white/10 h-10 rounded-xl text-xs text-neutral-200">
+                <SelectValue placeholder="All Statuses" />
+              </SelectTrigger>
+              <SelectContent className="bg-[#12151c] border-white/10 text-white">
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="booked">Booked</SelectItem>
+                <SelectItem value="in transit">In Transit</SelectItem>
+                <SelectItem value="delivered">Delivered</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <span className="text-xs font-mono text-neutral-400 px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/10 shrink-0">
+              {filteredLoads?.length || 0} Loads
+            </span>
+          </div>
+        </div>
+
+        {/* Loads Table */}
+        <div className="rounded-2xl border border-white/10 bg-[#12151c] overflow-hidden shadow-xl">
+          <Table>
+            <TableHeader className="bg-black/40">
+              <TableRow className="border-white/10 hover:bg-transparent">
+                <TableHead className="font-mono text-xs uppercase text-neutral-400">Tracking ID</TableHead>
+                <TableHead className="font-mono text-xs uppercase text-neutral-400">Status</TableHead>
+                <TableHead className="font-mono text-xs uppercase text-neutral-400">Carrier</TableHead>
+                <TableHead className="font-mono text-xs uppercase text-neutral-400">USDOT #</TableHead>
+                <TableHead className="font-mono text-xs uppercase text-neutral-400">Truck #</TableHead>
+                <TableHead className="font-mono text-xs uppercase text-neutral-400">Rate</TableHead>
+                <TableHead className="font-mono text-xs uppercase text-neutral-400">Start Date</TableHead>
+                <TableHead className="font-mono text-xs uppercase text-neutral-400 text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {isLoading ? (
+                <TableRow>
+                  <TableCell colSpan={8} className="h-32 text-center">
+                    <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#D4AF37]" />
+                  </TableCell>
+                </TableRow>
+              ) : filteredLoads?.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={8} className="h-32 text-center text-neutral-400 text-xs font-mono uppercase tracking-wider">
+                    No loads found matching criteria.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                filteredLoads?.map((load) => (
+                  <TableRow key={load.id} className="border-white/5 hover:bg-white/[0.03] transition-colors group">
+                    <TableCell className="font-mono text-xs font-bold text-white">
+                      #{load.trackingId}
+                    </TableCell>
+                    <TableCell>
+                      <span className={`text-[10px] uppercase tracking-wider font-mono px-2.5 py-1 rounded-md border inline-flex items-center gap-1.5 font-semibold ${statusBadgeClasses(load.status)}`}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-current" />
+                        {load.status}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-xs font-medium text-white max-w-[160px] truncate">
+                      {load.carrierName}
+                    </TableCell>
+                    <TableCell className="text-xs text-neutral-400 font-mono">{load.dot || "--"}</TableCell>
+                    <TableCell className="text-xs text-neutral-400 font-mono">{load.truck || "--"}</TableCell>
+                    <TableCell className="text-xs font-mono font-bold text-emerald-400">{formatCurrency(load.outboundRate)}</TableCell>
+                    <TableCell className="text-xs text-neutral-400 font-mono">{load.startDate.slice(0, 10)}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-1.5">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-neutral-400 hover:text-[#D4AF37] hover:bg-white/5 rounded-lg transition-colors cursor-pointer"
+                          onClick={() => openEdit(load)}
+                          title="Edit Load"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
+                              title="Delete Load"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent className="bg-[#12151c] border-white/10 text-white">
+                            <AlertDialogHeader>
+                              <AlertDialogTitle className="text-lg font-bold text-white">Delete Load Manifest</AlertDialogTitle>
+                              <AlertDialogDescription className="text-xs text-neutral-400 leading-relaxed">
+                                Are you sure you want to delete load #{load.trackingId}? This will remove tracking status for the carrier.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter className="pt-2">
+                              <AlertDialogCancel className="bg-transparent border-white/10 text-neutral-300 hover:bg-white/5">Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => onDelete(load.id)}
+                                className="bg-rose-600 hover:bg-rose-500 text-white font-bold"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
         </div>
       </div>
 
+      {/* Edit Load Dialog */}
       <Dialog open={!!editingLoad} onOpenChange={(open) => !open && setEditingLoad(null)}>
-        <DialogContent className="sm:max-w-[960px] max-h-[85vh] overflow-y-auto bg-card border-border">
-          <DialogHeader>
-            <DialogTitle>Edit Load #{editingLoad?.trackingId}</DialogTitle>
+        <DialogContent className="sm:max-w-[960px] max-h-[85vh] overflow-y-auto bg-[#12151c] border-white/10 text-white">
+          <DialogHeader className="border-b border-white/5 pb-4">
+            <DialogTitle className="text-lg font-bold text-white">Edit Load Manifest: #{editingLoad?.trackingId}</DialogTitle>
           </DialogHeader>
           <Form {...editForm}>
-            <form onSubmit={editForm.handleSubmit(onEditSubmit)} className="space-y-4 py-2">
+            <form onSubmit={editForm.handleSubmit(onEditSubmit)} className="space-y-4 py-3">
               <LoadFormFields form={editForm} />
-              <SectionHeader icon={Paperclip}>Attachment</SectionHeader>
+              <SectionHeader icon={Paperclip}>Documents &amp; Proof of Delivery</SectionHeader>
               <BillOfLadingField billOfLadingPath={editBolPath} onUploaded={setEditBolPath} />
-              <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setEditingLoad(null)}>Cancel</Button>
-                <Button type="submit" className="bg-[#D4AF37] hover:bg-[#F4C542] text-black w-full sm:w-auto" disabled={updateMutation.isPending}>
+              <DialogFooter className="pt-4 border-t border-white/5 gap-2">
+                <Button type="button" variant="outline" onClick={() => setEditingLoad(null)} className="border-white/10 text-neutral-300">
+                  Cancel
+                </Button>
+                <Button type="submit" className="bg-[#D4AF37] hover:bg-[#F4C542] text-black font-bold rounded-xl" disabled={updateMutation.isPending}>
                   {updateMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                   Save Changes
                 </Button>

@@ -7,7 +7,7 @@ export function CarrierServices() {
       id: 'dedicated-freight-lanes',
       title: 'Dedicated Freight Lanes',
       tag: 'CONTRACT CARRIER',
-      icon: <Truck className="h-6 w-6 text-lime-400" />,
+      icon: <Truck className="h-6 w-6 text-[#D4AF37]" />,
       description:
         'Secure steady, recurring revenue with contracted dedicated freight lanes across premier American industrial corridors. We partner with vetted enterprise shippers to provide predictable schedules, minimal deadhead miles, and contracted rate-per-mile guarantees.',
       specs: [
@@ -21,7 +21,7 @@ export function CarrierServices() {
       id: 'trailer-rental-program',
       title: 'Trailer Rental Program',
       tag: 'EQUIPMENT SOLUTIONS',
-      icon: <Truck className="h-6 w-6 text-lime-400" />,
+      icon: <Truck className="h-6 w-6 text-[#D4AF37]" />,
       description:
         'Expand your hauling capability without the burden of long-term equipment debt. Our trailer rental program provides late-model 53-foot air-ride dry vans and refrigerated units ready for immediate hook and haul.',
       specs: [
@@ -35,7 +35,7 @@ export function CarrierServices() {
       id: 'twic-card-assistance',
       title: 'TWIC Card Assistance',
       tag: 'CREDENTIALING',
-      icon: <Key className="h-6 w-6 text-lime-400" />,
+      icon: <Key className="h-6 w-6 text-[#D4AF37]" />,
       description:
         'Access maritime terminals, coastal ports, petrochemical facilities, and secure federal installations. Our compliance team guides drivers through the Transportation Worker Identification Credential (TWIC) application, biometric appointments, and renewal protocols.',
       specs: [
@@ -49,7 +49,7 @@ export function CarrierServices() {
       id: 'insurance-assistance',
       title: 'Insurance Assistance',
       tag: 'RISK MANAGEMENT',
-      icon: <ShieldCheck className="h-6 w-6 text-lime-400" />,
+      icon: <ShieldCheck className="h-6 w-6 text-[#D4AF37]" />,
       description:
         'Ensure continuous compliance with shipper minimums. We connect carriers with premier commercial insurance providers for primary auto liability ($1M), physical damage, cargo insurance ($100k-$500k), and general liability policies.',
       specs: [
@@ -63,7 +63,7 @@ export function CarrierServices() {
       id: 'factoring-registration',
       title: 'Factoring Registration',
       tag: 'CASH FLOW',
-      icon: <DollarSign className="h-6 w-6 text-lime-400" />,
+      icon: <DollarSign className="h-6 w-6 text-[#D4AF37]" />,
       description:
         'Accelerate your cash flow with non-recourse invoice factoring programs. Turn completed freight bills into liquid operating capital within 24 hours without waiting 30–60 days for shipper payment.',
       specs: [
@@ -77,7 +77,7 @@ export function CarrierServices() {
       id: 'specialized-permit-loads',
       title: 'Specialized Permit Loads',
       tag: 'HEAVY HAUL',
-      icon: <FileText className="h-6 w-6 text-lime-400" />,
+      icon: <FileText className="h-6 w-6 text-[#D4AF37]" />,
       description:
         'Coordinate complex oversize, overweight, superload, and specialized cargo transport across state lines. We engineer multi-state route approvals, bridge clearances, curfew compliance, and certified pilot car escort teams.',
       specs: [
@@ -91,7 +91,7 @@ export function CarrierServices() {
       id: 'permit-application-support',
       title: 'Permit Application Support',
       tag: 'PERMIT DESK',
-      icon: <FileText className="h-6 w-6 text-lime-400" />,
+      icon: <FileText className="h-6 w-6 text-[#D4AF37]" />,
       description:
         'Eliminate transit delays caused by state permitting bureaucracy. Our dedicated permit specialists prepare and submit temporary trip permits, fuel (IFTA) trip permits, and annual state oversize operating authorities.',
       specs: [
@@ -105,7 +105,7 @@ export function CarrierServices() {
       id: 'dot-compliance-support',
       title: 'DOT Compliance Support',
       tag: 'SAFETY & AUDIT',
-      icon: <ShieldCheck className="h-6 w-6 text-lime-400" />,
+      icon: <ShieldCheck className="h-6 w-6 text-[#D4AF37]" />,
       description:
         'Protect your operating authority and maintain clean CSA safety scores. We provide comprehensive safety consulting including Driver Qualification (DQ) file management, ELD logbook audits, drug and alcohol clearinghouse registration, and mock DOT audits.',
       specs: [
@@ -129,13 +129,13 @@ export function CarrierServices() {
   }
 
   return (
-    <div className="bg-white text-gray-900 selection:bg-lime-500 selection:text-black">
+    <div className="bg-white text-gray-900 selection:bg-[#D4AF37] selection:text-black">
       {/* 1. HERO - LIGHT THEME */}
       <section className="relative pt-32 pb-20 border-b border-gray-200 bg-gray-50 overflow-hidden">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl space-y-6">
-            <div className="inline-flex items-center space-x-2 text-xs font-mono text-lime-700 uppercase tracking-widest px-3.5 py-1 rounded-full bg-lime-100 border border-lime-300 font-semibold">
-              <Truck className="h-4 w-4" />
+            <div className="inline-flex items-center space-x-2 text-xs font-mono text-amber-600 uppercase tracking-widest px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 font-semibold">
+              <Truck className="h-4 w-4 text-[#D4AF37]" />
               <span>Fleet & Carrier Solutions</span>
             </div>
             <h1 className="text-4xl sm:text-6xl font-black text-gray-900 uppercase tracking-tight leading-tight">
@@ -156,7 +156,7 @@ export function CarrierServices() {
               <div
                 key={svc.id}
                 id={svc.id}
-                className="rounded-2xl bg-white border border-gray-200 shadow-sm hover:shadow-xl hover:border-lime-500/60 transition-all flex flex-col justify-between overflow-hidden group scroll-mt-28"
+                className="rounded-2xl bg-white border border-gray-200 shadow-sm hover:shadow-xl hover:border-[#D4AF37]/60 hover:shadow-[0_10px_30px_rgba(212,175,55,0.08)] transition-all flex flex-col justify-between overflow-hidden group scroll-mt-28"
               >
                 {/* Photo header for each service */}
                 <div className="h-52 overflow-hidden relative">
@@ -172,7 +172,7 @@ export function CarrierServices() {
 
                 <div className="p-8 flex-1 flex flex-col justify-between space-y-6">
                   <div className="space-y-4">
-                    <h2 className="text-2xl font-bold text-gray-900 group-hover:text-lime-700 transition-colors uppercase">
+                    <h2 className="text-2xl font-bold text-gray-900 group-hover:text-amber-600 transition-colors uppercase">
                       {svc.title}
                     </h2>
 
@@ -187,7 +187,7 @@ export function CarrierServices() {
                       <ul className="space-y-2">
                         {svc.specs.map((spec, i) => (
                           <li key={i} className="flex items-start text-xs text-gray-600 font-medium">
-                            <CheckCircle2 className="h-4 w-4 text-lime-600 mr-2 shrink-0 mt-0.5" />
+                            <CheckCircle2 className="h-4 w-4 text-[#D4AF37] mr-2 shrink-0 mt-0.5" />
                             <span>{spec}</span>
                           </li>
                         ))}
@@ -198,15 +198,15 @@ export function CarrierServices() {
                   <div className="pt-6 border-t border-gray-100 flex items-center justify-between">
                     <Link
                       href={`/contact?service=${encodeURIComponent(svc.title)}`}
-                      className="inline-flex items-center text-xs font-mono uppercase tracking-wider text-gray-900 hover:text-lime-700 font-bold"
+                      className="inline-flex items-center text-xs font-mono uppercase tracking-wider text-gray-900 hover:text-amber-600 font-bold group/link"
                     >
                       <span>Inquire About Service</span>
-                      <ArrowUpRight className="ml-1.5 h-3.5 w-3.5 text-lime-600" />
+                      <ArrowUpRight className="ml-1.5 h-3.5 w-3.5 text-[#D4AF37] group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
                     </Link>
 
                     <div className="flex items-center space-x-1.5 text-xs font-mono text-gray-500 font-medium">
                       <span>Call:</span>
-                      <a href="tel:9176723364" className="hover:text-black transition-colors">+1 (917) 672-3364</a>
+                      <a href="tel:9176723364" className="hover:text-black transition-colors font-semibold">+1 (917) 672-3364</a>
                     </div>
                   </div>
                 </div>
@@ -228,10 +228,10 @@ export function CarrierServices() {
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/contact"
-              className="w-full sm:w-auto px-8 py-4 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm uppercase tracking-wider transition-all inline-flex items-center justify-center shadow-md"
+              className="w-full sm:w-auto px-8 py-4 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm uppercase tracking-wider transition-all inline-flex items-center justify-center shadow-md group"
             >
               <span>Submit Carrier Application</span>
-              <ArrowUpRight className="ml-2 h-4 w-4 text-lime-400" />
+              <ArrowUpRight className="ml-2 h-4 w-4 text-[#D4AF37] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
             <a
               href="tel:9176723364"

@@ -17,7 +17,7 @@ export function About() {
     },
     {
       title: 'Operational Precision',
-      desc: 'Our Alexandria logistics center monitors lanes 24/7 to provide instant check calls, proactive weather routing, and zero-delay detention resolutions.',
+      desc: 'Our Overland Park logistics center monitors lanes 24/7 to provide instant check calls, proactive weather routing, and zero-delay detention resolutions.',
     },
     {
       title: 'Absolute Compliance',
@@ -30,13 +30,13 @@ export function About() {
   ]
 
   return (
-    <div className="bg-white text-gray-900 selection:bg-lime-500 selection:text-black">
+    <div className="bg-white text-gray-900 selection:bg-[#D4AF37] selection:text-black">
       {/* 1. HERO SECTION - LIGHT THEME */}
       <section className="relative pt-32 pb-20 border-b border-gray-200 bg-gray-50 overflow-hidden">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl space-y-6">
-            <div className="inline-flex items-center space-x-2 text-xs font-mono text-lime-700 uppercase tracking-widest px-3.5 py-1 rounded-full bg-lime-100 border border-lime-300 font-semibold">
-              <ShieldCheck className="h-4 w-4" />
+            <div className="inline-flex items-center space-x-2 text-xs font-mono text-amber-600 uppercase tracking-widest px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 font-semibold">
+              <ShieldCheck className="h-4 w-4 text-[#D4AF37]" />
               <span>About Gold Star Transportation, Inc.</span>
             </div>
             <h1 className="text-4xl sm:text-6xl font-black text-gray-900 uppercase tracking-tight leading-tight">
@@ -58,7 +58,7 @@ export function About() {
                 <div className="text-4xl sm:text-5xl font-black font-mono text-gray-900">
                   {s.value}
                 </div>
-                <div className="text-xs sm:text-sm text-lime-700 font-bold uppercase tracking-wide mt-1">
+                <div className="text-xs sm:text-sm text-amber-600 font-bold uppercase tracking-wide mt-1">
                   {s.label}
                 </div>
               </div>
@@ -72,8 +72,8 @@ export function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-6 space-y-6">
-              <div className="inline-flex items-center space-x-2 text-xs font-mono text-lime-700 uppercase tracking-widest font-semibold">
-                <span className="h-1.5 w-6 bg-lime-500 rounded-full" />
+              <div className="inline-flex items-center space-x-2 text-xs font-mono text-amber-600 uppercase tracking-widest font-semibold">
+                <span className="h-1.5 w-6 bg-[#D4AF37] rounded-full" />
                 <span>Our Story</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-black text-gray-900 uppercase tracking-tight">
@@ -93,11 +93,11 @@ export function About() {
 
               <div className="pt-4 flex items-center space-x-6 text-xs font-mono text-gray-600">
                 <div className="flex items-center space-x-2">
-                  <MapPin className="h-4 w-4 text-lime-600" />
+                  <MapPin className="h-4 w-4 text-[#D4AF37]" />
                   <span>OVERLAND PARK, KS 66207</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Building2 className="h-4 w-4 text-lime-600" />
+                  <Building2 className="h-4 w-4 text-[#D4AF37]" />
                   <span>Licensed Motor Broker</span>
                 </div>
               </div>
@@ -112,7 +112,7 @@ export function About() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-white/95 backdrop-blur-sm border border-gray-200">
-                  <div className="text-xs font-mono text-lime-700 uppercase tracking-wider font-bold">
+                  <div className="text-xs font-mono text-amber-600 uppercase tracking-wider font-bold">
                     Operational Credibility
                   </div>
                   <div className="text-sm font-bold text-gray-900 mt-1">
@@ -129,8 +129,8 @@ export function About() {
       <section className="py-20 lg:py-28 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl space-y-4 mb-16">
-            <div className="inline-flex items-center space-x-2 text-xs font-mono text-lime-700 uppercase tracking-widest font-semibold">
-              <Award className="h-4 w-4" />
+            <div className="inline-flex items-center space-x-2 text-xs font-mono text-amber-600 uppercase tracking-widest font-semibold">
+              <Award className="h-4 w-4 text-[#D4AF37]" />
               <span>Core Principles</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-gray-900 uppercase tracking-tight">
@@ -142,9 +142,9 @@ export function About() {
             {values.map((v, i) => (
               <div
                 key={i}
-                className="p-8 rounded-xl bg-gray-50 border border-gray-200 shadow-sm space-y-3 hover:border-lime-500/50 hover:shadow-md transition-all"
+                className="p-8 rounded-xl bg-gray-50 border border-gray-200 shadow-sm space-y-3 hover:border-[#D4AF37]/50 hover:shadow-md transition-all"
               >
-                <div className="text-xs font-mono text-lime-700 uppercase tracking-widest font-bold">
+                <div className="text-xs font-mono text-amber-600 uppercase tracking-widest font-bold">
                   Principle 0{i + 1}
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 uppercase">
@@ -165,7 +165,7 @@ export function About() {
       </div>
 
       {/* 6. CONVERSION CTA WITH TEAM/OFFICE PHOTO & LIGHT ACCENT BLOCK */}
-      <section className="py-20 bg-lime-50/60 border-t border-gray-200">
+      <section className="py-20 bg-amber-50/50 border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-5">
@@ -179,7 +179,7 @@ export function About() {
             </div>
 
             <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center space-x-2 text-xs font-mono text-lime-800 uppercase tracking-widest px-3 py-1 rounded-full bg-lime-200/80 border border-lime-300 font-semibold">
+              <div className="inline-flex items-center space-x-2 text-xs font-mono text-amber-700 uppercase tracking-widest px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 font-semibold">
                 <span>Dedicated Operations Desk</span>
               </div>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 uppercase tracking-tight">
@@ -191,10 +191,10 @@ export function About() {
               <div className="pt-2 flex flex-col sm:flex-row items-center gap-4">
                 <Link
                   href="/contact"
-                  className="w-full sm:w-auto px-8 py-4 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm uppercase tracking-wider transition-all inline-flex items-center justify-center shadow-md"
+                  className="w-full sm:w-auto px-8 py-4 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm uppercase tracking-wider transition-all inline-flex items-center justify-center shadow-md group"
                 >
                   <span>Get In Touch</span>
-                  <ArrowUpRight className="ml-2 h-4 w-4 text-lime-400" />
+                  <ArrowUpRight className="ml-2 h-4 w-4 text-[#D4AF37] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </Link>
                 <Link
                   href="/carrier-services"

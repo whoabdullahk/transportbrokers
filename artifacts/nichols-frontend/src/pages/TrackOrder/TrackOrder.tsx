@@ -53,12 +53,12 @@ const defaultRecord: TrackOrderRecord = {
   dailyRate: '$2,450.00',
   weeklyRate: '$12,250.00',
   monthlyRate: '$49,000.00',
-  outboundRoute: 'Alexandria, LA → Dallas, TX',
-  returnRoute: 'Dallas, TX → Alexandria, LA',
+  outboundRoute: 'Overland Park, KS → Dallas, TX',
+  returnRoute: 'Dallas, TX → Overland Park, KS',
   pickupLocation: '9424 REEDS ROAD, OVERLAND PARK, KS 66207',
   deliveryLocation: '4200 Logistics Pkwy, Dallas, TX 75241',
-  eachSideMiles: '312 Miles',
-  totalRoundTripMiles: '624 Miles',
+  eachSideMiles: '510 Miles',
+  totalRoundTripMiles: '1,020 Miles',
   commodity: 'General Dry Van Industrial Freight',
   outboundWeight: '41,200 lbs',
   backhaulWeight: '38,500 lbs',
@@ -67,9 +67,9 @@ const defaultRecord: TrackOrderRecord = {
   refundable: 'Yes (Applied to Final Billing Settlement)',
   appliesToContract: 'DFA-2026-88',
   bolStatus: 'Active & Verified',
-  originCoords: [31.3113, -92.4451], // Alexandria, LA
+  originCoords: [38.9567, -94.6644], // Overland Park, KS
   destCoords: [32.7767, -96.7970],  // Dallas, TX
-  originName: 'Alexandria, LA',
+  originName: 'Overland Park, KS',
   destName: 'Dallas, TX',
 }
 
@@ -83,10 +83,10 @@ async function fetchShipmentData(rawId: string): Promise<TrackOrderRecord | null
     if (res.ok) {
       const data = await res.json()
 
-      const originStr = data.pickupAddress || 'Alexandria, LA'
+      const originStr = data.pickupAddress || 'Overland Park, KS'
       const destStr = data.deliveryAddress || 'Dallas, TX'
 
-      let originCoords: [number, number] = [31.3113, -92.4451]
+      let originCoords: [number, number] = [38.9567, -94.6644]
       let destCoords: [number, number] = [32.7767, -96.7970]
 
       try {
@@ -319,7 +319,7 @@ export function TrackOrder() {
                     <h3 className="text-sm font-black uppercase tracking-widest text-black">
                       Load Overview
                     </h3>
-                    <span className="px-3 py-1 bg-lime-100 text-lime-700 text-[10px] font-bold uppercase tracking-widest rounded-full font-mono border border-lime-200">
+                    <span className="px-3 py-1 bg-amber-500/10 text-amber-700 text-[10px] font-bold uppercase tracking-widest rounded-full font-mono border border-amber-500/30">
                       {activeRecord.status}
                     </span>
                   </div>
@@ -396,7 +396,7 @@ export function TrackOrder() {
             <div className="bg-neutral-900 rounded-xl overflow-hidden shadow-lg border border-neutral-800">
               <div className="p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-neutral-800">
                 <div>
-                  <div className="text-lime-400 text-[10px] font-bold uppercase tracking-widest font-mono mb-2">
+                  <div className="text-[#D4AF37] text-[10px] font-bold uppercase tracking-widest font-mono mb-2">
                     Guaranteed Lane Compensation
                   </div>
                   <div className="text-gray-400 text-xs font-mono mb-1 uppercase tracking-wider">
@@ -420,17 +420,17 @@ export function TrackOrder() {
               <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-neutral-800">
                 <div className="p-6">
                   <div className="text-gray-500 text-[10px] font-bold uppercase tracking-widest font-mono mb-2">Daily</div>
-                  <div className="text-2xl font-black text-lime-400 font-mono mb-1">{activeRecord.dailyRate}</div>
+                  <div className="text-2xl font-black text-[#D4AF37] font-mono mb-1">{activeRecord.dailyRate}</div>
                   <div className="text-xs text-gray-500">1 Scheduled Round Trip</div>
                 </div>
                 <div className="p-6 bg-neutral-900/50">
                   <div className="text-gray-500 text-[10px] font-bold uppercase tracking-widest font-mono mb-2">Weekly (5 Days)</div>
-                  <div className="text-2xl font-black text-lime-400 font-mono mb-1">{activeRecord.weeklyRate}</div>
+                  <div className="text-2xl font-black text-[#D4AF37] font-mono mb-1">{activeRecord.weeklyRate}</div>
                   <div className="text-xs text-gray-500">5 Consecutive Operating Days</div>
                 </div>
                 <div className="p-6 bg-neutral-800/20">
                   <div className="text-gray-500 text-[10px] font-bold uppercase tracking-widest font-mono mb-2">Monthly (4 Weeks)</div>
-                  <div className="text-2xl font-black text-lime-400 font-mono mb-1">{activeRecord.monthlyRate}</div>
+                  <div className="text-2xl font-black text-[#D4AF37] font-mono mb-1">{activeRecord.monthlyRate}</div>
                   <div className="text-xs text-gray-500">20 Contracted Round Trips</div>
                 </div>
               </div>
@@ -544,8 +544,8 @@ export function TrackOrder() {
                     </div>
                     <div className="flex justify-between items-center py-3">
                       <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 font-mono">Bill of Lading Status</span>
-                      <span className="px-3 py-1 bg-lime-50 text-lime-700 text-xs font-bold rounded-full border border-lime-200 flex items-center gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span className="px-3 py-1 bg-amber-50 text-amber-700 text-xs font-bold rounded-full border border-amber-200 flex items-center gap-1.5 font-mono">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37]" />
                         {activeRecord.bolStatus}
                       </span>
                     </div>
@@ -562,8 +562,8 @@ export function TrackOrder() {
                   className="absolute inset-0 w-full h-full object-cover"
                 />
                 <div className="absolute bottom-0 left-0 right-0 p-6 z-20 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-black/50 backdrop-blur-sm border border-white/10 text-[10px] font-bold uppercase tracking-widest text-lime-400 mb-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-lime-400 animate-pulse"></span>
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-black/50 backdrop-blur-sm border border-white/10 text-[10px] font-bold uppercase tracking-widest text-[#D4AF37] mb-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse"></span>
                     Terminal Gate & Yard Visibility
                   </div>
                   <h4 className="text-white font-black uppercase tracking-wide text-lg leading-tight mb-2">
@@ -584,14 +584,14 @@ export function TrackOrder() {
                 Need real-time verbal confirmation?
               </h3>
               <p className="text-gray-600 text-sm max-w-lg mx-auto mb-6">
-                Our Alexandria dispatch team is actively monitoring this lane and can confirm gate entry, scale weights, and appointment schedules.
+                Our Overland Park dispatch team is actively monitoring this lane and can confirm gate entry, scale weights, and appointment schedules.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
                   href="tel:9176723364"
-                  className="px-6 py-3 rounded-full bg-black text-white font-bold text-sm uppercase tracking-wider inline-flex items-center gap-2 hover:bg-neutral-800 transition-colors"
+                  className="px-6 py-3 rounded-full bg-black text-white font-bold text-sm uppercase tracking-wider inline-flex items-center gap-2 hover:bg-neutral-800 transition-colors group"
                 >
-                  <Phone className="w-4 h-4 text-lime-400" />
+                  <Phone className="w-4 h-4 text-[#D4AF37] group-hover:scale-110 transition-transform" />
                   Call +1 (917) 672-3364
                 </a>
                 <Link href="/contact">
@@ -614,9 +614,9 @@ export function TrackOrder() {
               Join the carriers who trust Gold Star Transportation, Inc. for consistent lanes and real support.
             </p>
             <Link href="/carrier-services">
-              <button className="px-8 py-4 rounded-full bg-white text-black font-bold text-sm uppercase tracking-wider inline-flex items-center gap-3 hover:bg-lime-400 transition-colors">
+              <button className="px-8 py-4 rounded-full bg-white text-black font-bold text-sm uppercase tracking-wider inline-flex items-center gap-3 hover:bg-[#D4AF37] hover:text-black transition-colors group">
                 Get Started Today
-                <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-lime-400 shadow-sm">
+                <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-[#D4AF37] shadow-sm group-hover:bg-white group-hover:text-black transition-colors">
                   <ArrowRight className="h-4 w-4" />
                 </div>
               </button>

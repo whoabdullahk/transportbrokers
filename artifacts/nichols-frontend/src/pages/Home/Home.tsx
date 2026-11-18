@@ -4,7 +4,13 @@ import {
   ArrowRight,
   ArrowDown,
   Plus,
-  Minus
+  Minus,
+  ShieldCheck,
+  Truck,
+  CheckCircle2,
+  Clock,
+  Sparkles,
+  Award
 } from 'lucide-react'
 
 export function Home() {
@@ -14,14 +20,16 @@ export function Home() {
     setOpenFaq(openFaq === index ? null : index)
   }
 
-  // 8 Cards for the signature 2x4 alternating grid from Nichols screenshot 3
+  // 8 Cards for the signature 2x4 alternating grid from Nichols design
   const solutionCards = [
     {
       title: 'Dedicated Freight Lanes',
       desc: 'Consistent freight opportunities with reliable lanes and competitive rates designed to maximize utilization and revenue.',
       bg: 'bg-[#bef264]',
       textColor: 'text-black',
-      descColor: 'text-black/80',
+      descColor: 'text-black/85',
+      badgeBg: 'bg-black/10 text-black',
+      tag: 'PREMIUM CONTRACTS',
       type: 'ellipses',
       href: '/carrier-services#dedicated-freight-lanes',
     },
@@ -30,16 +38,20 @@ export function Home() {
       desc: 'Flexibility with dry van, reefer, flatbed, and specialized trailer rental solutions for both short-term and long-term operations.',
       bg: 'bg-[#f4f2ee]',
       textColor: 'text-black',
-      descColor: 'text-black/70',
+      descColor: 'text-black/75',
+      badgeBg: 'bg-black/5 text-gray-800',
+      tag: 'FLEET EXPANSION',
       type: 'cones',
       href: '/carrier-services#trailer-rental-program',
     },
     {
       title: 'TWIC Card Assistance',
       desc: 'Professional guidance throughout the TWIC application process with expedited support for port access compliance.',
-      bg: 'bg-[#1c1c1e]',
+      bg: 'bg-[#141518]',
       textColor: 'text-white',
-      descColor: 'text-white/70',
+      descColor: 'text-white/75',
+      badgeBg: 'bg-white/10 text-lime-400',
+      tag: 'MARITIME CLEARANCE',
       type: 'lines',
       href: '/carrier-services#twic-card-assistance',
     },
@@ -48,16 +60,20 @@ export function Home() {
       desc: 'Helping carriers obtain affordable cargo, liability, and commercial trucking insurance through trusted providers.',
       bg: 'bg-[#f4f2ee]',
       textColor: 'text-black',
-      descColor: 'text-black/70',
+      descColor: 'text-black/75',
+      badgeBg: 'bg-black/5 text-gray-800',
+      tag: 'RISK MANAGEMENT',
       type: 'dots',
       href: '/insurance',
     },
     {
       title: 'Factoring Registration',
       desc: 'Fast invoice factoring solutions that improve cash flow and ensure quicker payments after load completion.',
-      bg: 'bg-[#1c1c1e]',
+      bg: 'bg-[#141518]',
       textColor: 'text-white',
-      descColor: 'text-white/70',
+      descColor: 'text-white/75',
+      badgeBg: 'bg-white/10 text-lime-400',
+      tag: 'CASH FLOW',
       type: 'ellipses',
       href: '/carrier-services#factoring-registration',
     },
@@ -66,7 +82,9 @@ export function Home() {
       desc: 'Access premium freight opportunities requiring specialized permits, including oversized and overweight transportation.',
       bg: 'bg-[#bef264]',
       textColor: 'text-black',
-      descColor: 'text-black/80',
+      descColor: 'text-black/85',
+      badgeBg: 'bg-black/10 text-black',
+      tag: 'HEAVY HAUL',
       type: 'cones',
       href: '/permits',
     },
@@ -75,16 +93,20 @@ export function Home() {
       desc: 'Complete assistance with transportation permits, operating authority documentation, and regulatory filings.',
       bg: 'bg-[#f4f2ee]',
       textColor: 'text-black',
-      descColor: 'text-black/70',
+      descColor: 'text-black/75',
+      badgeBg: 'bg-black/5 text-gray-800',
+      tag: 'REGULATORY COMPLIANCE',
       type: 'lines',
       href: '/permits',
     },
     {
       title: 'DOT Compliance Support',
       desc: 'Helping carriers remain compliant with FMCSA regulations, DOT requirements, permits, and industry standards.',
-      bg: 'bg-[#1c1c1e]',
+      bg: 'bg-[#141518]',
       textColor: 'text-white',
-      descColor: 'text-white/70',
+      descColor: 'text-white/75',
+      badgeBg: 'bg-white/10 text-lime-400',
+      tag: 'SAFETY AUDITING',
       type: 'dots',
       href: '/carrier-services#dot-compliance-support',
     },
@@ -116,55 +138,80 @@ export function Home() {
   return (
     <div className="bg-white text-gray-900 selection:bg-[#bef264] selection:text-black">
       {/* ========================================================================= */}
-      {/* 1. HERO SECTION (Matches Screenshot 1) */}
+      {/* 1. HERO SECTION */}
       {/* ========================================================================= */}
       <section
         aria-label="Hero Section"
-        className="relative min-h-screen flex items-center justify-between bg-black text-white overflow-hidden pb-10"
+        className="relative min-h-[92vh] sm:min-h-screen flex items-center justify-between bg-black text-white overflow-hidden pb-12"
       >
-        {/* Full-width background photo of semi-truck on desert highway */}
+        {/* Full-width background photo with subtle high-contrast lighting */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none scale-105 transform animate-in fade-in duration-1000"
           style={{ backgroundImage: `url('/images/hero/desert-highway-truck.jpg')` }}
         >
-          {/* Subtle gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-black/85" />
+          {/* Subtle multi-stop gradient overlay for crisp legibility */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/35" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 sm:pt-36 min-h-[calc(100vh-4rem)] flex flex-col justify-between">
-
-          <div className="max-w-4xl space-y-6">
-            {/* Small uppercase eyebrow */}
-            <div className="text-xs sm:text-sm font-mono uppercase tracking-[0.25em] text-white/80 leading-tight">
-              SMART LOGISTICS<br />
-              SOLUTIONS
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 sm:pt-40 min-h-[calc(100vh-4rem)] flex flex-col justify-between">
+          <div className="max-w-4xl space-y-7">
+            {/* Live Status Telemetry Pill */}
+            <div className="inline-flex items-center space-x-2.5 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-mono uppercase tracking-[0.2em] text-white/90">
+              <span className="h-2 w-2 rounded-full bg-lime-400 animate-pulse" />
+              <span>Smart Logistics &amp; Nationwide Freight</span>
             </div>
 
-            {/* Giant Bold White Headline */}
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl xl:text-[6.25rem] font-black uppercase tracking-tight text-white leading-[0.95] drop-shadow-2xl">
+            {/* Giant Bold Headline */}
+            <h1 className="text-5xl sm:text-7xl lg:text-8xl xl:text-[6.5rem] font-black uppercase tracking-tight text-white leading-[0.92] drop-shadow-2xl">
               LOGISTICS THAT<br />
               MOVE WITH<br />
-              PRECISION.
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-lime-200 to-lime-400">
+                PRECISION.
+              </span>
             </h1>
 
-            {/* White Pill Button 'Request a Consultation' with green arrow circle */}
-            <div className="pt-2">
+            {/* Paragraph Text */}
+            <p className="text-base sm:text-lg text-gray-200 font-normal leading-relaxed max-w-2xl pt-1 drop-shadow-md">
+              Gold Star Transportation, Inc. is a premier nationwide freight brokerage and carrier support firm connecting owner-operators and enterprise carriers with dependable high-yield lanes, accelerated factoring, and 24/7 dedicated dispatch.
+            </p>
+
+            {/* Action Buttons Row */}
+            <div className="flex flex-wrap items-center gap-4 pt-2">
               <Link
                 href="/contact"
-                className="inline-flex items-center pl-7 pr-3.5 py-3 rounded-full bg-white hover:bg-white/90 text-black font-bold text-base transition-all transform hover:scale-[1.02] shadow-2xl group w-fit"
+                className="inline-flex items-center pl-7 pr-3.5 py-3.5 rounded-full bg-white hover:bg-white/95 text-black font-extrabold text-sm sm:text-base transition-all transform hover:scale-[1.02] shadow-2xl group w-fit cursor-pointer"
               >
-                <span className="mr-3 text-black tracking-normal">Request a Consultation</span>
+                <span className="mr-3 tracking-normal">Request a Consultation</span>
                 <span className="w-8 h-8 rounded-full bg-[#bef264] text-black flex items-center justify-center font-black group-hover:translate-x-0.5 transition-transform">
-                  <ArrowRight className="h-4 w-4 stroke-[2.5]" />
+                  <ArrowRight className="h-4 w-4 stroke-[3]" />
                 </span>
+              </Link>
+
+              <Link
+                href="/carrier-services"
+                className="inline-flex items-center px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-sm sm:text-base border border-white/20 backdrop-blur-md transition-all cursor-pointer"
+              >
+                <span>Explore Solutions</span>
               </Link>
             </div>
 
-            {/* Paragraph Text below button */}
-            <p className="text-sm sm:text-base text-gray-200 font-normal leading-relaxed max-w-2xl pt-2 drop-shadow-md">
-              Gold Star Transportation, Inc. is a professional freight brokerage and transportation support company committed to connecting carriers with dependable freight opportunities while helping them operate more efficiently and profitably.
-            </p>
+            {/* Floating Trust Metrics */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-6 max-w-xl border-t border-white/15">
+              <div className="space-y-0.5">
+                <div className="text-2xl font-black font-mono text-lime-400">500+</div>
+                <div className="text-xs text-gray-300 font-medium">Vetted Carriers</div>
+              </div>
+              <div className="space-y-0.5">
+                <div className="text-2xl font-black font-mono text-white">97.4%</div>
+                <div className="text-xs text-gray-300 font-medium">On-Time Delivery</div>
+              </div>
+              <div className="space-y-0.5 col-span-2 sm:col-span-1">
+                <div className="text-2xl font-black font-mono text-white">24/7</div>
+                <div className="text-xs text-gray-300 font-medium">Active Dispatch</div>
+              </div>
+            </div>
 
             {/* Accessibility aliases */}
             <div className="sr-only" aria-hidden="true">
@@ -176,20 +223,20 @@ export function Home() {
           </div>
 
           {/* Bottom Down Arrow Indicator */}
-          <div className="pt-8 pb-4">
+          <div className="pt-10 pb-4">
             <a
               href="#about-section"
               aria-label="Scroll down to content"
-              className="w-10 h-10 rounded-full border border-white/40 hover:border-white text-white/80 hover:text-white flex items-center justify-center transition-all hover:bg-white/10"
+              className="w-11 h-11 rounded-full border border-white/30 hover:border-white text-white/80 hover:text-white flex items-center justify-center transition-all hover:bg-white/15 group cursor-pointer"
             >
-              <ArrowDown className="h-4 w-4" />
+              <ArrowDown className="h-4 w-4 group-hover:translate-y-0.5 transition-transform" />
             </a>
           </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 2. INDUSTRIAL OVERVIEW & STATS (Matches Screenshot 2) */}
+      {/* 2. INDUSTRIAL OVERVIEW & STATS SECTION */}
       {/* ========================================================================= */}
       <section id="about-section" className="py-20 lg:py-28 bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -197,26 +244,42 @@ export function Home() {
 
             {/* Left: Aerial Container Terminal Image */}
             <div className="lg:col-span-6">
-              <div className="relative rounded-2xl overflow-hidden shadow-xl bg-gray-100 aspect-[4/3] group">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-gray-100 aspect-[4/3] group border border-gray-200/80">
                 <img
                   src="/images/hero/container-terminal-aerial.jpg"
                   alt="Industrial commercial container freight terminal operations"
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
+                <div className="absolute bottom-5 left-5 right-5 text-white">
+                  <span className="text-[11px] font-mono uppercase tracking-widest text-lime-400 font-bold">
+                    Terminal Logistics Network
+                  </span>
+                  <p className="text-sm font-semibold text-white/90 mt-0.5">
+                    Direct access to deepwater ports, railheads, and intermodal corridors.
+                  </p>
+                </div>
               </div>
             </div>
 
             {/* Right: Editorial Narrative & 3 Stats with Dividers */}
             <div className="lg:col-span-6 space-y-8">
-              <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-gray-900 leading-snug">
-                Our experienced logistics team works closely with owner-operators, small fleets, and enterprise carriers by providing freight solutions, compliance assistance, operational support, and dependable customer service throughout every shipment.
-              </h2>
+              <div className="space-y-3">
+                <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold uppercase tracking-widest text-[#65a30d]">
+                  <span className="h-2 w-2 rounded-full bg-[#bef264]" />
+                  <span>The Brokerage Standard</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-gray-900 leading-snug">
+                  Our experienced logistics team works closely with owner-operators, small fleets, and enterprise carriers by providing freight solutions, compliance assistance, operational support, and dependable customer service throughout every shipment.
+                </h2>
+              </div>
 
               {/* 3 Stats with fine dividers */}
               <div className="divide-y divide-gray-200 border-t border-b border-gray-200">
                 {/* Stat 1 */}
-                <div className="py-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-3">
-                  <div className="text-5xl sm:text-6xl font-black font-mono tracking-tight text-gray-900 min-w-[170px]">
+                <div className="py-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 group">
+                  <div className="text-5xl sm:text-6xl font-black font-mono tracking-tight text-gray-900 min-w-[170px] group-hover:text-[#65a30d] transition-colors">
                     500+
                   </div>
                   <div className="text-sm sm:text-base text-gray-600 font-normal leading-relaxed flex-1">
@@ -225,8 +288,8 @@ export function Home() {
                 </div>
 
                 {/* Stat 2 */}
-                <div className="py-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-3">
-                  <div className="text-5xl sm:text-6xl font-black font-mono tracking-tight text-gray-900 min-w-[170px]">
+                <div className="py-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 group">
+                  <div className="text-5xl sm:text-6xl font-black font-mono tracking-tight text-gray-900 min-w-[170px] group-hover:text-[#65a30d] transition-colors">
                     97%
                   </div>
                   <div className="text-sm sm:text-base text-gray-600 font-normal leading-relaxed flex-1">
@@ -235,8 +298,8 @@ export function Home() {
                 </div>
 
                 {/* Stat 3 */}
-                <div className="py-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-3">
-                  <div className="text-5xl sm:text-6xl font-black font-mono tracking-tight text-gray-900 min-w-[170px]">
+                <div className="py-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 group">
+                  <div className="text-5xl sm:text-6xl font-black font-mono tracking-tight text-gray-900 min-w-[170px] group-hover:text-[#65a30d] transition-colors">
                     24/7
                   </div>
                   <div className="text-sm sm:text-base text-gray-600 font-normal leading-relaxed flex-1">
@@ -249,9 +312,10 @@ export function Home() {
               <div>
                 <Link
                   href="/about"
-                  className="inline-flex items-center px-8 py-3.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm tracking-normal transition-all shadow-md"
+                  className="inline-flex items-center px-8 py-3.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm tracking-normal transition-all shadow-md group cursor-pointer"
                 >
                   <span>Learn more about us</span>
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform text-[#bef264]" />
                 </Link>
               </div>
             </div>
@@ -261,9 +325,9 @@ export function Home() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. COMPLETE TRANSPORTATION & 8-CARD GRID (Matches Screenshot 3) */}
+      {/* 3. COMPLETE TRANSPORTATION & 8-CARD GRID */}
       {/* ========================================================================= */}
-      <section className="py-24 lg:py-32 bg-white border-b border-gray-100 overflow-hidden">
+      <section className="py-24 lg:py-32 bg-gray-50/60 border-b border-gray-200/80 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-start">
@@ -272,34 +336,42 @@ export function Home() {
             <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-8">
               <div className="inline-flex items-center space-x-2 text-xs font-mono font-bold uppercase tracking-widest text-[#65a30d]">
                 <span className="h-2 w-2 rounded-full bg-[#bef264]" />
-                <span>Our Services</span>
+                <span>Our Core Services</span>
               </div>
 
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-gray-900 leading-tight">
                 Complete transportation and carrier support solutions everything carriers need to keep trucks moving and businesses growing.
               </h2>
 
+              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                From dedicated lanes to fast factoring and compliance filings, we equip modern carriers to run efficiently with zero broker friction.
+              </p>
+
               <div>
                 <Link
                   href="/carrier-services"
-                  className="inline-flex items-center px-8 py-3.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm tracking-normal transition-all shadow-md"
+                  className="inline-flex items-center px-8 py-3.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm tracking-normal transition-all shadow-md group cursor-pointer"
                 >
                   <span>Learn more about our solutions</span>
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform text-[#bef264]" />
                 </Link>
               </div>
             </div>
 
-            {/* Right Column: 8 Cards Grid (2 rows x 4 cols on desktop) */}
+            {/* Right Column: 8 Cards Grid */}
             <div className="lg:col-span-8">
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                 {solutionCards.map((card, idx) => (
                   <Link
                     key={idx}
                     href={card.href}
-                    className={`p-6 rounded-2xl ${card.bg} ${card.textColor} min-h-[280px] flex flex-col justify-between transition-transform hover:-translate-y-1 duration-300 relative overflow-hidden group`}
+                    className={`p-6 rounded-3xl ${card.bg} ${card.textColor} min-h-[300px] flex flex-col justify-between transition-all hover:-translate-y-1.5 hover:shadow-xl duration-300 relative overflow-hidden group border border-black/5`}
                   >
-                    {/* Card Content */}
+                    {/* Top Tag & Card Content */}
                     <div className="space-y-3 relative z-10">
+                      <span className={`inline-block text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${card.badgeBg}`}>
+                        {card.tag}
+                      </span>
                       <h3 className="text-xl font-bold tracking-tight leading-snug">
                         {card.title}
                       </h3>
@@ -308,8 +380,8 @@ export function Home() {
                       </p>
                     </div>
 
-                    {/* Architectural Geometric Wireframe Graphics at bottom */}
-                    <div className="h-20 flex items-end justify-center opacity-40 group-hover:opacity-70 transition-opacity">
+                    {/* Wireframe Graphic at bottom */}
+                    <div className="h-20 flex items-end justify-center opacity-45 group-hover:opacity-85 transition-opacity">
                       {card.type === 'ellipses' && (
                         <svg className="w-28 h-16" viewBox="0 0 120 60" fill="none" stroke="currentColor">
                           <ellipse cx="60" cy="50" rx="45" ry="8" strokeWidth="1" />
@@ -355,9 +427,9 @@ export function Home() {
 
         </div>
 
-        {/* Ticker Marquee Strip (Below 8-Card Grid) */}
-        <div className="mt-20 py-4 border-y border-gray-200 overflow-hidden bg-white select-none">
-          <div className="flex space-x-8 whitespace-nowrap text-xs font-mono font-bold tracking-widest uppercase text-gray-600 animate-marquee">
+        {/* Marquee Strip */}
+        <div className="mt-20 py-4 border-y border-gray-200 overflow-hidden bg-white select-none shadow-sm">
+          <div className="flex space-x-8 whitespace-nowrap text-xs font-mono font-bold tracking-widest uppercase text-gray-700 animate-marquee">
             {[...Array(6)].map((_, i) => (
               <span key={i} className="inline-flex items-center space-x-6">
                 <span>FREIGHT BUILT ON TRUST</span>
@@ -377,9 +449,9 @@ export function Home() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. 10K+ TRUCK BANNER & FAQ (Matches Screenshot 4) */}
+      {/* 4. 10K+ TRUCK BANNER & FAQ */}
       {/* ========================================================================= */}
-      <section className="bg-[#121214] text-white py-20 lg:py-28 overflow-hidden relative">
+      <section className="bg-[#101114] text-white py-20 lg:py-28 overflow-hidden relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -387,8 +459,9 @@ export function Home() {
             {/* Left: 10K+ Metric & 4 Feature Rows */}
             <div className="lg:col-span-6 space-y-8">
               <div className="space-y-2">
-                <div className="text-xs font-mono uppercase tracking-[0.2em] text-gray-400 font-bold">
-                  PROVEN TRACK RECORD
+                <div className="inline-flex items-center space-x-2 text-xs font-mono uppercase tracking-[0.2em] text-gray-400 font-bold">
+                  <span className="h-1.5 w-1.5 rounded-full bg-lime-400" />
+                  <span>PROVEN TRACK RECORD</span>
                 </div>
                 <p className="text-sm sm:text-base text-gray-300 font-light leading-relaxed max-w-xl">
                   A proven track record built on dependable freight opportunities, exceptional carrier support, and professional logistics solutions, delivered with total transparency.
@@ -400,9 +473,9 @@ export function Home() {
                 10K+
               </div>
 
-              {/* 4 Technical Feature Rows with thin horizontal dividers */}
+              {/* 4 Technical Feature Rows */}
               <div className="divide-y divide-white/10 border-t border-b border-white/10">
-                <div className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
+                <div className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs hover:bg-white/[0.02] px-2 rounded transition-colors">
                   <span className="font-mono text-gray-400 font-bold tracking-wider uppercase min-w-[160px]">
                     CARRIER NETWORK
                   </span>
@@ -410,7 +483,7 @@ export function Home() {
                     Owner-operators, small fleets, and enterprise carriers matched with dependable freight lanes.
                   </span>
                 </div>
-                <div className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
+                <div className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs hover:bg-white/[0.02] px-2 rounded transition-colors">
                   <span className="font-mono text-gray-400 font-bold tracking-wider uppercase min-w-[160px]">
                     COMPLIANCE EXPERTS
                   </span>
@@ -418,7 +491,7 @@ export function Home() {
                     Guidance on TWIC permits, insurance, and FMCSA compliance for every carrier we work with.
                   </span>
                 </div>
-                <div className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
+                <div className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs hover:bg-white/[0.02] px-2 rounded transition-colors">
                   <span className="font-mono text-gray-400 font-bold tracking-wider uppercase min-w-[160px]">
                     QUICKPAY OPTIONS
                   </span>
@@ -426,7 +499,7 @@ export function Home() {
                     Fast factoring registration options so carriers get paid quicker after load completion.
                   </span>
                 </div>
-                <div className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
+                <div className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs hover:bg-white/[0.02] px-2 rounded transition-colors">
                   <span className="font-mono text-gray-400 font-bold tracking-wider uppercase min-w-[160px]">
                     DEDICATED SUPPORT
                   </span>
@@ -437,13 +510,14 @@ export function Home() {
               </div>
             </div>
 
-            {/* Right: Studio 3D White Semi-Truck Rendering */}
+            {/* Right: Studio Semi-Truck Rendering */}
             <div className="lg:col-span-6 flex items-center justify-center">
-              <div className="relative w-full max-w-2xl transform hover:scale-[1.02] transition-transform duration-500">
+              <div className="relative w-full max-w-2xl transform hover:scale-[1.02] transition-transform duration-500 rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-white/5 p-4">
                 <img
                   src="/images/services/white-semi-truck-studio.jpg"
                   alt="Modern commercial white freight semi truck with full box trailer"
                   className="w-full h-auto object-contain rounded-xl"
+                  loading="lazy"
                 />
               </div>
             </div>
@@ -453,13 +527,18 @@ export function Home() {
         </div>
       </section>
 
-      {/* FAQ Accordion Section (Clean White Background) */}
+      {/* FAQ Accordion Section */}
       <section className="py-24 bg-white border-b border-gray-100">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          <h2 className="text-3xl sm:text-4xl font-black uppercase text-center tracking-tight text-gray-900 mb-14">
-            Frequently Asked Questions
-          </h2>
+          <div className="text-center space-y-3 mb-14">
+            <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#65a30d]">
+              Support Knowledge Base
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-gray-900">
+              Frequently Asked Questions
+            </h2>
+          </div>
 
           <div className="divide-y divide-gray-200 border-t border-b border-gray-200">
             {faqs.map((faq, index) => {
@@ -469,7 +548,7 @@ export function Home() {
                   <button
                     type="button"
                     onClick={() => toggleFaq(index)}
-                    className="w-full flex items-center justify-between text-left text-base sm:text-lg font-bold text-gray-900 focus:outline-none group"
+                    className="w-full flex items-center justify-between text-left text-base sm:text-lg font-bold text-gray-900 focus:outline-none group cursor-pointer"
                   >
                     <span className="group-hover:text-black transition-colors">{faq.q}</span>
                     <span className="ml-4 flex-shrink-0 text-gray-400 group-hover:text-black transition-colors">
@@ -491,34 +570,46 @@ export function Home() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 5. BRIDGE SUNSET BANNER CTA (Matches Screenshot 5) */}
+      {/* 5. BRIDGE SUNSET BANNER CTA */}
       {/* ========================================================================= */}
       <section className="relative py-28 lg:py-36 bg-black text-white text-center overflow-hidden">
         {/* Background Image: Semi-truck on Highway at Sunset */}
         <div
-          className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-40"
+          className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-40 scale-105"
           style={{ backgroundImage: `url('/images/services/mountain-highway-truck.jpg')` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/70 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/80 pointer-events-none" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/10 text-xs font-mono uppercase tracking-widest text-lime-400 border border-white/10">
+            <Award className="h-3.5 w-3.5" />
+            <span>Partner With Gold Star</span>
+          </div>
+
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white leading-tight">
             Ready to haul more freight with a broker that has your back?
           </h2>
 
           <p className="text-base sm:text-lg text-gray-300 font-light max-w-2xl mx-auto leading-relaxed">
-            Join the carriers who trust Gold Star Transportation, Inc. for consistent lanes and real support.
+            Join the carriers who trust Gold Star Transportation, Inc. for consistent lanes, transparent rates, and real 24/7 support.
           </p>
 
-          <div className="pt-4">
+          <div className="pt-4 flex flex-wrap justify-center gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center pl-8 pr-4 py-3.5 rounded-full bg-white hover:bg-white/90 text-black font-bold text-base transition-all transform hover:scale-[1.02] shadow-2xl group w-fit mx-auto"
+              className="inline-flex items-center pl-8 pr-4 py-4 rounded-full bg-white hover:bg-white/95 text-black font-extrabold text-base transition-all transform hover:scale-[1.02] shadow-2xl group w-fit cursor-pointer"
             >
               <span className="mr-3 text-black">Get Started Today</span>
               <span className="w-8 h-8 rounded-full bg-[#bef264] text-black flex items-center justify-center font-black group-hover:translate-x-0.5 transition-transform">
-                <ArrowRight className="h-4 w-4 stroke-[2.5]" />
+                <ArrowRight className="h-4 w-4 stroke-[3]" />
               </span>
+            </Link>
+
+            <Link
+              href="/carrier-services"
+              className="inline-flex items-center px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-base border border-white/20 backdrop-blur-md transition-all cursor-pointer"
+            >
+              <span>Explore Carrier Services</span>
             </Link>
           </div>
         </div>

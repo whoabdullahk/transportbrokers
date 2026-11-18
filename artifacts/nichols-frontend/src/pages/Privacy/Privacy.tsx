@@ -3,12 +3,12 @@ import { ArrowLeft } from 'lucide-react'
 
 export function Privacy() {
   return (
-    <div className="bg-brand-black text-white selection:bg-lime-500 selection:text-black min-h-screen">
+    <div className="bg-brand-black text-white selection:bg-[#D4AF37] selection:text-black min-h-screen">
       <section className="pt-32 pb-20 border-b border-white/10 bg-brand-charcoal">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
           <Link
             href="/"
-            className="inline-flex items-center text-xs font-mono text-lime-400 hover:text-lime-300 uppercase tracking-wider"
+            className="inline-flex items-center text-xs font-mono text-[#D4AF37] hover:text-[#F4C542] uppercase tracking-wider"
           >
             <ArrowLeft className="h-3.5 w-3.5 mr-1" />
             <span>Return to Home</span>

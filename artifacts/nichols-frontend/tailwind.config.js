@@ -1,6 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './artifacts/nichols-frontend/index.html',
+    './artifacts/nichols-frontend/src/**/*.{js,ts,jsx,tsx}',
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+  ],
   theme: {
     screens: {
       'sm': '640px',
@@ -48,16 +53,20 @@ export default {
         ],
       },
       letterSpacing: {
-        'industrial': '0.08em',
-        'tightest': '-0.035em',
+        tighter: '-0.04em',
+        tight: '-0.02em',
+        normal: '0',
+        wide: '0.05em',
+        wider: '0.1em',
+        widest: '0.2em',
       },
       boxShadow: {
-        'lime-glow': '0 0 25px rgba(132, 204, 22, 0.25)',
-        'lime-glow-lg': '0 0 45px rgba(132, 204, 22, 0.35)',
-        'dark-elevation': '0 20px 40px -15px rgba(0, 0, 0, 0.7)',
+        card: '0 4px 20px -2px rgba(0, 0, 0, 0.5)',
+        'card-hover': '0 8px 30px -4px rgba(0, 0, 0, 0.7)',
+        glow: '0 0 40px -10px rgba(132, 204, 22, 0.15)',
+        'glow-strong': '0 0 60px -15px rgba(132, 204, 22, 0.3)',
       },
     },
   },
   plugins: [],
 }
-

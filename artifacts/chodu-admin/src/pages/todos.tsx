@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { AdminLayout } from '@/components/admin-layout';
 import { supabase } from '@/lib/supabase';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Check, ClipboardList, Trash2, Plus, Loader2 } from 'lucide-react';
+import { Check, ClipboardList, Trash2, Plus, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 interface Todo {
   id: string | number;
@@ -117,103 +119,119 @@ export default function AdminTodos() {
     }
   };
 
+  const completedCount = todos.filter((t) => t.is_completed).length;
+
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Supabase Integration Demo</h1>
-          <p className="text-muted-foreground">
-            A client-side connection demonstrating live data retrieval from Supabase.
-          </p>
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-white/5">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-mono text-[#D4AF37] uppercase tracking-wider mb-1">
+              <span className="h-2 w-2 rounded-full bg-[#D4AF37] animate-pulse" />
+              <span>Operations Workflow Tracker</span>
+            </div>
+            <h1 className="text-3xl font-black tracking-tight text-white">Task Board</h1>
+            <p className="text-xs sm:text-sm text-neutral-400 mt-1">
+              Live checklist synchronized in real-time with the central Supabase operational database.
+            </p>
+          </div>
+
+          <div className="text-xs font-mono text-neutral-400 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
+            <span>COMPLETED:</span>{" "}
+            <strong className="text-emerald-400 font-bold">{completedCount}</strong> of{" "}
+            <strong className="text-white">{todos.length}</strong> Tasks
+          </div>
         </div>
 
         {error && (
-          <div className="p-4 bg-destructive/15 text-destructive rounded-lg text-sm">
-            <strong>Error:</strong> {error}
+          <div className="p-4 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl text-xs flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span><strong>System Notice:</strong> {error}</span>
           </div>
         )}
 
-        <div className="grid gap-6 md:grid-cols-3">
-          {/* Form Card */}
-          <Card className="bg-card border-border shadow-sm md:col-span-1">
-            <CardHeader>
-              <CardTitle className="text-sm font-medium font-mono uppercase">
-                Add Todo
+        <div className="grid gap-6 lg:grid-cols-3">
+          {/* Create Task Form */}
+          <Card className="bg-[#12151c] border-white/10 shadow-xl lg:col-span-1">
+            <CardHeader className="border-b border-white/5 pb-4">
+              <CardTitle className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-300">
+                Create Operational Item
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-5">
               <form onSubmit={handleAddTodo} className="space-y-4">
-                <div>
-                  <label className="text-xs text-muted-foreground block mb-1">
-                    Todo Title / Name
+                <div className="space-y-2">
+                  <label className="text-xs text-neutral-400 font-mono uppercase tracking-wider block">
+                    Task Title / Instruction
                   </label>
-                  <input
+                  <Input
                     type="text"
                     value={newTodoName}
                     onChange={(e) => setNewTodoName(e.target.value)}
-                    placeholder="E.g., Complete logistics draft"
-                    className="w-full px-3 py-2 bg-background border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                    placeholder="E.g., Review TWIC clearance queue"
+                    className="bg-black/40 border-white/10 rounded-xl text-xs text-white placeholder:text-neutral-500 h-11"
                     disabled={submitting}
                   />
                 </div>
-                <button
+                <Button
                   type="submit"
                   disabled={submitting || !newTodoName.trim()}
-                  className="w-full flex items-center justify-center gap-2 bg-[#D4AF37] hover:bg-[#C5A030] text-black font-semibold py-2 px-4 rounded-md text-sm transition-colors disabled:opacity-50"
+                  className="w-full h-11 bg-gradient-to-r from-[#D4AF37] to-[#F5D061] hover:from-[#e5bd3d] hover:to-[#ffd86b] text-black font-extrabold uppercase tracking-wider text-xs rounded-xl transition-all shadow-md cursor-pointer disabled:opacity-50"
                 >
                   {submitting ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
                   ) : (
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-4 h-4 mr-2 stroke-[3]" />
                   )}
-                  Add Todo
-                </button>
+                  Add to Queue
+                </Button>
               </form>
             </CardContent>
           </Card>
 
-          {/* List Card */}
-          <Card className="bg-card border-border shadow-sm md:col-span-2">
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium font-mono uppercase">
-                Active Todos
+          {/* Active Tasks List */}
+          <Card className="bg-[#12151c] border-white/10 shadow-xl lg:col-span-2 overflow-hidden">
+            <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-white/5">
+              <CardTitle className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-300">
+                Active Checklist Queue
               </CardTitle>
-              <ClipboardList className="w-4 h-4 text-muted-foreground" />
+              <ClipboardList className="w-4 h-4 text-[#D4AF37]" />
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-4 sm:p-6">
               {loading ? (
-                <div className="py-8 flex flex-col items-center justify-center text-muted-foreground gap-2">
-                  <Loader2 className="w-8 h-8 animate-spin" />
-                  <span className="text-sm">Loading items from Supabase...</span>
+                <div className="py-12 flex flex-col items-center justify-center text-neutral-400 gap-2">
+                  <Loader2 className="w-7 h-7 animate-spin text-[#D4AF37]" />
+                  <span className="text-xs font-mono uppercase tracking-widest mt-1">Retrieving database tasks...</span>
                 </div>
               ) : todos.length === 0 ? (
-                <div className="py-8 text-center text-muted-foreground text-sm">
-                  No todos found. Add a new item to get started!
+                <div className="py-12 text-center text-neutral-500 text-xs font-mono uppercase tracking-wider">
+                  No active tasks. Queue is clear.
                 </div>
               ) : (
-                <ul className="divide-y divide-border">
+                <ul className="divide-y divide-white/5 space-y-1">
                   {todos.map((todo) => (
                     <li
                       key={todo.id}
-                      className="py-3 flex items-center justify-between gap-4"
+                      className="py-3 px-3 rounded-xl hover:bg-white/[0.02] flex items-center justify-between gap-4 transition-colors group"
                     >
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 min-w-0">
                         <button
                           type="button"
                           onClick={() => handleToggleTodo(todo.id, !!todo.is_completed)}
-                          className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
+                          className={`w-5 h-5 rounded-md border flex items-center justify-center transition-all cursor-pointer shrink-0 ${
                             todo.is_completed
-                              ? 'bg-[#D4AF37] border-[#D4AF37] text-black'
-                              : 'border-muted-foreground/30 hover:border-[#D4AF37]'
+                              ? "bg-emerald-500 border-emerald-500 text-black shadow-sm shadow-emerald-500/20"
+                              : "border-white/20 hover:border-[#D4AF37] bg-black/40"
                           }`}
                         >
-                          {todo.is_completed && <Check className="w-3 h-3 stroke-[3]" />}
+                          {todo.is_completed && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                         </button>
                         <span
-                          className={`text-sm ${
+                          className={`text-sm leading-snug truncate ${
                             todo.is_completed
-                              ? 'line-through text-muted-foreground'
-                              : 'text-foreground'
+                              ? "line-through text-neutral-500 font-normal"
+                              : "text-neutral-200 font-medium"
                           }`}
                         >
                           {todo.name}
@@ -222,7 +240,8 @@ export default function AdminTodos() {
                       <button
                         type="button"
                         onClick={() => handleDeleteTodo(todo.id)}
-                        className="text-muted-foreground hover:text-destructive p-1 rounded transition-colors"
+                        className="text-neutral-500 hover:text-rose-400 p-1.5 rounded-lg hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
+                        title="Delete task"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>

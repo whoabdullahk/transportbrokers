@@ -20,3 +20,4 @@ export const executionSchema = z.object({
 
 export type CarrierInfo = z.infer<typeof carrierSchema>;
 export type ExecutionInfo = { signature: string; printName: string; date: string; agreed: boolean };
+

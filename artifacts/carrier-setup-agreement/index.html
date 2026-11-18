@@ -17,9 +17,45 @@
   <meta name="twitter:description"
     content="Complete carrier onboarding, choose services, and sign the agreement online with GOLD STAR TRANSPORTATION, INC." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Inline Chunk Error Auto-Recovery -->
+  <script>
+    (function() {
+      var key = 'app_chunk_reload';
+      function tryReload() {
+        var last = sessionStorage.getItem(key);
+        var now = Date.now();
+        if (!last || now - parseInt(last, 10) > 10000) {
+          sessionStorage.setItem(key, now.toString());
+          window.location.reload();
+        }
+      }
+      window.addEventListener('vite:preloadError', function(e) {
+        e.preventDefault();
+        tryReload();
+      });
+      window.addEventListener('error', function(e) {
+        var msg = (e && e.message) ? e.message.toLowerCase() : '';
+        if (
+          msg.indexOf('failed to fetch dynamically imported module') !== -1 ||
+          msg.indexOf('error loading dynamically imported module') !== -1 ||
+          msg.indexOf('loading chunk') !== -1 ||
+          msg.indexOf('importing a module script failed') !== -1
+        ) {
+          tryReload();
+        }
+      });
+    })();
+  </script>
+
+  <!-- Non-blocking asynchronous font loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" />
+  </noscript>
 </head>
 
 <body>

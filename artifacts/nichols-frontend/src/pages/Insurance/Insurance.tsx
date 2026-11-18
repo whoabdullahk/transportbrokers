@@ -49,13 +49,13 @@ export function Insurance() {
   ]
 
   return (
-    <div className="bg-white text-gray-900 selection:bg-lime-500 selection:text-black">
+    <div className="bg-white text-gray-900 selection:bg-[#D4AF37] selection:text-black">
       {/* 1. HERO - LIGHT THEME */}
       <section className="relative pt-32 pb-20 border-b border-gray-200 bg-gray-50 overflow-hidden">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl space-y-6">
-            <div className="inline-flex items-center space-x-2 text-xs font-mono text-lime-700 uppercase tracking-widest px-3.5 py-1 rounded-full bg-lime-100 border border-lime-300 font-semibold">
-              <ShieldCheck className="h-4 w-4" />
+            <div className="inline-flex items-center space-x-2 text-xs font-mono text-amber-600 uppercase tracking-widest px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 font-semibold">
+              <ShieldCheck className="h-4 w-4 text-[#D4AF37]" />
               <span>Risk Management & Insurance</span>
             </div>
             <h1 className="text-4xl sm:text-6xl font-black text-gray-900 uppercase tracking-tight leading-tight">
@@ -72,7 +72,7 @@ export function Insurance() {
       <section className="py-20 lg:py-28 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl space-y-3 mb-16">
-            <div className="text-xs font-mono uppercase text-lime-700 tracking-widest font-bold">
+            <div className="text-xs font-mono uppercase text-amber-600 tracking-widest font-bold">
               Carrier Standards
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-gray-900 uppercase tracking-tight">
@@ -87,13 +87,13 @@ export function Insurance() {
             {requirements.map((req, i) => (
               <div
                 key={i}
-                className="p-8 rounded-2xl bg-gray-50 border border-gray-200 shadow-sm space-y-4 hover:border-lime-500/50 hover:shadow-md transition-all"
+                className="p-8 rounded-2xl bg-gray-50 border border-gray-200 shadow-sm space-y-4 hover:border-[#D4AF37]/50 hover:shadow-md transition-all"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono uppercase text-gray-500 tracking-wider font-semibold">
                     Requirement 0{i + 1}
                   </span>
-                  <span className="text-xl font-mono font-black text-lime-700">
+                  <span className="text-xl font-mono font-black text-amber-600">
                     {req.amount}
                   </span>
                 </div>
@@ -113,7 +113,7 @@ export function Insurance() {
       <section className="py-20 lg:py-28 bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto space-y-3 mb-16">
-            <div className="text-xs font-mono uppercase text-lime-700 tracking-widest font-bold">
+            <div className="text-xs font-mono uppercase text-amber-600 tracking-widest font-bold">
               Workflow
             </div>
             <h2 className="text-3xl sm:text-4xl font-black uppercase text-gray-900 tracking-tight">
@@ -130,7 +130,7 @@ export function Insurance() {
                 key={i}
                 className="p-6 rounded-xl bg-white border border-gray-200 shadow-sm space-y-3 relative"
               >
-                <div className="text-3xl font-mono font-black text-lime-600">
+                <div className="text-3xl font-mono font-black text-[#D4AF37]">
                   {s.step}
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 uppercase tracking-wide">
@@ -160,8 +160,8 @@ export function Insurance() {
 
             <div className="lg:col-span-7 p-8 sm:p-12 space-y-4 flex flex-col justify-between">
               <div className="space-y-4">
-                <div className="inline-flex items-center space-x-2 text-xs font-mono text-lime-700 uppercase tracking-widest font-semibold">
-                  <FileCheck className="h-4 w-4" />
+                <div className="inline-flex items-center space-x-2 text-xs font-mono text-amber-600 uppercase tracking-widest font-semibold">
+                  <FileCheck className="h-4 w-4 text-[#D4AF37]" />
                   <span>Need Better Rates?</span>
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-black text-gray-900 uppercase">
@@ -175,10 +175,10 @@ export function Insurance() {
               <div className="pt-2 flex flex-col sm:flex-row gap-4">
                 <Link
                   href="/contact?service=Insurance%20Assistance"
-                  className="px-8 py-3.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider transition-all inline-flex items-center justify-center shadow-sm"
+                  className="px-8 py-3.5 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider transition-all inline-flex items-center justify-center shadow-sm group"
                 >
                   <span>Request Insurance Review</span>
-                  <ArrowUpRight className="ml-2 h-4 w-4 text-lime-400" />
+                  <ArrowUpRight className="ml-2 h-4 w-4 text-[#D4AF37] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </Link>
               </div>
             </div>
@@ -198,10 +198,10 @@ export function Insurance() {
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/contact"
-              className="w-full sm:w-auto px-8 py-4 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm uppercase tracking-wider transition-all inline-flex items-center justify-center shadow-md"
+              className="w-full sm:w-auto px-8 py-4 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm uppercase tracking-wider transition-all inline-flex items-center justify-center shadow-md group"
             >
               <span>Contact Compliance Desk</span>
-              <ArrowUpRight className="ml-2 h-4 w-4 text-lime-400" />
+              <ArrowUpRight className="ml-2 h-4 w-4 text-[#D4AF37] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
             <a
               href="mailto:brandontaylor@goldstartranposrtationinc.com"

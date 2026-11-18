@@ -53,13 +53,13 @@ export function Permits() {
   ]
 
   return (
-    <div className="bg-white text-gray-900 selection:bg-lime-500 selection:text-black">
+    <div className="bg-white text-gray-900 selection:bg-[#D4AF37] selection:text-black">
       {/* 1. HERO - LIGHT THEME */}
       <section className="relative pt-32 pb-20 border-b border-gray-200 bg-gray-50 overflow-hidden">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl space-y-6">
-            <div className="inline-flex items-center space-x-2 text-xs font-mono text-lime-700 uppercase tracking-widest px-3.5 py-1 rounded-full bg-lime-100 border border-lime-300 font-semibold">
-              <FileText className="h-4 w-4" />
+            <div className="inline-flex items-center space-x-2 text-xs font-mono text-amber-600 uppercase tracking-widest px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 font-semibold">
+              <FileText className="h-4 w-4 text-[#D4AF37]" />
               <span>Regulatory Filings & Credentials</span>
             </div>
             <h1 className="text-4xl sm:text-6xl font-black text-gray-900 uppercase tracking-tight leading-tight">
@@ -77,7 +77,7 @@ export function Permits() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
             <div className="lg:col-span-7 space-y-3">
-              <div className="text-xs font-mono uppercase text-lime-700 tracking-widest font-bold">
+              <div className="text-xs font-mono uppercase text-amber-600 tracking-widest font-bold">
                 Solutions
               </div>
               <h2 className="text-3xl sm:text-4xl font-black text-gray-900 uppercase tracking-tight">
@@ -98,7 +98,7 @@ export function Permits() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent flex items-end p-6">
                   <div className="text-white">
-                    <p className="text-xs font-mono text-lime-400 uppercase tracking-wider font-bold">Port & Terminal Authority</p>
+                    <p className="text-xs font-mono text-[#D4AF37] uppercase tracking-wider font-bold">Port & Terminal Authority</p>
                     <p className="text-sm font-bold">TWIC Verified Access for Deepwater Ports & Rail Terminals</p>
                   </div>
                 </div>
@@ -110,17 +110,17 @@ export function Permits() {
             {permitTypes.map((p, i) => (
               <div
                 key={i}
-                className="p-8 rounded-2xl bg-gray-50 border border-gray-200 hover:border-lime-500/60 shadow-sm hover:shadow-md transition-all space-y-4 group"
+                className="p-8 rounded-2xl bg-gray-50 border border-gray-200 hover:border-[#D4AF37]/60 shadow-sm hover:shadow-[0_10px_30px_rgba(212,175,55,0.08)] transition-all space-y-4 group"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-lime-700 uppercase tracking-widest font-bold">
+                  <span className="text-xs font-mono text-amber-600 uppercase tracking-widest font-bold">
                     {p.tag}
                   </span>
                   <span className="text-xs font-mono text-gray-500 font-semibold">
                     PERMIT 0{i + 1}
                   </span>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 group-hover:text-lime-700 transition-colors uppercase">
+                <h3 className="text-2xl font-bold text-gray-900 group-hover:text-amber-600 transition-colors uppercase">
                   {p.title}
                 </h3>
                 <p className="text-sm text-gray-600 font-normal leading-relaxed">
@@ -134,7 +134,7 @@ export function Permits() {
                   <ul className="space-y-1.5">
                     {p.specs.map((s, idx) => (
                       <li key={idx} className="flex items-center text-xs text-gray-600 font-medium">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-lime-600 mr-2 shrink-0" />
+                        <CheckCircle2 className="h-3.5 w-3.5 text-[#D4AF37] mr-2 shrink-0" />
                         <span>{s}</span>
                       </li>
                     ))}
@@ -150,7 +150,7 @@ export function Permits() {
       <section className="py-20 lg:py-28 bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto space-y-3 mb-16">
-            <div className="text-xs font-mono uppercase text-lime-700 tracking-widest font-bold">
+            <div className="text-xs font-mono uppercase text-amber-600 tracking-widest font-bold">
               Process
             </div>
             <h2 className="text-3xl sm:text-4xl font-black uppercase text-gray-900 tracking-tight">
@@ -167,7 +167,7 @@ export function Permits() {
                 key={i}
                 className="p-6 rounded-xl bg-white border border-gray-200 shadow-sm space-y-3"
               >
-                <div className="text-3xl font-mono font-black text-lime-600">
+                <div className="text-3xl font-mono font-black text-[#D4AF37]">
                   {w.step}
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 uppercase tracking-wide">
@@ -194,10 +194,10 @@ export function Permits() {
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/contact?service=Permit%20Application%20Support"
-              className="w-full sm:w-auto px-8 py-4 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm uppercase tracking-wider transition-all inline-flex items-center justify-center shadow-md"
+              className="w-full sm:w-auto px-8 py-4 rounded-full bg-black hover:bg-neutral-800 text-white font-bold text-sm uppercase tracking-wider transition-all inline-flex items-center justify-center shadow-md group"
             >
               <span>Submit Permit Request</span>
-              <ArrowUpRight className="ml-2 h-4 w-4 text-lime-400" />
+              <ArrowUpRight className="ml-2 h-4 w-4 text-[#D4AF37] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
             <a
               href="tel:9176723364"

@@ -98,3 +98,4 @@ export function FmcsaCertificateCard({ todayLong }: { todayLong: string }) {
     </div>
   );
 }
+

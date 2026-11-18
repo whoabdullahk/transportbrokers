@@ -1,5 +1,5 @@
 import { Link } from 'wouter'
-import { Mail, MapPin, Phone, ShieldCheck, ArrowUpRight } from 'lucide-react'
+import { Mail, MapPin, Phone, ShieldCheck, ArrowUpRight, CheckCircle2 } from 'lucide-react'
 
 // SVG icons for social media
 const Facebook = ({ className }: { className?: string }) => (
@@ -65,23 +65,23 @@ const defaultSitemap: FooterLink[] = [
   { label: 'About Us', href: '/about' },
   { label: 'Carrier Services', href: '/carrier-services' },
   { label: 'Insurance Solutions', href: '/insurance' },
-  { label: 'Permits and Certificates', href: '/permits' },
+  { label: 'Permits & Certificates', href: '/permits' },
   { label: 'Contact Us', href: '/contact' },
 ]
 
 const defaultQuickLinks: FooterLink[] = [
-  { label: 'Request Quote', href: '/contact' },
-  { label: 'Our Team', href: '/about' },
-  { label: 'Careers', href: '/contact' },
-  { label: 'Admin Portal', href: 'http://localhost:5173' },
-  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Dedicated Freight Lanes', href: '/carrier-services#dedicated-freight-lanes' },
+  { label: 'Trailer Rental Program', href: '/carrier-services#trailer-rental-program' },
+  { label: 'TWIC Card Assistance', href: '/carrier-services#twic-card-assistance' },
+  { label: 'Factoring Registration', href: '/carrier-services#factoring-registration' },
+  { label: 'DOT Safety Audit', href: '/permits#dot-safety-audit' },
 ]
 
 const defaultTrackSupport: FooterLink[] = [
-  { label: 'Track Shipment', href: '/track-order' },
-  { label: 'Support Center', href: '/contact' },
-  { label: 'FAQs', href: '/about#faq' },
-  { label: 'Documentation', href: '/permits' },
+  { label: 'Track Order', href: '/track-order' },
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Dispatch Desk', href: '/contact' },
+  { label: 'Carrier Setup Portal', href: '/contact' },
 ]
 
 const defaultContactInfo: ContactInfo = {
@@ -92,16 +92,14 @@ const defaultContactInfo: ContactInfo = {
     state: 'KS',
     zip: '66207',
   },
-  phones: [
-    '+1 (917) 672-3364',
-  ],
+  phones: ['+1 (917) 672-3364'],
 }
 
 const defaultSocialLinks: SocialLink[] = [
-  { platform: 'Facebook', url: 'https://facebook.com/goldstartransportation', icon: 'facebook' },
-  { platform: 'Twitter', url: 'https://twitter.com/goldstartrans', icon: 'twitter' },
-  { platform: 'LinkedIn', url: 'https://linkedin.com/company/goldstartransportation', icon: 'linkedin' },
-  { platform: 'Instagram', url: 'https://instagram.com/goldstartransportation', icon: 'instagram' },
+  { platform: 'Facebook', url: 'https://facebook.com', icon: 'facebook' },
+  { platform: 'Twitter', url: 'https://twitter.com', icon: 'twitter' },
+  { platform: 'LinkedIn', url: 'https://linkedin.com', icon: 'linkedin' },
+  { platform: 'Instagram', url: 'https://instagram.com', icon: 'instagram' },
 ]
 
 const getSocialIcon = (icon: string) => {
@@ -128,17 +126,20 @@ export function Footer({
   socialLinks = defaultSocialLinks,
 }: FooterProps = {}) {
   return (
-    <footer className="bg-[#0a0a0a] text-gray-300 border-t border-white/5 relative overflow-hidden">
+    <footer className="bg-[#08090b] text-gray-300 border-t border-white/8 relative overflow-hidden">
       {/* Top Regulatory Header Strip */}
-      <div className="border-b border-white/8 py-3.5 bg-black/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-gray-500 gap-2">
-          <div className="flex items-center space-x-3">
+      <div className="border-b border-white/10 py-3.5 bg-black/60 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-gray-400 gap-3">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
             <ShieldCheck className="h-4 w-4 text-[#D4AF37]" />
             <span className="text-white font-bold tracking-wide">GOLD STAR TRANSPORTATION, INC.</span>
             <span className="text-gray-500">• USDOT #253494 • MC-179608</span>
           </div>
-          <div className="flex items-center space-x-4">
-            <span className="font-semibold text-gray-400">OPERATING STATUS: ACTIVE</span>
+          <div className="flex items-center space-x-3 text-[11px]">
+            <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/20">
+              OPERATING STATUS: ACTIVE
+            </span>
             <span className="text-white/20">|</span>
             <span className="text-[#D4AF37] font-semibold">48-STATE CORRIDOR NETWORK</span>
           </div>
@@ -151,18 +152,18 @@ export function Footer({
 
           {/* Sitemap Section */}
           <div className="space-y-4">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-gray-500">
-              Sitemap
+            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-lime-400">
+              Company Navigation
             </h3>
             <ul className="space-y-2.5">
               {sitemap.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium flex items-center group"
+                    className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium flex items-center group w-fit"
                   >
                     <span>{link.label}</span>
-                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-[#D4AF37]" />
+                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-lime-400" />
                   </Link>
                 </li>
               ))}
@@ -171,18 +172,18 @@ export function Footer({
 
           {/* Quick Links Section */}
           <div className="space-y-4">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-gray-500">
-              Quick Links
+            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-lime-400">
+              Carrier Solutions
             </h3>
             <ul className="space-y-2.5">
               {quickLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium flex items-center group"
+                    className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium flex items-center group w-fit"
                   >
                     <span>{link.label}</span>
-                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-[#D4AF37]" />
+                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-lime-400" />
                   </Link>
                 </li>
               ))}
@@ -191,18 +192,18 @@ export function Footer({
 
           {/* Track & Support Section */}
           <div className="space-y-4">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-gray-500">
-              Track & Support
+            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-lime-400">
+              Support & Tools
             </h3>
             <ul className="space-y-2.5">
               {trackSupport.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium flex items-center group"
+                    className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium flex items-center group w-fit"
                   >
                     <span>{link.label}</span>
-                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-[#D4AF37]" />
+                    <ArrowUpRight className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-lime-400" />
                   </Link>
                 </li>
               ))}
@@ -211,8 +212,8 @@ export function Footer({
 
           {/* Contact Us Section */}
           <div className="space-y-4">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-gray-500">
-              Contact Us
+            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-lime-400">
+              Operations Center
             </h3>
             <div className="space-y-3.5 text-sm">
               {/* Emails */}
@@ -261,7 +262,7 @@ export function Footer({
         </div>
 
         {/* Social & Legal Area */}
-        <div className="mt-16 pt-8 border-t border-white/8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-14 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
             {socialLinks.map((social) => (
               <a
@@ -269,7 +270,7 @@ export function Footer({
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 rounded-lg bg-white/5 text-gray-400 hover:text-black hover:bg-[#D4AF37] transition-all border border-white/10"
+                className="p-2.5 rounded-xl bg-white/5 text-gray-400 hover:text-black hover:bg-lime-400 transition-all border border-white/10"
                 aria-label={`Visit our ${social.platform} page`}
               >
                 {getSocialIcon(social.icon)}
@@ -277,16 +278,16 @@ export function Footer({
             ))}
           </div>
 
-          <p className="text-gray-600 text-xs font-mono">
-            © {new Date().getFullYear()} Gold Star Transportation, Inc. All rights reserved. Commercial Carrier Services.
+          <p className="text-gray-500 text-xs font-mono text-center md:text-right">
+            © {new Date().getFullYear()} Gold Star Transportation, Inc. All rights reserved. Nationwide Commercial Freight Brokerage.
           </p>
         </div>
       </div>
 
-      {/* Giant Gold Star Watermark Branding Text — dark on dark like Nichols */}
-      <div className="py-8 md:py-14 border-t border-white/5 select-none overflow-hidden">
+      {/* Giant Gold Star Watermark Branding Text */}
+      <div className="py-6 md:py-10 border-t border-white/5 select-none overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-5xl sm:text-8xl md:text-[9rem] lg:text-[12rem] font-black text-white/[0.04] tracking-widest leading-none font-mono uppercase">
+          <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-[10rem] font-black text-white/[0.03] tracking-widest leading-none font-mono uppercase">
             GOLD STAR
           </h2>
         </div>
@@ -294,4 +295,3 @@ export function Footer({
     </footer>
   )
 }
-
