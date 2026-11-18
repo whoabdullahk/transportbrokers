@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'wouter'
-import { Menu, X, ArrowUpRight, Phone, ShieldCheck, MapPin, Search } from 'lucide-react'
+import { Menu, X, ArrowUpRight, Phone, ShieldCheck } from 'lucide-react'
 
 export interface NavLink {
   label: string
@@ -109,11 +109,10 @@ export function Navigation({ links }: NavigationProps) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isTransparent
-          ? 'bg-black/35 backdrop-blur-md border-b border-white/10 py-4 sm:py-5'
-          : 'bg-white/95 backdrop-blur-xl border-b border-gray-200/90 shadow-sm py-3'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isTransparent
+        ? 'bg-black/35 backdrop-blur-md border-b border-white/10 py-4 sm:py-5'
+        : 'bg-white/95 backdrop-blur-xl border-b border-gray-200/90 shadow-sm py-3'
+        }`}
     >
       <nav
         className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
@@ -192,9 +191,8 @@ export function Navigation({ links }: NavigationProps) {
 
             <div className="flex flex-col justify-center leading-none">
               <span
-                className={`font-black text-lg sm:text-xl tracking-tight uppercase font-sans transition-colors duration-300 ${
-                  isTransparent ? 'text-white' : 'text-gray-900'
-                }`}
+                className={`font-black text-lg sm:text-xl tracking-tight uppercase font-sans transition-colors duration-300 ${isTransparent ? 'text-white' : 'text-gray-900'
+                  }`}
               >
                 Gold Star
               </span>
@@ -214,15 +212,14 @@ export function Navigation({ links }: NavigationProps) {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`relative text-xs xl:text-sm font-semibold tracking-normal px-3 py-1.5 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-lime-500 ${
-                    active
-                      ? isTransparent
-                        ? 'text-white bg-white/15 shadow-sm'
-                        : 'text-black bg-gray-100 font-bold'
-                      : isTransparent
+                  className={`relative text-xs xl:text-sm font-semibold tracking-normal px-3 py-1.5 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-lime-500 ${active
+                    ? isTransparent
+                      ? 'text-white bg-white/15 shadow-sm'
+                      : 'text-black bg-gray-100 font-bold'
+                    : isTransparent
                       ? 'text-white/80 hover:text-white hover:bg-white/10'
                       : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/70'
-                  }`}
+                    }`}
                   onClick={(e) => handleLinkClick(e, link.href)}
                   aria-current={active ? 'page' : undefined}
                 >
@@ -244,9 +241,8 @@ export function Navigation({ links }: NavigationProps) {
             {/* Direct Phone link */}
             <a
               href="tel:9176723364"
-              className={`hidden xl:inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full transition-colors ${
-                isTransparent ? 'text-white/80 hover:text-white' : 'text-gray-600 hover:text-gray-900'
-              }`}
+              className={`hidden xl:inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full transition-colors ${isTransparent ? 'text-white/80 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                }`}
             >
               <Phone className="h-3.5 w-3.5 mr-1.5 text-lime-400" />
               <span>(917) 672-3364</span>
@@ -256,11 +252,10 @@ export function Navigation({ links }: NavigationProps) {
             <Link
               href="/track-order"
               onClick={closeMobileMenu}
-              className={`inline-flex items-center space-x-1.5 px-4 py-2 rounded-full font-bold text-xs tracking-wide transition-all duration-200 border ${
-                isTransparent
-                  ? 'border-white/20 text-white hover:bg-white/10'
-                  : 'border-gray-200 text-gray-800 hover:bg-gray-100'
-              }`}
+              className={`inline-flex items-center space-x-1.5 px-4 py-2 rounded-full font-bold text-xs tracking-wide transition-all duration-200 border ${isTransparent
+                ? 'border-white/20 text-white hover:bg-white/10'
+                : 'border-gray-200 text-gray-800 hover:bg-gray-100'
+                }`}
             >
               <span className="h-2 w-2 rounded-full bg-lime-400 animate-pulse" />
               <span>Track Order</span>
@@ -270,11 +265,10 @@ export function Navigation({ links }: NavigationProps) {
             <Link
               href="/contact"
               onClick={closeMobileMenu}
-              className={`inline-flex items-center justify-center px-5 py-2 rounded-full font-bold text-xs tracking-wider uppercase transition-all duration-300 shadow-sm ${
-                isTransparent
-                  ? 'bg-lime-400 hover:bg-lime-300 text-black shadow-lime-400/20'
-                  : 'bg-black text-white hover:bg-neutral-800'
-              }`}
+              className={`inline-flex items-center justify-center px-5 py-2 rounded-full font-bold text-xs tracking-wider uppercase transition-all duration-300 shadow-sm ${isTransparent
+                ? 'bg-lime-400 hover:bg-lime-300 text-black shadow-lime-400/20'
+                : 'bg-black text-white hover:bg-neutral-800'
+                }`}
             >
               <span>Get Started</span>
               <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
@@ -285,9 +279,8 @@ export function Navigation({ links }: NavigationProps) {
           <div className="flex lg:hidden items-center space-x-2">
             <Link
               href="/track-order"
-              className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold ${
-                isTransparent ? 'bg-white/10 text-white' : 'bg-gray-100 text-black'
-              }`}
+              className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold ${isTransparent ? 'bg-white/10 text-white' : 'bg-gray-100 text-black'
+                }`}
             >
               <span className="h-1.5 w-1.5 rounded-full bg-lime-400 mr-1.5 animate-pulse" />
               Track
@@ -296,9 +289,8 @@ export function Navigation({ links }: NavigationProps) {
             <button
               ref={menuButtonRef}
               type="button"
-              className={`p-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500 transition-colors ${
-                !isTransparent ? 'text-black hover:bg-gray-100' : 'text-white hover:bg-white/10'
-              }`}
+              className={`p-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500 transition-colors ${!isTransparent ? 'text-black hover:bg-gray-100' : 'text-white hover:bg-white/10'
+                }`}
               onClick={toggleMobileMenu}
               aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMobileMenuOpen}
@@ -338,11 +330,10 @@ export function Navigation({ links }: NavigationProps) {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`flex items-center justify-between text-xl font-bold tracking-tight py-2.5 px-3 rounded-xl transition-all ${
-                    active
-                      ? 'text-lime-400 bg-lime-500/10 border border-lime-500/20'
-                      : 'text-gray-200 hover:text-white hover:bg-white/5'
-                  }`}
+                  className={`flex items-center justify-between text-xl font-bold tracking-tight py-2.5 px-3 rounded-xl transition-all ${active
+                    ? 'text-lime-400 bg-lime-500/10 border border-lime-500/20'
+                    : 'text-gray-200 hover:text-white hover:bg-white/5'
+                    }`}
                   onClick={closeMobileMenu}
                   role="menuitem"
                   aria-current={active ? 'page' : undefined}

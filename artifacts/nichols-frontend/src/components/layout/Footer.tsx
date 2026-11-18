@@ -1,5 +1,5 @@
 import { Link } from 'wouter'
-import { Mail, MapPin, Phone, ShieldCheck, ArrowUpRight, CheckCircle2 } from 'lucide-react'
+import { Mail, MapPin, Phone, ShieldCheck, ArrowUpRight } from 'lucide-react'
 
 // SVG icons for social media
 const Facebook = ({ className }: { className?: string }) => (

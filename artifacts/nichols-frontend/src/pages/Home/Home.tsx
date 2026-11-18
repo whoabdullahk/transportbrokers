@@ -5,11 +5,6 @@ import {
   ArrowDown,
   Plus,
   Minus,
-  ShieldCheck,
-  Truck,
-  CheckCircle2,
-  Clock,
-  Sparkles,
   Award
 } from 'lucide-react'
 
