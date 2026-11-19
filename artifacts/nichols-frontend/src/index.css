@@ -20,7 +20,6 @@
   }
 
   html {
-    scroll-behavior: smooth;
     color-scheme: light;
     background-color: #ffffff;
   }
@@ -29,11 +28,12 @@
     min-height: 100vh;
     background-color: #ffffff;
     color: #111827;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    line-height: 1.6;
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.5;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   #root {
@@ -44,24 +44,56 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-    letter-spacing: -0.025em;
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 }
 
 @layer utilities {
-  /* Explicit Brand Background Utilities */
+  /* Text Wrapping Helpers */
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Base Deceleration Easing Curve from AI Design Skill B7 */
+  .transition-decel {
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Physical Tactile Press Feedback */
+  .btn-tactile {
+    transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease;
+  }
+  .btn-tactile:active {
+    transform: scale(0.98) translateY(1px);
+  }
+
+  /* Explicit Brand Background Utilities (Flat Surfacing) */
   .bg-brand-black {
-    background-color: #080808 !important;
+    background-color: #000000 !important;
   }
   .bg-brand-charcoal {
-    background-color: #111111 !important;
+    background-color: #181818 !important;
   }
   .bg-brand-surface {
-    background-color: #171717 !important;
+    background-color: #1F1F1F !important;
+  }
+  .bg-brand-elevated {
+    background-color: #272727 !important;
   }
   .bg-brand-card {
-    background-color: #141414 !important;
+    background-color: #181818 !important;
+  }
+  .bg-brand-dark-gold {
+    background-color: #131209 !important;
   }
   .border-brand-border {
     border-color: #262626 !important;

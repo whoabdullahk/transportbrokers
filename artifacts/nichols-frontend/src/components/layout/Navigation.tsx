@@ -253,7 +253,7 @@ export function Navigation({ links }: NavigationProps) {
             <Link
               href="/track-order"
               onClick={closeMobileMenu}
-              className={`whitespace-nowrap inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full font-bold text-xs tracking-wide transition-all duration-200 border flex-shrink-0 ${isTransparent
+              className={`btn-tactile whitespace-nowrap inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full font-bold text-xs tracking-wide transition-all duration-200 border flex-shrink-0 ${isTransparent
                 ? 'border-white/20 text-white bg-white/5 hover:bg-[#D4AF37]/15 hover:border-[#D4AF37]/50'
                 : 'border-gray-300 text-gray-800 bg-gray-50 hover:border-[#D4AF37]/50'
                 }`}
@@ -266,7 +266,7 @@ export function Navigation({ links }: NavigationProps) {
             <Link
               href="/contact"
               onClick={closeMobileMenu}
-              className="whitespace-nowrap inline-flex items-center justify-center px-5 py-2 rounded-full font-extrabold text-xs tracking-wider uppercase transition-all duration-300 bg-gradient-to-r from-[#D4AF37] to-[#F4C542] hover:from-[#F4C542] hover:to-[#D4AF37] text-neutral-950 shadow-[0_0_20px_rgba(212,175,55,0.25)] hover:shadow-[0_0_28px_rgba(212,175,55,0.4)] hover:scale-[1.02] flex-shrink-0"
+              className="btn-tactile whitespace-nowrap inline-flex items-center justify-center px-5 py-2 rounded-full font-bold text-xs tracking-wider uppercase transition-all duration-300 bg-gradient-to-r from-[#D4AF37] to-[#F4C542] hover:from-[#F4C542] hover:to-[#D4AF37] text-neutral-950 shadow-[0_0_20px_rgba(212,175,55,0.25)] hover:shadow-[0_0_28px_rgba(212,175,55,0.4)] flex-shrink-0"
             >
               <span>Get Started</span>
               <ArrowUpRight className="ml-1 h-3.5 w-3.5 stroke-[2.5]" />

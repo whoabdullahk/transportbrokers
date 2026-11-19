@@ -11,4 +11,5 @@ export { FullPageImage } from './FullPageImage'
 export { CTASection } from './CTASection'
 export { ProcessSection } from './ProcessSection'
 export { TrackingWidget } from './TrackingWidget'
+export { TaglineReveal } from './TaglineReveal'
 

@@ -16,17 +16,19 @@ export default {
     },
     extend: {
       colors: {
-        // Sophisticated Color System
-        'brand-black': '#080808',
-        'brand-charcoal': '#111111',
-        'brand-surface': '#171717',
+        // Sophisticated Color System aligned with AI Design Skill rules
+        'brand-black': '#000000',
+        'brand-charcoal': '#181818',
+        'brand-surface': '#1F1F1F',
+        'brand-elevated': '#272727',
         'brand-border': '#262626',
-        'brand-card': '#141414',
+        'brand-card': '#181818',
+        'brand-dark-gold': '#131209',
         'brand-offwhite': '#F5F5F0',
         gold: {
           300: '#FFF0A8',
           400: '#F5D061',
-          500: '#D4AF37', // Signature Metallic Gold
+          500: '#D4AF37', // Signature Metallic Gold Accent
           600: '#B8860B',
           700: '#946C0B',
         },
@@ -40,17 +42,15 @@ export default {
       },
       fontFamily: {
         sans: [
-          '"Inter"',
-          '"Plus Jakarta Sans"',
+          '"Geist"',
           'system-ui',
           '-apple-system',
           'BlinkMacSystemFont',
           '"Segoe UI"',
-          'Roboto',
           'sans-serif',
         ],
         mono: [
-          '"JetBrains Mono"',
+          '"Geist Mono"',
           'ui-monospace',
           'SFMono-Regular',
           'Menlo',
@@ -58,6 +58,9 @@ export default {
           'Consolas',
           'monospace',
         ],
+      },
+      transitionTimingFunction: {
+        decel: 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
       letterSpacing: {
         tighter: '-0.04em',
