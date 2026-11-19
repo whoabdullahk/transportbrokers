@@ -241,12 +241,12 @@ export function Navigation({ links }: NavigationProps) {
           <div className="hidden md:flex items-center space-x-3 flex-shrink-0">
             {/* Direct Phone link */}
             <a
-              href="tel:9176723364"
+              href="tel:9132981729"
               className={`whitespace-nowrap flex items-center text-xs font-semibold px-2.5 py-1.5 rounded-full transition-colors flex-shrink-0 ${isTransparent ? 'text-white/90 hover:text-[#D4AF37]' : 'text-gray-700 hover:text-black'
                 }`}
             >
               <Phone className="h-3.5 w-3.5 mr-1.5 text-[#D4AF37] flex-shrink-0" />
-              <span className="font-mono tracking-tight whitespace-nowrap">(917) 672-3364</span>
+              <span className="font-mono tracking-tight whitespace-nowrap">(913) 298-1729</span>
             </a>
 
             {/* Track Order Pill */}
@@ -374,11 +374,11 @@ export function Navigation({ links }: NavigationProps) {
               </div>
               <div className="flex items-center justify-between pt-1">
                 <a
-                  href="tel:9176723364"
+                  href="tel:9132981729"
                   className="flex items-center text-xs font-semibold text-white hover:text-lime-400 transition-colors"
                 >
                   <Phone className="h-3 w-3 mr-1.5 text-lime-400" />
-                  <span>+1 (917) 672-3364</span>
+                  <span>+1 (913) 298-1729</span>
                 </a>
                 <span className="text-[11px] text-gray-400">Overland Park, KS</span>
               </div>

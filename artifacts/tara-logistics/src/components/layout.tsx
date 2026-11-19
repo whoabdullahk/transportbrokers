@@ -191,7 +191,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <div>
                     <div className="text-[13px] text-[#94A3B8] mb-0.5">24/7 Support</div>
                     <div className="text-[15px] font-medium text-foreground">
-                      <a href="tel:19176723364" className="hover:text-[#D4AF37] transition-colors">+1 (917) 672-3364</a>
+                      <a href="tel:19132981729" className="hover:text-[#D4AF37] transition-colors">+1 (913) 298-1729</a>
                     </div>
                   </div>
                 </li>

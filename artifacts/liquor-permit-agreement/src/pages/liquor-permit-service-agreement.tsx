@@ -109,7 +109,7 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
         <br />
         Address: 9424 REEDS ROAD, OVERLAND PARK, KS 66207
         <br />
-        Email: brandontaylor@goldstartranposrtationinc.com | Phone: +1 (917) 672-3364
+        Email: brandontaylor@goldstartranposrtationinc.com | Phone: +1 (913) 298-1729
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">

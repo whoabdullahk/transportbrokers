@@ -61,7 +61,7 @@ export function Privacy() {
             <div>Gold Star Transportation, Inc.</div>
             <div>9424 REEDS ROAD, OVERLAND PARK, KS 66207</div>
             <div>Email: brandontaylor@goldstartranposrtationinc.com</div>
-            <div>Phone: +1 (917) 672-3364</div>
+            <div>Phone: +1 (913) 298-1729</div>
           </div>
         </div>
       </section>

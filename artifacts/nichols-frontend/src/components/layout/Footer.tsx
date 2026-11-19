@@ -92,7 +92,7 @@ const defaultContactInfo: ContactInfo = {
     state: 'KS',
     zip: '66207',
   },
-  phones: ['+1 (917) 672-3364'],
+  phones: ['+1 (913) 298-1729'],
 }
 
 const defaultSocialLinks: SocialLink[] = [

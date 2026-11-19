@@ -147,7 +147,7 @@ export default function RateConfirmationPrint() {
 
 ***CARRIER FORFEITS ANY ACCESSORIAL MONIES, FOR EXTENDED DWELL TIMES IF ORIGINALLY SCHEDULED APPOINTMENT IS NOT MET. ***
 
-***Driver must call for verbal dispatch +1 (917) 672-3364
+***Driver must call for verbal dispatch +1 (913) 298-1729
 
 ***IN ORDER FOR DETENTION TO BE APPLICABLE, DRIVERS MUST CHECK IN/OUT ON THE TABLET AT ANY CHEWY FULFILLMENT CENTER. ...
 
@@ -189,7 +189,7 @@ Failure to notify Gold Star Transportation, Inc. within 1HR of occurrence result
             <div className="text-[12px] font-bold mb-1">FROM</div>
             <div className="text-[12px] font-bold">{companyName}</div>
             <div className="text-[12px] whitespace-pre-line">{companyAddress}</div>
-            <div className="text-[12px]">{rc.fromPhone || "+1 (917) 672-3364"}</div>
+            <div className="text-[12px]">{rc.fromPhone || "+1 (913) 298-1729"}</div>
             <div className="text-[12px]">{rebrandText(rc.fromEmail || "brandontaylor@goldstartranposrtationinc.com")}</div>
           </div>
           <div className="border border-black/20 p-3 bg-white">
@@ -316,7 +316,7 @@ Failure to notify Gold Star Transportation, Inc. within 1HR of occurrence result
             <div className="text-[12px] font-bold mb-1">FROM</div>
             <div className="text-[12px] font-bold">{companyName}</div>
             <div className="text-[12px] whitespace-pre-line">{companyAddress}</div>
-            <div className="text-[12px]">{rc.fromPhone || "+1 (917) 672-3364"}</div>
+            <div className="text-[12px]">{rc.fromPhone || "+1 (913) 298-1729"}</div>
             <div className="text-[12px]">{rebrandText(rc.fromEmail || "brandontaylor@goldstartranposrtationinc.com")}</div>
           </div>
           <div className="border border-black/20 p-3 bg-white">

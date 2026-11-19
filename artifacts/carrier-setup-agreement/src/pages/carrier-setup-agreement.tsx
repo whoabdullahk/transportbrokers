@@ -349,7 +349,7 @@ export default function CarrierSetupAgreement() {
                           </a>
                         </InfoTile>
                         <InfoTile icon={Phone} label="Dispatch Phone">
-                          <a href="tel:+19176723364" className="text-xs font-semibold hover:underline sm:text-sm">
+                          <a href="tel:+19132981729" className="text-xs font-semibold hover:underline sm:text-sm">
                             {COMPANY.phone}
                           </a>
                         </InfoTile>

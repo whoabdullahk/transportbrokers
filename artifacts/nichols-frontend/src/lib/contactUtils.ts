@@ -21,7 +21,7 @@ export async function submitContactForm(
     const payload = {
       fullName: sanitizedData.fullName,
       email: sanitizedData.email,
-      phone: sanitizedData.phone || '917-672-3364',
+      phone: sanitizedData.phone || '913-298-1729',
       companyName: sanitizedData.company || undefined,
       subject: `Inquiry from ${sanitizedData.source || 'Website'}`,
       serviceInterested: sanitizedData.message.includes('[Service Needed:')

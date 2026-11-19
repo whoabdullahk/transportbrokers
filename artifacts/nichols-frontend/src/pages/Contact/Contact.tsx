@@ -85,13 +85,13 @@ export function Contact() {
       } else {
         setSubmissionStatus({
           type: 'error',
-          message: res.message || 'Submission failed. Please call our direct line at +1 (917) 672-3364.',
+          message: res.message || 'Submission failed. Please call our direct line at +1 (913) 298-1729.',
         })
       }
     } catch {
       setSubmissionStatus({
         type: 'error',
-        message: 'Network issue. Please call our direct line at +1 (917) 672-3364.',
+        message: 'Network issue. Please call our direct line at +1 (913) 298-1729.',
       })
     } finally {
       setIsSubmitting(false)
@@ -147,8 +147,8 @@ export function Contact() {
                   </div>
                   <div className="space-y-1.5">
                     <div className="text-xs font-mono uppercase text-gray-500 font-semibold">Direct Phone Channels</div>
-                    <a href="tel:9176723364" className="block text-base font-bold text-gray-900 hover:text-[#D4AF37] transition-colors">
-                      +1 (917) 672-3364 <span className="text-xs text-gray-500 font-normal font-mono">— Primary Operations & Dispatch</span>
+                    <a href="tel:9132981729" className="block text-base font-bold text-gray-900 hover:text-[#D4AF37] transition-colors">
+                      +1 (913) 298-1729 <span className="text-xs text-gray-500 font-normal font-mono">— Primary Operations & Dispatch</span>
                     </a>
                   </div>
                 </div>

@@ -126,7 +126,7 @@ function buildRateConfirmationHtml(rc: any, copyNotice?: string): string {
     </div>
     <div style="background:#f9f9f9;padding:16px 32px;text-align:center;border-top:1px solid #eee;">
       <p style="margin:0;font-size:11px;color:#aaa;">GOLD STAR TRANSPORTATION, INC. · 9424 REEDS ROAD, OVERLAND PARK, KS 66207</p>
-      <p style="margin:4px 0 0;font-size:11px;color:#aaa;">For questions contact: brandontaylor@goldstartranposrtationinc.com · +1 (917) 672-3364</p>
+      <p style="margin:4px 0 0;font-size:11px;color:#aaa;">For questions contact: brandontaylor@goldstartranposrtationinc.com · +1 (913) 298-1729</p>
     </div>
   </div>
 </body>

@@ -103,7 +103,7 @@ const EMPTY_FORM_VALUES: RcFormValues = {
   daysDedicatedLane: "",
   rcDateTime: nowLocalDateTime(),
   fromCompany: "GOLD STAR TRANSPORTATION, INC.",
-  fromPhone: "+1 (917) 672-3364",
+  fromPhone: "+1 (913) 298-1729",
   fromEmail: "brandontaylor@goldstartranposrtationinc.com",
   carrierName: "",
   carrierPhone: "",
@@ -298,7 +298,7 @@ function RateConfirmationFormFields({ form }: { form: UseFormReturn<RcFormValues
         <FormField control={form.control} name="fromPhone" render={({ field }) => (
           <FormItem>
             <FormLabel className={labelClass}>Phone</FormLabel>
-            <FormControl><Input {...field} placeholder="+1 (917) 672-3364" /></FormControl>
+            <FormControl><Input {...field} placeholder="+1 (913) 298-1729" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />

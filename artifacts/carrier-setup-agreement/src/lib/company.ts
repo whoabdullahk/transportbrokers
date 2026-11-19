@@ -8,7 +8,7 @@ export const COMPANY = {
   dotNumber: "253494",
   serviceDate: "May 21, 2022",
   address: "9424 REEDS ROAD, OVERLAND PARK, KS 66207",
-  phone: "+1 (917) 672-3364",
+  phone: "+1 (913) 298-1729",
   onboardingEmail: "brandontaylor@goldstartranposrtationinc.com",
   billingEmail: "brandontaylor@goldstartranposrtationinc.com",
   siteUrl: "https://goldstartranposrtationinc.com",
