@@ -16,6 +16,7 @@ import {
   FileText,
   Hash,
   IdCard,
+  Info,
   Landmark,
   Layers,
   Loader2,
@@ -63,12 +64,12 @@ const TERMS = [
   {
     icon: Check,
     title: "Payment & Activation Terms",
-    body: "Fees for any optional add-on services are invoiced after the service has been confirmed. Digital confirmation receipts are issued upon processing.",
+    body: "Payment is due prior to service activation. Payments may be processed via certified electronic systems to enable same-day service. Digital confirmation receipts will be issued immediately upon processing.",
   },
   {
     icon: RotateCcw,
-    title: "Cancellation Policy",
-    body: `Either party may terminate this Agreement with written notice. Fees for add-on services not yet started by ${COMPANY.name} are refunded in full.`,
+    title: "Refund Policy",
+    body: `The $500 dedicated lane setup fee is refundable after the Client completes their first three successful round trips arranged by ${COMPANY.name}. Auxiliary administrative fees are non-refundable once administrative processing has commenced.`,
   },
   {
     icon: ShieldCheck,
@@ -78,7 +79,7 @@ const TERMS = [
   {
     icon: Scale,
     title: "Limitation of Liability",
-    body: `${COMPANY.name} is not liable for indirect income loss due to transit delays, shipper-directed appointments, market conditions, or broker cancellations. Both parties commit to professional communication and adherence to agreed schedules.`,
+    body: `${COMPANY.name} is not liable for indirect business loss due to transit delays, shipper-directed appointments, market conditions, or broker cancellations. Both parties commit to professional communication and adherence to agreed schedules.`,
   },
 ];
 
@@ -123,6 +124,7 @@ export default function CarrierSetupAgreement() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [today, setToday] = useState("");
   const [carrier, setCarrier] = useState<CarrierInfo>(EMPTY_CARRIER);
+  const [laneOption, setLaneOption] = useState<"established" | "new">("established");
   const [addOns, setAddOns] = useState<string[]>([]);
   const [payment, setPayment] = useState<PaymentMethod>("Factoring");
   const [exec, setExec] = useState<ExecutionInfo>({ signature: "", printName: "", date: "", agreed: false });
@@ -173,6 +175,7 @@ export default function CarrierSetupAgreement() {
     try {
       const pdfBase64 = await generateAgreementPDF({
         carrier,
+        laneOption,
         addOns,
         payment,
         exec,
@@ -191,6 +194,10 @@ export default function CarrierSetupAgreement() {
         truckNumber: carrier.truckNumber,
         phone: carrier.phone,
         email: carrier.email,
+        laneSetupOption:
+          laneOption === "new"
+            ? "New / Limited Operating History ($500 Refundable Deposit)"
+            : "Established Carrier (No Deposit Required)",
         otherServices: {
           twicCard: addOns.includes("twic"),
           trailerRental: addOns.includes("trailer"),
@@ -288,7 +295,7 @@ export default function CarrierSetupAgreement() {
         </div>
 
         {submitted ? (
-          <SuccessCard carrier={carrier} exec={exec} payment={payment} addOns={addOns} docId={docId} emailSent={emailSent} />
+          <SuccessCard carrier={carrier} exec={exec} laneOption={laneOption} payment={payment} addOns={addOns} docId={docId} emailSent={emailSent} />
         ) : (
           <>
             {/* Stepper */}
@@ -395,19 +402,88 @@ export default function CarrierSetupAgreement() {
                 {step === 1 && (
                   <div className="form-step">
                     <SectionHeader
-                      icon={Layers}
-                      title="Scope of Dedicated Services"
-                      subtitle="This Agreement governs setup, logistics management, and carrier dispatch services."
+                      icon={RouteIcon}
+                      title="Dedicated Lane Options"
+                      subtitle="Your Lane, Your Commitment. We evaluate operating history and established performance prior to assigning dedicated corridors."
                     />
-                    <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-                      {SCOPE.map(({ icon: Icon, label }) => (
-                        <div key={label} className="glass flex items-center gap-3.5 rounded-xl p-4">
-                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border bg-foreground/5">
-                            <Icon className="h-4 w-4" />
+                    <div role="radiogroup" aria-label="Dedicated lane options" className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                      {/* Option 1: Established Carrier */}
+                      <button
+                        type="button"
+                        role="radio"
+                        aria-checked={laneOption === "established"}
+                        data-selected={laneOption === "established"}
+                        onClick={() => setLaneOption("established")}
+                        className="select-tile flex flex-col justify-between text-left p-5 transition-all"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between gap-3">
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 border-foreground/30 transition-all">
+                                {laneOption === "established" && <div className="h-2.5 w-2.5 rounded-full bg-foreground" />}
+                              </div>
+                              <span className="font-display text-sm font-bold tracking-wide uppercase text-foreground">
+                                ESTABLISHED CARRIER
+                              </span>
+                            </div>
+                            <span className="shrink-0 rounded-full border border-foreground/20 bg-foreground/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                              NO DEPOSIT REQUIRED
+                            </span>
                           </div>
-                          <span className="text-xs font-semibold leading-snug sm:text-sm">{label}</span>
+                          <div className="pl-8 pt-1 text-xs font-medium text-muted-foreground">
+                            2+ Years Operating History
+                          </div>
                         </div>
-                      ))}
+                        <p className="mt-3 pl-8 text-xs leading-relaxed text-muted-foreground">
+                          Established operating history and verified carrier performance. No refundable deposit is required to secure your dedicated lane.
+                        </p>
+                      </button>
+
+                      {/* Option 2: New / Limited Operating History */}
+                      <button
+                        type="button"
+                        role="radio"
+                        aria-checked={laneOption === "new"}
+                        data-selected={laneOption === "new"}
+                        onClick={() => setLaneOption("new")}
+                        className="select-tile flex flex-col justify-between text-left p-5 transition-all"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between gap-3">
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 border-foreground/30 transition-all">
+                                {laneOption === "new" && <div className="h-2.5 w-2.5 rounded-full bg-foreground" />}
+                              </div>
+                              <span className="font-display text-sm font-bold tracking-wide uppercase text-foreground">
+                                NEW / LIMITED OPERATING HISTORY
+                              </span>
+                            </div>
+                            <span className="shrink-0 rounded-full border border-foreground/25 bg-foreground/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-foreground">
+                              $500 REFUNDABLE
+                            </span>
+                          </div>
+                          <div className="pl-8 pt-1 text-xs font-medium text-muted-foreground">
+                            New MC / DOT-Only / Leased
+                          </div>
+                        </div>
+                        <p className="mt-3 pl-8 text-xs leading-relaxed text-muted-foreground">
+                          Dedicated operational schedule reservation. $500 refundable commitment deposit confirms schedule adherence.
+                        </p>
+                      </button>
+                    </div>
+
+                    {/* Deposit Info Callout Box */}
+                    <div className="mb-10 rounded-2xl border border-border bg-foreground/[0.02] p-5 sm:p-6 backdrop-blur-sm">
+                      <div className="mb-2 flex items-center gap-2 text-xs font-bold text-foreground sm:text-sm">
+                        <Info className="h-4 w-4 shrink-0 text-muted-foreground" />
+                        <span>Why is a deposit required for new authority carriers?</span>
+                      </div>
+                      <p className="text-xs leading-relaxed text-muted-foreground">
+                        Dedicated lanes are scheduled in advance and require a carrier to commit to the assigned pickup schedule. For carriers with limited operating history, a refundable $500 deposit is required to confirm their commitment to the scheduled operation.
+                      </p>
+                      <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                        <strong className="font-semibold text-foreground">Build your track record:</strong> Complete your first 3 round trips successfully, and your $500 deposit will be refunded according to the terms of the carrier agreement.
+                      </p>
                     </div>
 
                     <SectionHeader
@@ -479,7 +555,7 @@ export default function CarrierSetupAgreement() {
                     <SectionHeader
                       icon={FileText}
                       title="Agreement Terms & Conditions"
-                      subtitle="Review carrier responsibilities, liability boundaries, and cancellation terms."
+                      subtitle="Review carrier responsibilities, liability boundaries, and refund specifications."
                     />
                     <div className="mb-10 grid grid-cols-1 gap-4 md:grid-cols-2">
                       {TERMS.map(({ icon: Icon, title, body }) => (
@@ -563,6 +639,7 @@ export default function CarrierSetupAgreement() {
 function SuccessCard({
   carrier,
   exec,
+  laneOption,
   payment,
   addOns,
   docId,
@@ -570,6 +647,7 @@ function SuccessCard({
 }: {
   carrier: CarrierInfo;
   exec: ExecutionInfo;
+  laneOption: "established" | "new";
   payment: PaymentMethod;
   addOns: string[];
   docId: string;
@@ -596,6 +674,9 @@ function SuccessCard({
       <div className="mx-auto grid max-w-2xl grid-cols-1 gap-4 text-left sm:grid-cols-2">
         <InfoTile icon={Hash} label="MC / DOT">
           {carrier.mcNumber || "—"} / {carrier.dotNumber || "—"}
+        </InfoTile>
+        <InfoTile icon={RouteIcon} label="Dedicated Lane Option">
+          {laneOption === "new" ? "New / Limited ($500 Refundable)" : "Established Carrier (No Deposit)"}
         </InfoTile>
         <InfoTile icon={CreditCard} label="Payment Method">
           {payment}

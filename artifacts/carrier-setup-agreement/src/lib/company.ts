@@ -16,7 +16,7 @@ export const COMPANY = {
 
 export const ADD_ONS = [
   { id: "twic", title: "TWIC Card Application", note: "Same-day processing", price: 360 },
-  { id: "trailer", title: "Trailer Rental (3 Mo.)", note: "Subject to availability", price: 500 },
+  { id: "trailer", title: "Trailer Rental (1 Mo.)", note: "Subject to availability", price: 500 },
   { id: "factoring", title: "Factoring Setup", note: "Same-day registration", price: 250 },
   { id: "insurance", title: "Insurance Assistance", note: "Fast-track quotation", price: 399 },
 ] as const;

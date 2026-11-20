@@ -4,6 +4,7 @@ import type { CarrierInfo, ExecutionInfo } from "@/lib/agreement-schema";
 
 export interface AgreementPdfParams {
   carrier: CarrierInfo;
+  laneOption?: "established" | "new";
   addOns: readonly string[];
   payment: PaymentMethod;
   exec: ExecutionInfo;
@@ -16,6 +17,7 @@ export interface AgreementPdfParams {
  */
 export async function generateAgreementPDF({
   carrier,
+  laneOption = "established",
   addOns,
   payment,
   exec,
@@ -188,6 +190,19 @@ export async function generateAgreementPDF({
 
   divider();
 
+  // ── Dedicated Lane Tier ──
+  sectionTitle("Dedicated Lane Options");
+  if (laneOption === "new") {
+    field("Selected Lane Tier", "NEW / LIMITED OPERATING HISTORY ($500 Refundable Commitment Deposit)");
+    bodyText("Dedicated operational schedule reservation. A refundable $500 deposit confirms schedule adherence. The $500 deposit is fully refundable after completing the first three successful round trips arranged by " + COMPANY.name + ".");
+  } else {
+    field("Selected Lane Tier", "ESTABLISHED CARRIER (2+ Years Operating History — No Deposit Required)");
+    bodyText("Established operating history and verified carrier performance. No refundable deposit is required to secure your dedicated lane.");
+  }
+  y += 6;
+
+  divider();
+
   // ── Scope & Optional Services ──
   sectionTitle("Scope of Dedicated Services");
   bodyText("This Agreement governs setup, logistics management, and carrier dispatch services including:");
@@ -227,15 +242,15 @@ export async function generateAgreementPDF({
   doc.text("1. Payment & Activation Terms", margin, y);
   y += 14;
   doc.setFont("helvetica", "normal");
-  bodyText("Fees for any optional add-on services are invoiced after the service has been confirmed. Digital confirmation receipts are issued upon processing.");
+  bodyText("Payment is due prior to service activation. Payments may be processed via certified electronic systems to enable same-day service. Digital confirmation receipts will be issued immediately upon processing.");
   y += 6;
 
   checkPage(40);
   doc.setFont("helvetica", "bold");
-  doc.text("2. Cancellation Policy", margin, y);
+  doc.text("2. Refund Policy", margin, y);
   y += 14;
   doc.setFont("helvetica", "normal");
-  bodyText(`Either party may terminate this Agreement with written notice. Fees for add-on services not yet started by ${COMPANY.name} are refunded in full.`);
+  bodyText(`The $500 dedicated lane setup fee is refundable after the Client completes their first three successful round trips arranged by ${COMPANY.name}. Auxiliary administrative fees are non-refundable once administrative processing has commenced.`);
   y += 6;
 
   checkPage(50);
@@ -251,7 +266,7 @@ export async function generateAgreementPDF({
   doc.text("4. Limitation of Liability", margin, y);
   y += 14;
   doc.setFont("helvetica", "normal");
-  bodyText(`${COMPANY.name} is not liable for indirect income loss due to transit delays, shipper-directed appointments, market conditions, or broker cancellations. Both parties commit to professional communication and adherence to agreed schedules.`);
+  bodyText(`${COMPANY.name} is not liable for indirect business loss due to transit delays, shipper-directed appointments, market conditions, or broker cancellations. Both parties commit to professional communication and adherence to agreed schedules.`);
 
   divider();
 
